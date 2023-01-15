@@ -5,6 +5,7 @@ import {
   ImageBackground,
   FlatList,
   Image,
+  ScrollView,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { Text } from "@react-native-material/core";
@@ -113,12 +114,12 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#c3d4b7",
+    backgroundColor: "#f2f2f2",
   },
 
   greeting: {
     fontSize: 28,
-    color: "#25413b",
+    color: "black",
     marginLeft: 30,
     marginTop: 100,
     fontFamily: "Poppins_500Medium",
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
 
   temperature: {
     fontSize: 50,
-    color: "#204038",
+    color: "black",
     marginLeft: 30,
     marginTop: 30,
     fontFamily: "Poppins_800ExtraBold",
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
 
   celsius: {
     marginTop: 30,
-    color: "#204038",
+    color: "black",
     fontSize: 50,
     fontFamily: "Poppins_200ExtraLight",
   },
@@ -165,12 +166,12 @@ const styles = StyleSheet.create({
   weatherType: {
     fontSize: 16,
     fontFamily: "Poppins_500Medium",
-    color: "#577868",
+    color: "black",
     marginLeft: 30,
   },
 
   location: {
-    color: "#435a43",
+    color: "black",
     fontSize: 16,
     fontFamily: "Poppins_700Bold",
     marginLeft: 2,
@@ -181,7 +182,7 @@ const styles = StyleSheet.create({
     fontSize: 21,
     marginBottom: 10,
     fontFamily: "Poppins_600SemiBold",
-    color: "#25413b",
+    color: "black",
     marginLeft: 30,
     marginTop: 30,
   },
@@ -193,30 +194,31 @@ const styles = StyleSheet.create({
 
   item: {
     flex: 1,
-    padding: 10,
+    padding: 8,
     marginVertical: 8,
     marginHorizontal: 16,
     justifyContent: "center",
     alignItems: "center",
-    width: 100,
-    height: 50,
+    width: 150,
+    height: 90,
   },
 
   title: {
     fontSize: 15,
-    color: "white",
+    color: "black",
   },
   content: {
     lineHeight: 30,
-    backgroundColor: "#dee8d6",
-    color: "#223015",
+    backgroundColor: "#88dae1",
+    color: "black",
     fontFamily: "Poppins_500Medium",
-    padding: 8,
+    padding: 15,
     marginBottom: 10,
     justifyContent: "center",
     textAlign: "center",
-    width: 165,
-    height: 115,
-    borderRadius: 15,
+    width: 170,
+    height: 130,
+    borderRadius: 7,
+    elevation: 5,
   },
 });

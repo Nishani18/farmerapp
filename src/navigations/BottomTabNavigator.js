@@ -8,24 +8,43 @@ import StatisticsScreen from "../screen/StatisticsScreen";
 
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
+import { FontAwesome5, AntDesign } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
 function BottomTabNavigator() {
   return (
     <Tab.Navigator
+      initialRouteName="Home"
       screenOptions={{
-        headerShown: false,
+        tabBarActiveTintColor: "#1e391e",
+        tabBarStyle: {
+          height: 60,
+          paddingHorizontal: 5,
+          paddingTop: 6,
+          paddingBottom: 6,
+          borderTopRightRadius: 20,
+          borderTopLeftRadius: 20,
+          borderBottomLeftRadius: 20,
+          borderBottomRightRadius: 20,
+          backgroundColor: "#fbfbfb",
+          marginBottom: 10,
+          elevation: 20,
+          marginRight: 10,
+          marginLeft: 10,
+          position: "absolute",
+          borderTopWidth: 0,
+        },
       }}
     >
       <Tab.Screen
-        name="HomeScreen"
+        name="Home"
         component={HomeScreen}
         options={{
-          tabBarLabel: "Home",
+          tabBarShowLabel: false,
+          headerShown: false,
           tabBarIcon: ({ color }) => (
-            <Ionicons name="ios-home" size={24} color={color} />
+            <AntDesign name="home" size={30} color={color} />
           ),
         }}
       />
@@ -33,9 +52,10 @@ function BottomTabNavigator() {
         name="Category"
         component={CategoryScreen}
         options={{
-          tabBarLabel: "Category",
+          tabBarShowLabel: false,
+          headerShown: false,
           tabBarIcon: ({ color }) => (
-            <Entypo name="add-to-list" size={24} color={color} />
+            <AntDesign name="plussquareo" size={30} color={color} />
           ),
         }}
       />
@@ -43,9 +63,10 @@ function BottomTabNavigator() {
         name="Statistics"
         component={StatisticsScreen}
         options={{
-          tabBarLabel: "Statistics",
+          tabBarShowLabel: false,
+          headerShown: false,
           tabBarIcon: ({ color }) => (
-            <Ionicons name="bar-chart" size={24} color={color} />
+            <AntDesign name="areachart" size={30} color={color} />
           ),
         }}
       />
@@ -53,9 +74,10 @@ function BottomTabNavigator() {
         name="Profile"
         component={ProfileScreen}
         options={{
-          tabBarLabel: "Profile",
+          tabBarShowLabel: false,
+          headerShown: false,
           tabBarIcon: ({ color }) => (
-            <FontAwesome5 name="user-alt" size={24} color={color} />
+            <AntDesign name="user" size={30} color={color} />
           ),
         }}
       />
