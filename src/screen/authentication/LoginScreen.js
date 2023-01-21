@@ -19,14 +19,16 @@ import {
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
 import { MaterialIcons, Foundation } from "@expo/vector-icons";
+import { login } from "../../../store1/slices/auth";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const submit = () => {
-    dispatch(Login(email, password));
+  const submit = ({email,password}) => {
+    dispatch(login({email,password})).unwrap().then(()=>{
+    })
   };
 
   let [fontsLoaded] = useFonts({
@@ -98,7 +100,7 @@ export default function LoginScreen({ navigation }) {
               marginHorizontal: 20,
               marginTop: 3,
             }}
-            onPress={submit}
+            onPress={()=>{submit({email,password})}}
           >
             {" "}
             Submit
