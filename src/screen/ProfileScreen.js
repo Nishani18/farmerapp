@@ -2,12 +2,14 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-paper";
 import { useDispatch } from "react-redux";
+import { logout } from "../../store1/slices/auth";
 import { Logout } from "../store/actions";
+
 
 export default function Profile({ route, navigation }) {
   const dispatch = useDispatch();
   const submit = () => {
-    dispatch(Logout());
+    dispatch(logout());
   };
   return (
     <View style={{ flex: 1 }}>

@@ -19,6 +19,7 @@ import {
   Poppins_800ExtraBold,
 } from "@expo-google-fonts/poppins";
 import React from "react";
+import { useSelector } from "react-redux";
 
 const DATA = [
   {
@@ -50,6 +51,9 @@ export default function HomeScreen() {
   const Bg = {
     uri: "https://st.depositphotos.com/1466799/3317/v/600/depositphotos_33176053-stock-illustration-blue-cloudy-sky-vector-background.jpg",
   };
+
+  const userToken = useSelector((state)=>state.auth.userToken)
+  console.log("Main stuff",userToken)
 
   let [fontsLoaded] = useFonts({
     Poppins_200ExtraLight,
