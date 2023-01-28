@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import {
   TouchableOpacity,
-  SafeAreaView,
   ImageBackground,
   StyleSheet,
   View,
   Dimensions,
+  ActivityIndicator,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Text, Input, Button } from "@rneui/base";
-import { useDispatch } from "react-redux";
-import { Login } from "../../store/actions";
+import { useDispatch, useSelector } from "react-redux";
 import {
   useFonts,
   Poppins_200ExtraLight,
@@ -25,10 +24,11 @@ export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const loading = useSelector((state) => state.auth.loading);
+
   const dispatch = useDispatch();
-  const submit = ({email,password}) => {
-    dispatch(login({email,password})).unwrap().then(()=>{
-    })
+  const submit = ({ email, password }) => {
+    dispatch(login({ email, password }));
   };
 
   let [fontsLoaded] = useFonts({
@@ -37,6 +37,14 @@ export default function LoginScreen({ navigation }) {
     Poppins_500Medium,
     Poppins_700Bold,
   });
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <ActivityIndicator size="large" color="green" />
+      </View>
+    );
+  }
 
   if (!fontsLoaded) {
     return null;
@@ -100,7 +108,11 @@ export default function LoginScreen({ navigation }) {
               marginHorizontal: 20,
               marginTop: 3,
             }}
-            onPress={()=>{submit({email,password})}}
+            type="clear"
+            disabled={!email || !password}
+            onPress={() => {
+              submit({ email, password });
+            }}
           >
             {" "}
             Submit

@@ -1,60 +1,53 @@
-import { createIconSetFromFontello } from '@expo/vector-icons';
-import axios from 'axios';
-import * as secureStore from 'expo-secure-store';
+import { createIconSetFromFontello } from "@expo/vector-icons";
+import axios from "axios";
+import * as secureStore from "expo-secure-store";
 
-const baseURL = "https://farmer-6ap5.onrender.com/api/auth/";
+const baseURL = "https://farmer-test.onrender.com/api/auth/";
 
-const register = (name,email,password)=>{
-    return axios.post(baseURL+"signin",{
-        name,
-        email,
-        password
+const register = (name, email, password) => {
+  return axios.post(baseURL + "signin", {
+    name,
+    email,
+    password,
+  });
+};
+
+const login = (email, password) => {
+  console.log("enters");
+  console.log(email);
+  console.log(password);
+  axios
+    .post(`${baseURL}login`, {
+      email: email,
+      password: password,
+    })
+    .then(async (Response) => {
+      console.log(Response.data.accessToken);
+      try {
+        await secureStore.setItemAsync("access", Response.data.accessToken);
+        const demoToken = await secureStore.getItemAsync("access");
+        console.log("Demo token", demoToken);
+      } catch (error) {
+        console.log(error);
+      }
+      return Response.data;
+    })
+    .catch((error) => {
+      console.log("This is the error", error);
     });
 };
 
-const login = (email,password)=>{
-    // const response = axios.post(baseURL + "login", {
-    //     email,
-    //     password
-    // });
-    // console.log("Is this the error",response)
-    //console.log(response.data.accessToken);
-    //return response.data;
-    console.log("enters")
-    console.log(email)
-    console.log(password)
-    axios.post(`${baseURL}login`, {
-        email: email,
-        password: password,
-        })
-        .then(async (Response) => {
-            console.log(Response.data.accessToken)
-            try{
-                await secureStore.setItemAsync('access',Response.data.accessToken)
-                const demoToken = await secureStore.getItemAsync('access')
-                console.log("Demo token",demoToken)
-            }
-            catch(error){
-                console.log(error)
-            }
-            return Response.data;
-        })
-        .catch((error) => {
-        console.log("This is the error",error);
-        });
+const logout = async () => {
+  await secureStore.deleteItemAsync("access");
 };
 
-const logout = async () =>{
-    await secureStore.deleteItemAsync('access');
-}
-
-const restore = async() => {
-    return await secureStore.getItemAsync('access')
-}
+const restore = async () => {
+  return await secureStore.getItemAsync("access");
+};
 
 export default authService = {
-    register,
-    login,
-    logout,
-    restore
-}
+  register,
+  login,
+  logout,
+  restore,
+};

@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { StatusBar, View } from "react-native";
+import { StatusBar, View, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider, useDispatch, useSelector } from "react-redux";
+import * as secureStore from "expo-secure-store";
 import store from "./store1/store";
-import { ActivityIndicator } from "react-native-paper";
-import { Init } from "./src/store/actions";
+import { createStackNavigator } from "@react-navigation/stack";
+import FlashMessage from "react-native-flash-message";
 
+//Navigation
 import AuthNavigator from "./src/navigations/AuthNavigator";
 import BottomTabNavigator from "./src/navigations/BottomTabNavigator";
-import HomeScreen from "./src/screen/HomeScreen";
-import * as secureStore from 'expo-secure-store'
+import CategoryNavigation from "./src/navigations/CategoryNavigation";
+
 import { restore } from "./store1/slices/auth";
-import reducer from "./store1/slices/auth";
 
 function SplashScreen() {
   return (
@@ -21,30 +22,23 @@ function SplashScreen() {
   );
 }
 
-const RootNavigation = () => {
-  const [loading, setLoading] = useState(false);
+const Stack = createStackNavigator();
 
-  const accesstoken = useSelector((state)=>state.auth.userToken);
-  const isLoggedin = useSelector((state)=>state.auth.isLoggedIn);
+const RootNavigation = () => {
+  const accesstoken = useSelector((state) => state.auth.userToken);
+  const isLoggedin = useSelector((state) => state.auth.isLoggedIn);
+  const loading = useSelector((state) => state.auth.loading);
 
   const dispatch = useDispatch();
   useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken;
-
       try {
-        userToken = await secureStore.getItemAsync('access');
-        console.log(userToken)
+        userToken = await secureStore.getItemAsync("access");
+        console.log(userToken);
       } catch (e) {
-        // Restoring token failed
-        console.log(e)
+        console.log(e);
       }
-
-      // After restoring token, we may need to validate it in production apps
-
-      // This will switch to the App screen or Auth screen and this loading
-      // screen will be unmounted and thrown away.
       dispatch(restore(userToken));
     };
 
@@ -61,8 +55,20 @@ const RootNavigation = () => {
 
   return (
     <NavigationContainer>
-      <StatusBar backgroundColor="black" barStyle="light-content" />
-      {accesstoken === null ? <AuthNavigator /> : <BottomTabNavigator />}
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {accesstoken === null ? (
+          <Stack.Screen name="AuthNavigator" component={AuthNavigator} />
+        ) : (
+          <Stack.Screen
+            name="BottomTabNavigator"
+            component={BottomTabNavigator}
+          />
+        )}
+        <Stack.Screen
+          name="CategoryNavigation"
+          component={CategoryNavigation}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
@@ -71,6 +77,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <RootNavigation />
+      <FlashMessage position="top" />
     </Provider>
   );
 };

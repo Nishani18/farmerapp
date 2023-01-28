@@ -4,8 +4,10 @@ import {
   StyleSheet,
   Text,
   View,
+  ActivityIndicator,
 } from "react-native";
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   useFonts,
   Poppins_200ExtraLight,
@@ -16,16 +18,19 @@ import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 import { Input, Button } from "@rneui/base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import axios from "axios";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
-const baseURL = "https://farmer-6ap5.onrender.com";
+const baseURL = "https://farmer-test.onrender.com";
 
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
 
   const [passError, setPassError] = useState(false);
+
+  const loading = useSelector((state) => state.auth.loading);
 
   const signUpHandler = async () => {
     axios
@@ -36,9 +41,27 @@ const RegisterScreen = () => {
       })
       .then((Response) => {
         console.log(Response.data);
+        showMessage({
+          message: "Account Created",
+          type: "success",
+          floating: true,
+          duration: 5000,
+          icon: { icon: "success", position: "left" },
+          style: { paddingVertical: 20, paddingHorizontal: 20 },
+        });
+        navigation.navigate("AuthNavigator", { screen: "Login" });
       })
       .catch((error) => {
         console.log(error);
+        showMessage({
+          message: "Error creating your account!",
+          type: "danger",
+          floating: true,
+          duration: 5000,
+          icon: { icon: "danger", position: "left" },
+          style: { paddingVertical: 20, paddingHorizontal: 20 },
+        });
+        navigation.navigate("AuthNavigator", { screen: "Register" });
       });
   };
 
@@ -49,6 +72,14 @@ const RegisterScreen = () => {
       setPassError(false);
     }
   });
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <ActivityIndicator size="large" color="green" />
+      </View>
+    );
+  }
 
   let [fontsLoaded] = useFonts({
     Poppins_200ExtraLight,
@@ -239,7 +270,6 @@ const styles = StyleSheet.create({
     fontSize: 60,
     color: "#EB1D36",
     textAlign: "center",
-    // fontFamily: 'Pacifico_400Regular',
   },
 
   input: {
