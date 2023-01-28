@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Modal,
   Pressable,
+  Alert,
 } from "react-native";
 import { Feather, Entypo } from "@expo/vector-icons";
 import { Text, TextInput } from "@react-native-material/core";
@@ -16,21 +17,36 @@ import {
   Poppins_500Medium,
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Category from "../components/Category";
 import CategoryTitle from "../db/FarmerCategory";
+import { Provider, useDispatch, useSelector } from "react-redux";
+import { createCategory, getCategory } from "../../store1/slices/cat";
 
 const CategoryScreen = () => {
   const renderItem = (item) => {
     //console.log(item);
+    console.log("The items", item);
     return <Category title={item.item.name} />;
   };
 
   const [toggle, setToggle] = useState(false);
   const [text, setText] = useState("");
-  const [addcategory, setAddcategory] = useState(CategoryTitle);
 
-  const height = Dimensions.get("window").height;
+  const category = useSelector((state) => state.cat.category);
+  const accessToken = useSelector((state) => state.auth.userToken);
+  const subCategory = useSelector((state) => state.cat.subCategory);
+
+  console.log(category);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const get = (accessToken) => {
+      dispatch(getCategory({ accessToken }));
+    };
+    get(accessToken);
+  }, []);
 
   let [fontsLoaded] = useFonts({
     Poppins_200ExtraLight,
@@ -55,14 +71,16 @@ const CategoryScreen = () => {
             <Feather name="plus-circle" size={50} color="white" />
           </TouchableOpacity>
         </View>
-        <FlatList data={addcategory} renderItem={renderItem} />
+
+        <FlatList data={category} renderItem={renderItem} />
+
         {toggle ? (
           <Modal
             animationType="slide"
-            transparent={true}
+            presentationStyle="pageSheet"
             visible={toggle}
             onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
+              Alert.alert("Do you want to exit?");
               setToggle(!toggle);
             }}
           >
@@ -79,14 +97,15 @@ const CategoryScreen = () => {
                 <Text style={styles1.modalText}>Add Category</Text>
                 <TextInput
                   style={styles1.input}
-                  placeholder="Add a Category"
+                  color="#103103"
+                  label="Category"
                   onChangeText={(newText) => setText(newText)}
                   defaultValue={text}
                 />
                 <Pressable
                   style={[styles1.button, styles1.buttonClose]}
                   onPress={() => {
-                    setAddcategory([...addcategory, { id: "12", name: text }]);
+                    dispatch(createCategory({ text, accessToken }));
                     setToggle(!toggle);
                   }}
                 >
@@ -142,7 +161,7 @@ const styles1 = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    backgroundColor: "black",
+    backgroundColor: "#103103",
     borderRadius: 25,
     width: 300,
     padding: 30,
@@ -154,7 +173,7 @@ const styles1 = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    elevation: 5,
+    elevation: 8,
   },
   button: {
     marginTop: 30,
@@ -166,12 +185,12 @@ const styles1 = StyleSheet.create({
     backgroundColor: "#F194FF",
   },
   buttonClose: {
-    backgroundColor: "#2d6844",
+    backgroundColor: "white",
   },
   textStyle: {
-    color: "white",
+    color: "black",
     padding: 5,
-    fontFamily: "Poppins_700Bold",
+    fontFamily: "Poppins_500Medium",
     textAlign: "center",
   },
   modalText: {
