@@ -63,7 +63,6 @@ const StatisticsScreen = () => {
             height={350}
             width={455}
             domainPadding={{ x: 30, y: [0, 40] }}
-            scale={{ x: "time" }}
           >
             <VictoryAxis dependentAxis tickFormat={(t) => `${t / 1000}k`} />
             <VictoryAxis
