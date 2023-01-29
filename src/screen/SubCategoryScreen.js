@@ -19,10 +19,15 @@ import {
 } from "@expo-google-fonts/poppins";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import { createCategory } from "../../store1/slices/cat";
 
 const SubCategoryScreen = ({ navigation }) => {
   const [toggle, setToggle] = useState(false);
   const [text, setText] = useState("");
+
+  const handlerLongClick = () => {
+    alert("Do you want to delete?");
+  };
 
   let [fontsLoaded] = useFonts({
     Poppins_200ExtraLight,
@@ -41,7 +46,6 @@ const SubCategoryScreen = ({ navigation }) => {
         </View>
 
         <TouchableOpacity
-          style={styles.button1}
           onPress={() =>
             navigation.navigate("CategoryNavigation", {
               screen: "SubCategoryList",
@@ -113,7 +117,7 @@ const SubCategoryScreen = ({ navigation }) => {
                   <Pressable
                     style={[styles.button, styles.buttonClose]}
                     onPress={() => {
-                      // dispatch(createCategory({ text, accessToken }));
+                      dispatch(createCategory({ text, accessToken }));
                       setToggle(!toggle);
                     }}
                   >

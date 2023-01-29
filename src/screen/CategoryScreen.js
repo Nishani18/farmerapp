@@ -19,25 +19,20 @@ import {
 } from "@expo-google-fonts/poppins";
 import React, { useEffect, useState } from "react";
 import Category from "../components/Category";
-import CategoryTitle from "../db/FarmerCategory";
 import { Provider, useDispatch, useSelector } from "react-redux";
 import { createCategory, getCategory } from "../../store1/slices/cat";
 
 const CategoryScreen = () => {
   const renderItem = (item) => {
-    //console.log(item);
-    console.log("The items", item);
     return <Category title={item.item.name} />;
   };
 
   const [toggle, setToggle] = useState(false);
-  const [text, setText] = useState("");
+  const [name, setName] = useState("");
 
   const category = useSelector((state) => state.cat.category);
   const accessToken = useSelector((state) => state.auth.userToken);
   const subCategory = useSelector((state) => state.cat.subCategory);
-
-  console.log(category);
 
   const dispatch = useDispatch();
 
@@ -47,6 +42,10 @@ const CategoryScreen = () => {
     };
     get(accessToken);
   }, []);
+
+  const onSubmit = ({ name, accessToken }) => {
+    dispatch(createCategory({ name, accessToken }));
+  };
 
   let [fontsLoaded] = useFonts({
     Poppins_200ExtraLight,
@@ -99,13 +98,14 @@ const CategoryScreen = () => {
                   style={styles1.input}
                   color="#103103"
                   label="Category"
-                  onChangeText={(newText) => setText(newText)}
-                  defaultValue={text}
+                  onChangeText={(text) => setName(text)}
+                  defaultValue={name}
                 />
                 <Pressable
                   style={[styles1.button, styles1.buttonClose]}
                   onPress={() => {
-                    dispatch(createCategory({ text, accessToken }));
+                    console.log(name);
+                    onSubmit({ name, accessToken });
                     setToggle(!toggle);
                   }}
                 >

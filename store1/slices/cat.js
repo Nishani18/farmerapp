@@ -17,7 +17,6 @@ export const getCategory = createAsyncThunk("Category/get", async (token) => {
     const response = await axios.get(baseURL, {
       headers: authHeader(token.accessToken),
     });
-    console.log("The response", response.data);
     return response.data;
   } catch (error) {
     return {
@@ -26,26 +25,22 @@ export const getCategory = createAsyncThunk("Category/get", async (token) => {
   }
 });
 
-export const createCategory = createAsyncThunk(
-  "Category/add",
-  async ({ name, token }) => {
-    try {
-      const response = await axios.post(baseURL, {
-        headers: authHeader(token),
-      });
-      console.log("Response is this for add ", response.data);
-      return response.data;
-    } catch (error) {
-      return {
-        message: "Error",
-      };
+export const createCategory = createAsyncThunk("Category/add", async (name) => {
+  const response = await axios.post(
+    baseURL,
+    {
+      name: name.name,
+    },
+    {
+      headers: authHeader(name.accessToken),
     }
-  }
-);
+  );
+  console.log("Main response", response.data);
+  return response.data.category;
+});
 
 const initialState = {
   category: [],
-  subCategory: [],
   loading: false,
 };
 
@@ -59,9 +54,9 @@ const categorySlice = createSlice({
       state.category = [];
     }),
       builder.addCase(getCategory.fulfilled, (state, action) => {
+        console.log("main action", action.payload.result);
         state.loading = false;
         state.category = action.payload.result;
-        state.subCategory = action.payload.result.result;
       }),
       builder.addCase(getCategory.rejected, (state, action) => {
         state.loading = false;
@@ -71,6 +66,7 @@ const categorySlice = createSlice({
         state.loading = true;
       }),
       builder.addCase(createCategory.fulfilled, (state, action) => {
+        console.log("Category after adding", state.category);
         state.loading = false;
       });
   },
