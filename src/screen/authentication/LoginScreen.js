@@ -6,6 +6,7 @@ import {
   View,
   Dimensions,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Text, Input, Button } from "@rneui/base";
@@ -19,17 +20,34 @@ import {
 } from "@expo-google-fonts/poppins";
 import { MaterialIcons, Foundation } from "@expo/vector-icons";
 import { login } from "../../../store1/slices/auth";
+import { add } from "../../../store1/slices/root";
+import * as secureStore from "expo-secure-store";
+
+import i18n from "../../../src/i18n/i18nHelper";
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const loading = useSelector((state) => state.auth.loading);
+  const lang = useSelector((state) => state.root.lang);
 
   const dispatch = useDispatch();
   const submit = ({ email, password }) => {
     dispatch(login({ email, password }));
   };
+
+  const addLanguage = async () => {
+    console.log(lang);
+    if (lang == "en") {
+      dispatch(add("kn"));
+      console.log("Inside", lang);
+    } else {
+      dispatch(add("en"));
+    }
+  };
+
+  i18n.locale = lang;
 
   let [fontsLoaded] = useFonts({
     Poppins_200ExtraLight,
@@ -56,11 +74,13 @@ export default function LoginScreen({ navigation }) {
             style={{ width: "100%", height: "100%" }}
             source={require("../../../assets/Village.jpg")}
           >
-            <Text style={styles.logo}>Farmer Expenditure</Text>
+            <Text style={styles.logo}>{i18n.t("welcome")}</Text>
           </ImageBackground>
         </View>
         <View style={styles.content}>
-          <Text style={styles.title}> Login </Text>
+          <View style={styles.languageCont}>
+            <Text style={styles.title}>{i18n.t("login")}</Text>
+          </View>
 
           <Input
             inputContainerStyle={{
@@ -71,7 +91,7 @@ export default function LoginScreen({ navigation }) {
               fontFamily: "Poppins_200ExtraLight",
             }}
             rightIcon={<MaterialIcons name="email" size={20} color="black" />}
-            placeholder="Email"
+            placeholder={i18n.t("loginInputPlaceholder")}
             autoCapitalize="none"
             inputStyle={styles.input}
             mode="outlined"
@@ -88,7 +108,7 @@ export default function LoginScreen({ navigation }) {
             }}
             secureTextEntry={true}
             rightIcon={<Foundation name="key" size={24} color="black" />}
-            placeholder="Password"
+            placeholder={i18n.t("passwordInputPlaceholder")}
             autoCapitalize="none"
             inputStyle={styles.input}
             mode="outlined"
@@ -115,19 +135,9 @@ export default function LoginScreen({ navigation }) {
             }}
           >
             {" "}
-            Submit
+            {i18n.t("loginBtn")}
           </Button>
 
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("ForgotPassword", {
-                screen: "ForgotPassword",
-              })
-            }
-            style={styles.forgotPassBtn}
-          >
-            <Text style={styles.forgotPassText}>Forgot Password?</Text>
-          </TouchableOpacity>
           <View
             style={{ flexDirection: "row", alignItems: "center", marginTop: 6 }}
           >
@@ -143,7 +153,7 @@ export default function LoginScreen({ navigation }) {
               <Text
                 style={{ width: 50, textAlign: "center", color: "#bdbab9" }}
               >
-                or
+                {i18n.t("or")}
               </Text>
             </View>
             <View
@@ -173,8 +183,20 @@ export default function LoginScreen({ navigation }) {
                 navigation.navigate("Register", { screen: "Register" })
               }
             >
-              Sign Up
+              {i18n.t("signUpBtn")}
             </Button>
+
+            <TouchableOpacity
+              onPress={() => {
+                addLanguage();
+              }}
+              style={{ justifyContent: "center", alignItems: "center" }}
+            >
+              <Image
+                source={require("../../../assets/Kannada.png")}
+                style={styles.language}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </KeyboardAwareScrollView>
@@ -240,5 +262,13 @@ const styles = StyleSheet.create({
   signupBtn: {
     color: "black",
     fontFamily: "Poppins_500Medium",
+  },
+  languageCont: {
+    flexDirection: "row",
+  },
+  language: {
+    width: Dimensions.get("window").width / 9,
+    height: Dimensions.get("window").height / 19,
+    marginTop: 20,
   },
 });

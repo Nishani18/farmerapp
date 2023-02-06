@@ -11,16 +11,10 @@ import FlashMessage from "react-native-flash-message";
 import AuthNavigator from "./src/navigations/AuthNavigator";
 import BottomTabNavigator from "./src/navigations/BottomTabNavigator";
 import CategoryNavigation from "./src/navigations/CategoryNavigation";
+import ReminderNavigation from "./src/navigations/ReminderNavigation";
 
 import { restore } from "./store1/slices/auth";
-
-function SplashScreen() {
-  return (
-    <View>
-      <Text>Loading...</Text>
-    </View>
-  );
-}
+import * as SQLite from "expo-sqlite";
 
 const Stack = createStackNavigator();
 
@@ -67,6 +61,10 @@ const RootNavigation = () => {
         <Stack.Screen
           name="CategoryNavigation"
           component={CategoryNavigation}
+        />
+        <Stack.Screen
+          name="ReminderNavigation"
+          component={ReminderNavigation}
         />
       </Stack.Navigator>
     </NavigationContainer>
