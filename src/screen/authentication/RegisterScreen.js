@@ -20,6 +20,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import axios from "axios";
 import { showMessage, hideMessage } from "react-native-flash-message";
 
+import i18n from "../../../src/i18n/i18nHelper";
+
 const baseURL = "https://farmer-test.onrender.com";
 
 const RegisterScreen = ({ navigation }) => {
@@ -31,6 +33,7 @@ const RegisterScreen = ({ navigation }) => {
   const [passError, setPassError] = useState(false);
 
   const loading = useSelector((state) => state.auth.loading);
+  const lang = useSelector((state) => state.root.lang);
 
   const signUpHandler = async () => {
     axios
@@ -73,6 +76,8 @@ const RegisterScreen = ({ navigation }) => {
     }
   });
 
+  i18n.locale = lang;
+
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
@@ -108,7 +113,7 @@ const RegisterScreen = ({ navigation }) => {
               fontFamily: "Poppins_400Regular",
             }}
           >
-            Register
+            {i18n.t("register")}
           </Text>
 
           <Input
@@ -125,7 +130,7 @@ const RegisterScreen = ({ navigation }) => {
             value={email}
             autoCapitalize="none"
             onChangeText={setEmail}
-            placeholder="Email"
+            placeholder={i18n.t("email")}
           />
 
           <Input
@@ -142,7 +147,7 @@ const RegisterScreen = ({ navigation }) => {
             value={name}
             autoCapitalize="none"
             onChangeText={setName}
-            placeholder="Full Name"
+            placeholder={i18n.t("fullname")}
           />
 
           <Input
@@ -160,7 +165,7 @@ const RegisterScreen = ({ navigation }) => {
             value={password}
             autoCapitalize="none"
             onChangeText={setPassword}
-            placeholder="Password"
+            placeholder={i18n.t("passwordInputPlaceholder")}
           />
 
           {password.length > 0 && password.length < 8 && (
@@ -176,7 +181,7 @@ const RegisterScreen = ({ navigation }) => {
               <Ionicons name="ios-warning" size={20} color="rgba(0,0,0,0.5)" />
               <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.5)" }}>
                 {" "}
-                Minimum password length must be of 8 characters!
+                {i18n.t("message1")}
               </Text>
             </View>
           )}
@@ -196,7 +201,7 @@ const RegisterScreen = ({ navigation }) => {
             secureTextEntry={true}
             autoCapitalize="none"
             onChangeText={setCPassword}
-            placeholder="Confirm Password"
+            placeholder={i18n.t("confirmpassword")}
           />
 
           {passError && (
@@ -211,7 +216,7 @@ const RegisterScreen = ({ navigation }) => {
               <Ionicons name="ios-warning" size={20} color="rgba(0,0,0,0.5)" />
               <Text style={{ fontSize: 12, color: "rgba(0,0,0,0.5)" }}>
                 {" "}
-                Password's don't match!
+                {i18n.t("message2")}
               </Text>
             </View>
           )}
@@ -228,7 +233,7 @@ const RegisterScreen = ({ navigation }) => {
               marginHorizontal: 20,
               marginTop: 3,
             }}
-            title="Sign Up"
+            title={i18n.t("signUpBtn")}
             type="clear"
             disabled={!email || !name || !password || passError}
             onPress={() => signUpHandler()}

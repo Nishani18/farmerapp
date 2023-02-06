@@ -7,8 +7,11 @@ import {
   Modal,
   Pressable,
   Alert,
+  FlatList,
+  Image,
+  ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { TextInput } from "@react-native-material/core";
 import {
   useFonts,
@@ -20,13 +23,87 @@ import {
 import { useSelector } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
+import axios from "axios";
+import { Ionicons } from "@expo/vector-icons";
 
-const SubCategoryListScreen = () => {
+import i18n from "../i18n/i18nHelper";
+
+const SubCategoryListScreen = ({ navigation, route }) => {
   const [toggle, setToggle] = useState(false);
   const [text, setText] = useState("");
+  const [expense, setExpense] = useState([]);
+  const [amount, setAmount] = useState("");
 
-  const subCategory = useSelector((state) => state.cat.subCategory);
-  console.log(subCategory);
+  const accessToken = useSelector((state) => state.auth.userToken);
+  const lang = useSelector((state) => state.root.lang);
+
+  const id = route.params.id;
+  const baseURL = "https://farmer-test.onrender.com/api/expense/";
+
+  i18n.locale = lang;
+
+  const getExpenses = async () => {
+    axios
+      .get(baseURL + id, {
+        headers: {
+          "x-access-token": accessToken,
+        },
+      })
+      .then((response) => {
+        console.log("Expenses response", response.data);
+        setExpense(response.data.response);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const deleteSub = async (exp_id) => {
+    const url = baseURL + exp_id;
+    console.log(url);
+    axios
+      .delete(url, {
+        headers: {
+          "x-access-token": accessToken,
+        },
+      })
+      .then((response) => {
+        console.log(response);
+        getExpenses(id);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    getExpenses();
+  }, []);
+
+  const addExpense = async () => {
+    axios
+      .post(
+        baseURL,
+        {
+          id: id,
+          name: text,
+          amount: amount,
+        },
+        {
+          headers: {
+            "x-access-token": accessToken,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        getExpenses();
+        //setExpense([...expense,repo])
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   let [fontsLoaded] = useFonts({
     Poppins_200ExtraLight,
@@ -35,14 +112,68 @@ const SubCategoryListScreen = () => {
     Poppins_700Bold,
   });
 
+  const Item = ({ id, title, price }) => (
+    <View style={styles.FlatListButtonCont}>
+      <View style={styles.ListCont}>
+        <View style={styles.ItemCont}>
+          <Text style={styles.Itemtitle}>{title}</Text>
+        </View>
+        <View style={styles.priceCont}>
+          <Text style={styles.pricetitle}>₹ {price}</Text>
+        </View>
+      </View>
+      <TouchableOpacity
+        onPress={() => {
+          console.log(id);
+          deleteSub(id);
+        }}
+      >
+        <Image
+          source={require("../../assets/garbage.png")}
+          style={styles.imagePin}
+        ></Image>
+      </TouchableOpacity>
+    </View>
+  );
+
   if (!fontsLoaded) {
     return null;
   } else {
     return (
       <View style={styles.container}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Medicines</Text>
+          <Text style={styles.title}>{route.params.title}</Text>
         </View>
+
+        {expense.length != 0 ? (
+          <FlatList
+            data={expense}
+            renderItem={({ item }) => (
+              <View>
+                <Item id={item._id} title={item.name} price={item.amount} />
+              </View>
+            )}
+            keyExtractor={(item) => item._id}
+            contentContainerStyle={{
+              paddingBottom: 10,
+            }}
+            showsVerticalScrollIndicator={false}
+          />
+        ) : (
+          <View style={styles.graphcontainer}>
+            <Image
+              source={require("../../assets/add-to-cart.png")}
+              style={styles.imageChart}
+            />
+            <Text style={styles.heading}>
+              {i18n.t("subcategorylistmessage1")}
+            </Text>
+            <Text style={styles.paragraph}>
+              {i18n.t("subcategorylistmessage2")}
+            </Text>
+          </View>
+        )}
+
         <TouchableOpacity
           style={styles.plus}
           onPress={() => {
@@ -64,36 +195,95 @@ const SubCategoryListScreen = () => {
             style={{ height: "100%", backgroundColor: "#e5e5e5" }}
           >
             <View style={styles.centeredView}>
-              <Text style={styles.title1}>Add Item name and Price</Text>
+              <Text style={styles.title1}>
+                {i18n.t("subcategorylisttitle")}
+              </Text>
               <View style={styles.modalView}>
-                <View style={styles.inputContainer}>
-                  <View style={styles.inputButton}>
-                    <TextInput
-                      style={styles.input}
-                      label={"Item Name"}
-                      color="#2a4330"
-                      onChangeText={(newText) => setText(newText)}
-                      defaultValue={text}
-                    />
-                  </View>
-                  <View style={styles.inputButton1}>
-                    <TextInput
-                      style={styles.input}
-                      label={"Price"}
-                      color="#2a4330"
-                      onChangeText={(newText) => setText(newText)}
-                      defaultValue={text}
-                    />
+                <View style={styles.errorContainer}>
+                  <View style={styles.inputContainer}>
+                    <View style={styles.inputButton}>
+                      <TextInput
+                        style={styles.input}
+                        placeholder={i18n.t("subcategorylisttoggleinput1")}
+                        color="#2a4330"
+                        onChangeText={(newText) => setText(newText)}
+                        defaultValue={text}
+                      />
+
+                      {/* {text.length == 0 && (
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            marginTop: 15,
+                            // marginBottom: 10,
+                          }}
+                        >
+                          <Ionicons
+                            name="ios-warning"
+                            size={20}
+                            color="rgba(0,0,0,0.5)"
+                          />
+                          <Text
+                            style={{ fontSize: 12, color: "rgba(0,0,0,0.5)" }}
+                          >
+                            Item should not be empty
+                          </Text>
+                        </View>
+                      )} */}
+                    </View>
+
+                    <View style={styles.inputButton1}>
+                      <TextInput
+                        style={styles.input}
+                        keyboardType="numeric"
+                        placeholder={i18n.t("subcategorylisttoggleinput2")}
+                        color="#2a4330"
+                        onChangeText={(newText) => setAmount(newText)}
+                        defaultValue={amount}
+                      />
+
+                      {amount < 0 && (
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            marginTop: 15,
+                            // marginBottom: 10,
+                          }}
+                        >
+                          <Ionicons
+                            name="ios-warning"
+                            size={20}
+                            color="rgba(0,0,0,0.5)"
+                          />
+                          <Text
+                            style={{ fontSize: 12, color: "rgba(0,0,0,0.5)" }}
+                          >
+                            {i18n.t("subcategoryinputwarning")}
+                          </Text>
+                        </View>
+                      )}
+                    </View>
+                    <View style={styles.errorCont}></View>
                   </View>
                 </View>
+
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
+                  disabled={!text || !amount || amount <= 0}
                   onPress={() => {
                     // dispatch(createCategory({ text, accessToken }));
+                    addExpense();
                     setToggle(!toggle);
+                    setText("");
+                    setAmount("");
                   }}
                 >
-                  <Text style={styles.textStyle}>Submit</Text>
+                  <Text style={styles.textStyle}>
+                    {" "}
+                    {i18n.t("categorysubmit")}
+                  </Text>
                 </Pressable>
               </View>
             </View>
@@ -208,6 +398,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputContainer: {
+    position: "relative",
     flexDirection: "row",
   },
   modalView: {
@@ -222,5 +413,77 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 20,
     fontFamily: "Poppins_500Medium",
+  },
+  Itemtitle: {
+    fontFamily: "Poppins_400Regular",
+    fontSize: 17,
+  },
+  ListCont: {
+    width: Dimensions.get("window").width / 1.2,
+    height: Dimensions.get("window").height / 11,
+    backgroundColor: "#ffffff",
+    elevation: 10,
+    marginLeft: 1,
+    marginTop: 15,
+    borderRadius: 3,
+    flexDirection: "row",
+  },
+  ItemCont: {
+    alignItems: "flex-start",
+    left: 25,
+    marginTop: 20,
+  },
+  priceCont: {
+    position: "absolute",
+    alignItems: "flex-end",
+    left: 250,
+    marginTop: 20,
+  },
+  pricetitle: {
+    fontSize: 17,
+    fontFamily: "Poppins_400Regular",
+  },
+  imagePin: {
+    width: 35,
+    height: 35,
+    marginLeft: 10,
+  },
+  FlatListButtonCont: {
+    backgroundColor: "#e5e5e5",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  graphcontainer: {
+    top: 200,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  imageChart: {
+    width: Dimensions.get("window").width / 4,
+    height: Dimensions.get("window").height / 8,
+  },
+
+  heading: {
+    fontFamily: "Poppins_500Medium",
+    fontSize: 17,
+    marginTop: 16,
+  },
+  paragraph: {
+    fontFamily: "Poppins_400Regular",
+    marginLeft: 20,
+    fontSize: 15,
+    marginRight: 20,
+    textAlign: "center",
+  },
+  inputContainer: {
+    flexDirection: "row",
+  },
+  errorCont: {
+    flexDirection: "row",
+  },
+  errorContainer: {
+    flexDirection: "column",
   },
 });

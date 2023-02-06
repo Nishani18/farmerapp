@@ -6,6 +6,7 @@ import {
   FlatList,
   Image,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { Text } from "@react-native-material/core";
@@ -19,13 +20,26 @@ import {
   Poppins_800ExtraBold,
 } from "@expo-google-fonts/poppins";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ProgressBar } from "react-native-paper";
 import axios from "axios";
 import HomeScreenChart from "../components/HomeScreenChart";
+import Weather from "../components/Weather";
+import Reminder from "../components/Reminder";
+import { add } from "../../store1/slices/root";
 
-export default function HomeScreen() {
+import i18n from "../i18n/i18nHelper";
+
+export default function HomeScreen({ navigation }) {
   const userToken = useSelector((state) => state.auth.userToken);
+  const userInfo = useSelector((state) => state.auth.userInfo);
+  const lang = useSelector((state) => state.root.lang);
+
+  const dispatch = useDispatch();
+
+  const base_url = "https://farmer-test.onrender.com/api/profile/";
+
+  const [profile, setProfile] = useState({ name: "user" });
 
   let [fontsLoaded] = useFonts({
     Poppins_200ExtraLight,
@@ -36,6 +50,31 @@ export default function HomeScreen() {
     Poppins_800ExtraBold,
   });
 
+  const getProfile = async () => {
+    const response = await axios.get(base_url, {
+      headers: {
+        "x-access-token": userToken,
+      },
+    });
+    setProfile(response.data.profile);
+  };
+
+  const addLanguage = async () => {
+    console.log(lang);
+    if (lang == "en") {
+      dispatch(add("kn"));
+      console.log("Inside", lang);
+    } else {
+      dispatch(add("en"));
+    }
+  };
+
+  i18n.locale = lang;
+
+  useEffect(() => {
+    getProfile();
+  }, []);
+
   if (!fontsLoaded) {
     return null;
   } else {
@@ -43,35 +82,29 @@ export default function HomeScreen() {
       <ScrollView showsVerticalScrollIndicator={false} style={styles.Scroll}>
         <View style={styles.container}>
           <View style={styles.greetingCont}>
-            <Text style={styles.greeting}>Hi, Nishani!</Text>
-          </View>
-
-          <View style={styles.weatherContainer}>
-            <View style={styles.locationContainer}>
+            <Text style={styles.greeting}>
+              {i18n.t("hi")}, {profile.name}!
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                addLanguage();
+              }}
+            >
               <Image
-                source={require("../../assets/pin.png")}
-                style={styles.imagePin}
+                source={require("../../assets/Kannada.png")}
+                style={styles.language}
               />
-              <Text style={styles.location}>Kaniyoor, Uppinangady</Text>
-            </View>
-            <View style={styles.temperatureContainer}>
-              <Text style={styles.temperature}>22</Text>
-              <Text style={styles.celsius}>℃</Text>
-              <Image
-                source={require("../../assets/Weather.png")}
-                style={styles.WeatherImage}
-              ></Image>
-            </View>
-            <Text style={styles.weatherType}>Partly Cloudy</Text>
+            </TouchableOpacity>
           </View>
-          <Text style={styles.revenue1}>Total Categories</Text>
-
+          <Weather />
+          <Text style={styles.revenue1}>{i18n.t("totalCategories")}</Text>
           <View style={styles.PieChart}>
             <HomeScreenChart />
           </View>
 
-          <Text style={styles.revenue}>Revenue</Text>
-          <View>
+          {/* <Text style={styles.revenue}>{i18n.t("reminder")}</Text> */}
+          {/* <Reminder /> */}
+          {/* <View>
             <View style={styles.revenueContainer1}>
               <View style={styles.logotitle}>
                 <Image
@@ -81,14 +114,6 @@ export default function HomeScreen() {
                 <Text style={styles.revenueText}>Highest Spent</Text>
               </View>
               <View style={styles.showSpent}>
-                <View style={styles.ProgressBar}>
-                  <ProgressBar
-                    progress={0.6}
-                    width={300}
-                    color="#386342"
-                  ></ProgressBar>
-                </View>
-
                 <View style={styles.spentTextBlock}>
                   <Text style={styles.spentText}>Spent</Text>
                   <Text style={styles.spentText1}> 60%</Text>
@@ -96,9 +121,8 @@ export default function HomeScreen() {
                   <Text style={styles.spentText3}> Tomato Farming</Text>
                 </View>
               </View>
-            </View>
-
-            <View style={styles.revenueContainer2}>
+            </View>  */}
+          {/* <View style={styles.revenueContainer2}>
               <View style={styles.logotitle}>
                 <Image
                   source={require("../../assets/spent.png")}
@@ -107,14 +131,6 @@ export default function HomeScreen() {
                 <Text style={styles.revenueText}>Lowest Spent</Text>
               </View>
               <View style={styles.showSpent}>
-                <View style={styles.ProgressBar}>
-                  <ProgressBar
-                    progress={0.3}
-                    width={300}
-                    color="#386342"
-                  ></ProgressBar>
-                </View>
-
                 <View style={styles.spentTextBlock}>
                   <Text style={styles.spentText}>Spent</Text>
                   <Text style={styles.spentText1}> 30%</Text>
@@ -122,8 +138,8 @@ export default function HomeScreen() {
                   <Text style={styles.spentText3}> Cattle</Text>
                 </View>
               </View>
-            </View>
-          </View>
+            </View> */}
+          {/* </View> */}
         </View>
       </ScrollView>
     );
@@ -143,12 +159,14 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     elevation: 30,
+    flexDirection: "row",
   },
 
   greeting: {
+    position: "absolute",
     fontSize: 28,
     color: "#ffffff",
-    marginLeft: 30,
+    marginLeft: 40,
     marginTop: 70,
     fontFamily: "Poppins_500Medium",
   },
@@ -318,5 +336,13 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_600SemiBold",
     color: "black",
     marginLeft: 36,
+  },
+
+  language: {
+    position: "absolute",
+    width: Dimensions.get("window").width / 9,
+    height: Dimensions.get("window").height / 19,
+    marginLeft: 330,
+    marginTop: 67,
   },
 });
