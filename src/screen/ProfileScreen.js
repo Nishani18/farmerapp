@@ -26,6 +26,14 @@ import i18n from "../i18n/i18nHelper";
 
 export default function Profile({ route, navigation }) {
   const [data, setData] = useState([]);
+  const [selectedPrinter, setSelectedPrinter] = useState();
+  const [profile, setProfile] = useState({ name: "user" });
+
+  var grand_total = 0;
+  data.map((item) => {
+    grand_total += item.total;
+  });
+
   const html = `
 <!DOCTYPE html>
 <html lang="en">
@@ -234,16 +242,10 @@ footer {
   
       <div id="details" class="clearfix">
         <div id="client">
-          <div class="to">INVOICE TO:</div>
-          <h2 class="name">John Doe</h2>
+          <h2 class="name">${profile.name}</h2>
           <div class="email">
-            <a href="mailto:john@example.com">john@example.com</a>
+            <a href="mailto:john@example.com">${profile.email}</a>
           </div>
-        </div>
-        <div id="invoice">
-          <h1>INVOICE</h1>
-          <div class="date">Date of Invoice: 01/06/2014</div>
-          <div class="date">Due Date: 30/06/2014</div>
         </div>
       </div>
       <table border="0" cellspacing="0" cellpadding="0">
@@ -252,43 +254,29 @@ footer {
             <th class="no">#</th>
             <th class="desc">CATEGORIES</th>
             <th class="desc">SUB CATEGORIES</th>
-            <th class="unit">SUB CATEGORIES COUNT</th>
-           
             <th class="total">TOTAL</th>
           </tr>
         </thead>
       ${data.map(
-        (item) =>
+        (item, index) =>
           `<tbody>
         <tr>
-          <td class="no">01</td>
+          <td class="no">${index + 1}</td>
           <td class="desc">
-            <h3>${item.main.name}</h3>
+            <h3>Name: ${item.main.name}</h3>
           </td>
           <td class="desc">
-          <h3>${item.result.name}</h3>
+          <h3>Email: ${item.result.name}</h3>
           </td>
-          <td class="unit">${item.total}</td>
-       
-          <td class="total">$1,200.00</td>
+          <td class="total">₹${item.total}</td>
         </tr>
           </tbody>`
       )}
-        <tfoot>
-          <tr>
-            <td colspan="1"></td>
-            <td colspan="1">SUBTOTAL</td>
-            <td>$5,200.00</td>
-          </tr>
-          <tr>
-            <td colspan="1"></td>
-            <td colspan="1">TAX 25%</td>
-            <td>$1,300.00</td>
-          </tr>
+        <>
           <tr>
             <td colspan="1"></td>
             <td colspan="1">GRAND TOTAL</td>
-            <td>$6,500.00</td>
+            <td>₹${grand_total}</td>
           </tr>
         </tfoot>
       </table>
@@ -324,8 +312,8 @@ footer {
 
   i18n.locale = lang;
 
-  const [selectedPrinter, setSelectedPrinter] = useState();
-  const [profile, setProfile] = useState({ name: "user" });
+  // const [selectedPrinter, setSelectedPrinter] = useState();
+  // const [profile, setProfile] = useState({ name: "user" });
 
   const printToFile = async () => {
     // On iOS/android prints the given html. On web prints the HTML from the current page.

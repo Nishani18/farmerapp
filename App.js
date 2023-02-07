@@ -15,6 +15,7 @@ import ReminderNavigation from "./src/navigations/ReminderNavigation";
 
 import { restore } from "./store1/slices/auth";
 import * as SQLite from "expo-sqlite";
+import * as Notifications from "expo-notifications";
 
 const Stack = createStackNavigator();
 
@@ -22,6 +23,14 @@ const RootNavigation = () => {
   const accesstoken = useSelector((state) => state.auth.userToken);
   const isLoggedin = useSelector((state) => state.auth.isLoggedIn);
   const loading = useSelector((state) => state.auth.loading);
+
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+    }),
+  });
 
   const dispatch = useDispatch();
   useEffect(() => {

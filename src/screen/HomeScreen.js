@@ -27,6 +27,7 @@ import HomeScreenChart from "../components/HomeScreenChart";
 import Weather from "../components/Weather";
 import Reminder from "../components/Reminder";
 import { add } from "../../store1/slices/root";
+import Item from "../components/Item";
 
 import i18n from "../i18n/i18nHelper";
 
@@ -102,44 +103,11 @@ export default function HomeScreen({ navigation }) {
             <HomeScreenChart />
           </View>
 
-          {/* <Text style={styles.revenue}>{i18n.t("reminder")}</Text> */}
-          {/* <Reminder /> */}
-          {/* <View>
-            <View style={styles.revenueContainer1}>
-              <View style={styles.logotitle}>
-                <Image
-                  source={require("../../assets/spent.png")}
-                  style={styles.imageRevenue}
-                />
-                <Text style={styles.revenueText}>Highest Spent</Text>
-              </View>
-              <View style={styles.showSpent}>
-                <View style={styles.spentTextBlock}>
-                  <Text style={styles.spentText}>Spent</Text>
-                  <Text style={styles.spentText1}> 60%</Text>
-                  <Text style={styles.spentText2}> on</Text>
-                  <Text style={styles.spentText3}> Tomato Farming</Text>
-                </View>
-              </View>
-            </View>  */}
-          {/* <View style={styles.revenueContainer2}>
-              <View style={styles.logotitle}>
-                <Image
-                  source={require("../../assets/spent.png")}
-                  style={styles.imageRevenue}
-                />
-                <Text style={styles.revenueText}>Lowest Spent</Text>
-              </View>
-              <View style={styles.showSpent}>
-                <View style={styles.spentTextBlock}>
-                  <Text style={styles.spentText}>Spent</Text>
-                  <Text style={styles.spentText1}> 30%</Text>
-                  <Text style={styles.spentText2}> on</Text>
-                  <Text style={styles.spentText3}> Cattle</Text>
-                </View>
-              </View>
-            </View> */}
-          {/* </View> */}
+          <Text style={styles.revenue}>{i18n.t("reminder")}</Text>
+          <Reminder />
+          <Text style={styles.revenue}>{i18n.t("Upcomingreminder")}</Text>
+
+          <Item />
         </View>
       </ScrollView>
     );
