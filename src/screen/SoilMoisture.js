@@ -79,7 +79,7 @@ const SoilMoisture = () => {
         originWhitelist={["*"]}
         javaScriptEnabled={true}
         source={{
-          uri: "https://api.thingspeak.com/channels/2028274/charts/2?api_key=585ADARCBF7ZCCQM&width=auto&height=650",
+          uri: "https://api.thingspeak.com/channels/2028274/charts/2?api_key=585ADARCBF7ZCCQM&width=auto&height=630",
         }}
       />
 
