@@ -212,7 +212,7 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <TouchableOpacity
-              style={{}}
+              style={{ height: 200, width: 300 }}
               onPress={() =>
                 navigation.navigate("SoilMoistureNavigation", {
                   screen: "SoilMoisture",
@@ -221,12 +221,12 @@ export default function HomeScreen({ navigation }) {
             >
               <View
                 style={{
-                  height: 100,
+                  // height: 100,
                   backgroundColor: "#ffffff",
                   elevation: 10,
-                  bottom: 100,
-                  marginBottom: 40,
-                  width: 300,
+                  bottom: 50,
+
+                  // width: 300,
                   borderRadius: 40,
                 }}
               >
@@ -234,7 +234,8 @@ export default function HomeScreen({ navigation }) {
                   style={{
                     fontFamily: "Poppins_500Medium",
                     fontSize: 17,
-                    marginTop: 36,
+                    marginTop: 20,
+                    marginBottom: 20,
                     textAlign: "center",
                   }}
                 >
