@@ -13,6 +13,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import * as SQLite from "expo-sqlite";
 import * as Notifications from "expo-notifications";
 import { useSelector } from "react-redux";
+import { AntDesign } from "@expo/vector-icons";
 
 import i18n from "../i18n/i18nHelper";
 import { useNavigation } from "@react-navigation/native";
@@ -83,6 +84,14 @@ const ReminderScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.titleContainer}>
+        <TouchableOpacity
+          style={{ top: 52, marginLeft: 20 }}
+          onPress={() => {
+            navigation.goBack();
+          }}
+        >
+          <AntDesign name="left" size={25} color="white" />
+        </TouchableOpacity>
         <Text style={styles.title}> {i18n.t("reminderTitle")}</Text>
       </View>
       <View>
@@ -201,8 +210,8 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    marginTop: 38,
-    marginLeft: 25,
+    marginTop: 9,
+    marginLeft: 60,
     fontSize: 21,
     color: "white",
     fontFamily: "Poppins_400Regular",

@@ -6,6 +6,7 @@ import * as secureStore from "expo-secure-store";
 import store from "./store1/store";
 import { createStackNavigator } from "@react-navigation/stack";
 import FlashMessage from "react-native-flash-message";
+import * as Device from "expo-device";
 
 //Navigation
 import AuthNavigator from "./src/navigations/AuthNavigator";
@@ -16,10 +17,12 @@ import ReminderNavigation from "./src/navigations/ReminderNavigation";
 import { restore } from "./store1/slices/auth";
 import * as SQLite from "expo-sqlite";
 import * as Notifications from "expo-notifications";
+import SoilMoistureNavigation from "./src/navigations/SoilMoistureNavigation";
 
 const Stack = createStackNavigator();
 
 const RootNavigation = () => {
+  const [expoToken, setExpoToken] = useState("");
   const accesstoken = useSelector((state) => state.auth.userToken);
   const isLoggedin = useSelector((state) => state.auth.isLoggedIn);
   const loading = useSelector((state) => state.auth.loading);
@@ -48,6 +51,47 @@ const RootNavigation = () => {
     bootstrapAsync();
   }, []);
 
+  async function registerForPushNotificationsAsync() {
+    let token;
+
+    if (Platform.OS === "android") {
+      await Notifications.setNotificationChannelAsync("default", {
+        name: "default",
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: "#FF231F7C",
+      });
+    }
+
+    if (Device.isDevice) {
+      const { status: existingStatus } =
+        await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== "granted") {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== "granted") {
+        alert("Failed to get push token for push notification!");
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert("Must use physical device for Push Notifications");
+    }
+
+    return token;
+  }
+
+  useEffect(() => {
+    const getToken = async () => {
+      registerForPushNotificationsAsync().then((token) => setExpoToken(token));
+      Notifications.regist;
+    };
+    getToken();
+  });
+
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
@@ -74,6 +118,10 @@ const RootNavigation = () => {
         <Stack.Screen
           name="ReminderNavigation"
           component={ReminderNavigation}
+        />
+        <Stack.Screen
+          name="SoilMoistureNavigation"
+          component={SoilMoistureNavigation}
         />
       </Stack.Navigator>
     </NavigationContainer>

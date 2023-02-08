@@ -218,6 +218,17 @@ const StatisticsScreen = () => {
                 />
               </VictoryChart>
             </View>
+
+            {/* <Text
+              style={{
+                fontFamily: "Poppins_500Medium",
+                fontSize: 20,
+                textAlign: "center",
+                marginTop: 30,
+              }}
+            >
+              {i18n.t("statisticssoilmoisture")}
+            </Text> */}
           </View>
         </ScrollView>
       </SafeAreaView>

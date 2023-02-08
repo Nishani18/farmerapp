@@ -48,7 +48,10 @@
     "redux": "^4.2.0",
     "redux-thunk": "^2.4.2",
     "victory-native": "^36.6.8",
-    "@react-native-community/datetimepicker": "6.5.2"
+    "@react-native-community/datetimepicker": "6.5.2",
+    "expo-device": "~5.0.0",
+    "react-native-webview": "11.23.1",
+    "expo-permissions": "~14.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"

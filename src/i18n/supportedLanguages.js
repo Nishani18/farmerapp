@@ -70,6 +70,7 @@ const en = {
   statisticstitle: "Spendings",
   statisticsmonthly: "Monthly Expenses",
   statisticsweekly: "Weekly Expeneses",
+  statisticssoilmoisture: "Soil Moisture Analytics",
 
   //Profile Screen
   profiletitle: "Profile",
@@ -78,6 +79,15 @@ const en = {
   profilelogout: "Logout",
   profilepdftitle: " Export Data to PDF Form",
   profileprint: "Print",
+
+  //Soil Moisture screen
+  soilmoisturetitle: "Soil Moisture Operations",
+  soilmoisturebutton: "Click here to navigate",
+  soilmoisturetitle1: "Soil Moisture",
+  soilmoistureanalytics: "Soil Moisture Analytics Chart",
+  clickonpump: "Click ON to start the water pump",
+  on: "ON",
+  off: "OFF",
 };
 
 const kn = {
@@ -152,6 +162,7 @@ const kn = {
   statisticstitle: "ಖರ್ಚುಗಳು",
   statisticsmonthly: "ಮಾಸಿಕ ವೆಚ್ಚಗಳು",
   statisticsweekly: "ಸಾಪ್ತಾಹಿಕ ವೆಚ್ಚಗಳು",
+  statisticssoilmoisture: "ಮಣ್ಣಿನ ತೇವಾಂಶ ವಿಶ್ಲೇಷಣೆ",
 
   //Profile Screen
   profiletitle: "ಪ್ರೊಫೈಲ್",
@@ -160,6 +171,15 @@ const kn = {
   profilelogout: "ಲಾಗ್ ಔಟ್",
   profilepdftitle: "PDF ಫಾರ್ಮ್‌ಗೆ ಡೇಟಾವನ್ನು ರಫ್ತು ಮಾಡಿ",
   profileprint: "ಮುದ್ರಿಸಿ",
+
+  //Soil Moisture screen
+  soilmoisturetitle: "ಮಣ್ಣಿನ ತೇವಾಂಶ ಕಾರ್ಯಾಚರಣೆಗಳು",
+  soilmoisturebutton: "ನ್ಯಾವಿಗೇಟ್ ಮಾಡಲು ಇಲ್ಲಿ ಕ್ಲಿಕ್ ಮಾಡಿ",
+  soilmoisturetitle1: "ಮಣ್ಣಿನ ತೇವಾಂಶ",
+  soilmoistureanalytics: "ಮಣ್ಣಿನ ತೇವಾಂಶ ವಿಶ್ಲೇಷಣೆ ಚಾರ್ಟ್",
+  clickonpump: "ನೀರಿನ ಪಂಪ್ ಅನ್ನು ಪ್ರಾರಂಭಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ",
+  on: "ಆನ್",
+  off: "ಆರಿಸಿ",
 };
 
 export { en, kn };
