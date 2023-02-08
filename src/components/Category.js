@@ -15,6 +15,13 @@ const Category = ({ title, id }) => {
     <View style={styles.container}>
       <Button
         style={styles.list}
+        labelStyle={{
+          fontFamily: "Poppins_400Regular",
+          marginTop: 11,
+          fontSize: 17,
+          justifyContent: "flex-start",
+          textAlign: "left",
+        }}
         textColor="white"
         title={title}
         onPress={() =>
@@ -56,9 +63,9 @@ const styles = StyleSheet.create({
 
   list: {
     width: 300,
-    padding: 5,
+    padding: 3,
     height: 50,
-    backgroundColor: "#8b9b75",
+    backgroundColor: "#2a4330",
     borderRadius: 4,
     fontSize: 20,
   },

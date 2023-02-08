@@ -6,6 +6,8 @@ import {
   Text,
   Dimensions,
   Image,
+  RefreshControl,
+  ScrollView,
 } from "react-native";
 import {
   useFonts,
@@ -28,6 +30,7 @@ export default function Profile({ route, navigation }) {
   const [data, setData] = useState([]);
   const [selectedPrinter, setSelectedPrinter] = useState();
   const [profile, setProfile] = useState({ name: "user" });
+  const [refreshing, setRefreshing] = useState(false);
 
   var grand_total = 0;
   data.map((item) => {
@@ -275,8 +278,8 @@ footer {
         <>
           <tr>
             <td colspan="1"></td>
-            <td colspan="1">GRAND TOTAL</td>
-            <td>₹${grand_total}</td>
+            <td colspan="2">GRAND TOTAL</td>
+            <td colspan="3">₹${grand_total}</td>
           </tr>
         </tfoot>
       </table>
@@ -293,6 +296,13 @@ footer {
 
   const base_url = "https://farmer-test.onrender.com/api/profile/";
   const expense_url = "https://farmer-test.onrender.com/api/expense/pdf";
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    getProfile();
+    getpdf();
+    setTimeout(() => setRefreshing(false), 2000);
+  };
 
   const getpdf = async () => {
     axios
@@ -349,145 +359,151 @@ footer {
   }, []);
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>{i18n.t("profiletitle")}</Text>
-        </View>
-        <View style={styles.nameDPCont}>
-          <Image
-            source={require("../../assets/user.png")}
-            style={styles.language}
-          />
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+    >
+      <View style={{ flex: 1 }}>
+        <View style={styles.container}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>{i18n.t("profiletitle")}</Text>
+          </View>
+          <View style={styles.nameDPCont}>
+            <Image
+              source={require("../../assets/user.png")}
+              style={styles.language}
+            />
 
-          <View style={{ flexDirection: "column", left: 100, top: 50 }}>
+            <View style={{ flexDirection: "column", left: 100, top: 50 }}>
+              <Text style={{ fontFamily: "Poppins_400Regular" }}>
+                {i18n.t("profilename")}:
+              </Text>
+              <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 19 }}>
+                {profile.name}
+              </Text>
+            </View>
+          </View>
+
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 30,
+            }}
+          >
+            <View
+              style={{
+                width: Dimensions.get("window").width / 1.2,
+                height: 1,
+                backgroundColor: "#c6c3bd",
+              }}
+            />
+          </View>
+
+          <View style={{ top: 40, left: 50 }}>
             <Text style={{ fontFamily: "Poppins_400Regular" }}>
-              {i18n.t("profilename")}:
+              {i18n.t("profieemail")}:
             </Text>
             <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 19 }}>
-              {profile.name}
+              {profile.email}
             </Text>
           </View>
-        </View>
 
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 30,
-          }}
-        >
           <View
             style={{
-              width: Dimensions.get("window").width / 1.2,
-              height: 1,
-              backgroundColor: "#c6c3bd",
-            }}
-          />
-        </View>
-
-        <View style={{ top: 40, left: 50 }}>
-          <Text style={{ fontFamily: "Poppins_400Regular" }}>
-            {i18n.t("profieemail")}:
-          </Text>
-          <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 19 }}>
-            {profile.email}
-          </Text>
-        </View>
-
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 70,
-          }}
-        >
-          <View
-            style={{
-              width: Dimensions.get("window").width / 1.2,
-              height: 1,
-              backgroundColor: "#c6c3bd",
-            }}
-          />
-        </View>
-
-        <View
-          style={{ top: 20, justifyContent: "center", alignItems: "center" }}
-        >
-          <Button
-            mode="contained"
-            width={350}
-            onPress={submit}
-            style={{
-              marginTop: 20,
-              borderRadius: 7,
-              backgroundColor: "#2a4330",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 70,
             }}
           >
-            {i18n.t("profilelogout")}
-          </Button>
-        </View>
+            <View
+              style={{
+                width: Dimensions.get("window").width / 1.2,
+                height: 1,
+                backgroundColor: "#c6c3bd",
+              }}
+            />
+          </View>
 
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 70,
-          }}
-        >
+          <View
+            style={{ top: 20, justifyContent: "center", alignItems: "center" }}
+          >
+            <Button
+              mode="contained"
+              width={350}
+              onPress={submit}
+              style={{
+                marginTop: 20,
+                borderRadius: 7,
+                backgroundColor: "#2a4330",
+              }}
+            >
+              {i18n.t("profilelogout")}
+            </Button>
+          </View>
+
           <View
             style={{
-              width: Dimensions.get("window").width / 1.2,
-              height: 1,
-              backgroundColor: "#c6c3bd",
-            }}
-          />
-        </View>
-
-        <Text
-          style={{
-            fontFamily: "Poppins_400Regular",
-            top: 30,
-            fontSize: 17,
-            left: 50,
-          }}
-        >
-          {i18n.t("profilepdftitle")}
-        </Text>
-
-        <View
-          style={{ top: 30, justifyContent: "center", alignItems: "center" }}
-        >
-          <Button
-            mode="contained"
-            width={350}
-            onPress={printToFile}
-            style={{
-              marginTop: 20,
-              borderRadius: 7,
-              backgroundColor: "#2a4330",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 70,
             }}
           >
-            {i18n.t("profileprint")}
-          </Button>
-        </View>
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 70,
-          }}
-        >
+            <View
+              style={{
+                width: Dimensions.get("window").width / 1.2,
+                height: 1,
+                backgroundColor: "#c6c3bd",
+              }}
+            />
+          </View>
+
+          <Text
+            style={{
+              fontFamily: "Poppins_400Regular",
+              top: 30,
+              fontSize: 17,
+              left: 50,
+            }}
+          >
+            {i18n.t("profilepdftitle")}
+          </Text>
+
+          <View
+            style={{ top: 30, justifyContent: "center", alignItems: "center" }}
+          >
+            <Button
+              mode="contained"
+              width={350}
+              onPress={printToFile}
+              style={{
+                marginTop: 20,
+                borderRadius: 7,
+                backgroundColor: "#2a4330",
+              }}
+            >
+              {i18n.t("profileprint")}
+            </Button>
+          </View>
           <View
             style={{
-              width: Dimensions.get("window").width / 1.2,
-              height: 1,
-              backgroundColor: "#c6c3bd",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 70,
             }}
-          />
+          >
+            <View
+              style={{
+                width: Dimensions.get("window").width / 1.2,
+                height: 1,
+                backgroundColor: "#c6c3bd",
+              }}
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 

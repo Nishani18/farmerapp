@@ -27,8 +27,22 @@ import Reminder from "../components/Reminder";
 import { add } from "../../store1/slices/root";
 import Item from "../components/Item";
 import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
 
 import i18n from "../i18n/i18nHelper";
+import SoilMoisture from "./SoilMoisture";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
+const apiKey = "585ADARCBF7ZCCQM";
+const channelId = 2028274;
+const readApiUrl = `https://api.thingspeak.com/channels/${channelId}/feeds.json?results=1&api_key=${apiKey}`;
 
 export default function HomeScreen({ navigation }) {
   const userToken = useSelector((state) => state.auth.userToken);
@@ -45,6 +59,7 @@ export default function HomeScreen({ navigation }) {
 
   const [chart, setChart] = useState([]);
   const [notifi, setNotifi] = useState([]);
+  const [soilMoisture, setSoilMoisture] = useState(0);
 
   let [fontsLoaded] = useFonts({
     Poppins_200ExtraLight,
@@ -107,6 +122,41 @@ export default function HomeScreen({ navigation }) {
     getNotifi();
   }, []);
 
+  useEffect(() => {
+    async function getSoilMoisture() {
+      const response = await axios.get(readApiUrl);
+      const soilMoisture = response.data.feeds[0].field2;
+      console.log("Soil moisture", response.data);
+      setSoilMoisture(soilMoisture);
+    }
+
+    getSoilMoisture();
+
+    const intervalId = setInterval(() => {
+      getSoilMoisture();
+    }, 60000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  useEffect(() => {
+    async function checkSoilMoisture() {
+      if (soilMoisture == null) {
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: "Low Soil Moisture",
+            body: "The soil moisture level is below the minimum threshold.",
+          },
+          trigger: null,
+        });
+      }
+    }
+
+    checkSoilMoisture();
+  }, [soilMoisture]);
+
   if (!fontsLoaded) {
     return null;
   } else {
@@ -139,6 +189,59 @@ export default function HomeScreen({ navigation }) {
           <Text style={styles.revenue1}>{i18n.t("totalCategories")}</Text>
           <View style={styles.PieChart}>
             <HomeScreenChart chart={chart} />
+          </View>
+
+          <Text
+            style={{
+              fontSize: 21,
+              bottom: 95,
+              marginBottom: 10,
+              fontFamily: "Poppins_600SemiBold",
+              color: "black",
+              marginLeft: 36,
+              marginTop: 20,
+            }}
+          >
+            {i18n.t("soilmoisturetitle")}
+          </Text>
+          <View
+            style={{
+              marginTop: 20,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={{}}
+              onPress={() =>
+                navigation.navigate("SoilMoistureNavigation", {
+                  screen: "SoilMoisture",
+                })
+              }
+            >
+              <View
+                style={{
+                  height: 100,
+                  backgroundColor: "#ffffff",
+                  elevation: 10,
+                  bottom: 100,
+                  marginBottom: 40,
+                  width: 300,
+                  borderRadius: 40,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "Poppins_500Medium",
+                    fontSize: 17,
+                    marginTop: 36,
+                    textAlign: "center",
+                  }}
+                >
+                  {i18n.t("soilmoisturebutton")}
+                </Text>
+              </View>
+            </TouchableOpacity>
           </View>
 
           <Text style={styles.revenue}>{i18n.t("reminder")}</Text>
