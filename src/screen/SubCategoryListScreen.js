@@ -142,6 +142,14 @@ const SubCategoryListScreen = ({ navigation, route }) => {
     return (
       <View style={styles.container}>
         <View style={styles.titleContainer}>
+          <TouchableOpacity
+            style={{ top: 60, marginLeft: 20 }}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <AntDesign name="left" size={30} color="white" />
+          </TouchableOpacity>
           <Text style={styles.title}>{route.params.title}</Text>
         </View>
 
@@ -195,6 +203,14 @@ const SubCategoryListScreen = ({ navigation, route }) => {
             style={{ height: "100%", backgroundColor: "#e5e5e5" }}
           >
             <View style={styles.centeredView}>
+              <TouchableOpacity
+                onPress={() => {
+                  setToggle(!toggle);
+                }}
+                style={{ bottom: 170, marginLeft: 20 }}
+              >
+                <Entypo name="cross" size={34} color="#103103" />
+              </TouchableOpacity>
               <Text style={styles.title1}>
                 {i18n.t("subcategorylisttitle")}
               </Text>
@@ -305,16 +321,16 @@ const styles = StyleSheet.create({
   },
 
   titleContainer: {
+    flexDirection: "row",
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height / 7.4,
     backgroundColor: "#2a4330",
-    justifyContent: "space-evenly",
     alignItems: "flex-start",
   },
 
   title: {
-    marginTop: 38,
-    marginLeft: 25,
+    marginTop: 60,
+    marginLeft: 15,
     fontSize: 21,
     color: "white",
     fontFamily: "Poppins_400Regular",

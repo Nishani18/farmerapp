@@ -5,8 +5,9 @@ import { useSelector } from "react-redux";
 
 import i18n from "../i18n/i18nHelper";
 
-const Item = () => {
-  const [reminder, setReminder] = React.useState([]);
+const Item = ({ notification }) => {
+  console.log(notification);
+  const [reminder, setReminder] = React.useState(notification);
 
   const lang = useSelector((state) => state.root.lang);
 
@@ -19,8 +20,8 @@ const Item = () => {
   i18n.locale = lang;
 
   useEffect(() => {
-    getNotifi();
-  }, []);
+    setReminder(notification);
+  }, [notification]);
 
   const deleteNotification = async (id) => {
     await Notifications.cancelScheduledNotificationAsync(id);
@@ -93,6 +94,7 @@ const Item = () => {
                     fontFamily: "Poppins_600SemiBold",
                     marginLeft: 16,
                     fontSize: 18,
+                    marginRight: 30,
                   }}
                 >
                   {item.content.body}

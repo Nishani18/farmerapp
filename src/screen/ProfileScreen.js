@@ -242,9 +242,9 @@ footer {
   
       <div id="details" class="clearfix">
         <div id="client">
-          <h2 class="name">${profile.name}</h2>
+          <h2 class="name">Name: ${profile.name}</h2>
           <div class="email">
-            <a href="mailto:john@example.com">${profile.email}</a>
+            <a href="mailto:john@example.com">Email: ${profile.email}</a>
           </div>
         </div>
       </div>
@@ -263,10 +263,10 @@ footer {
         <tr>
           <td class="no">${index + 1}</td>
           <td class="desc">
-            <h3>Name: ${item.main.name}</h3>
+            <h3>${item.main.name}</h3>
           </td>
           <td class="desc">
-          <h3>Email: ${item.result.name}</h3>
+          <h3>${item.result.name}</h3>
           </td>
           <td class="total">₹${item.total}</td>
         </tr>

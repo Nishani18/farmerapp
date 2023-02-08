@@ -9,6 +9,7 @@ import {
   Alert,
   FlatList,
   Image,
+  RefreshControl,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "@react-native-material/core";
@@ -23,11 +24,14 @@ import { AntDesign } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { createCategory } from "../../store1/slices/cat";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 
 import i18n from "../i18n/i18nHelper";
 
-const SubCategoryScreen = ({ navigation, route }) => {
+const SubCategoryScreen = ({ route }) => {
+  const navigation = useNavigation();
+
   const id = route.params.id;
   const baseURL = "https://farmer-test.onrender.com/api/sub/";
   const userToken = useSelector((state) => state.auth.userToken);
@@ -40,6 +44,7 @@ const SubCategoryScreen = ({ navigation, route }) => {
   const [text, setText] = useState("");
   const [subCategory, setSubCategory] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const handlerLongClick = () => {
     alert("Do you want to delete?");
@@ -99,6 +104,13 @@ const SubCategoryScreen = ({ navigation, route }) => {
   useEffect(() => {
     getSub();
   }, []);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    getSub();
+    addSub();
+    setTimeout(() => setRefreshing(false), 2000);
+  };
 
   const addSub = () => {
     axios
@@ -167,6 +179,14 @@ const SubCategoryScreen = ({ navigation, route }) => {
     return (
       <View style={styles.container}>
         <View style={styles.titleContainer}>
+          <TouchableOpacity
+            style={{ top: 55, marginLeft: 20 }}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <AntDesign name="left" size={30} color="white" />
+          </TouchableOpacity>
           <Text style={styles.title}>
             {route.params.title} {i18n.t("subcategorytitle")}
           </Text>
@@ -182,6 +202,9 @@ const SubCategoryScreen = ({ navigation, route }) => {
               contentContainerStyle={{
                 paddingBottom: 10,
               }}
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
             />
           </View>
         ) : (
@@ -292,8 +315,8 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    marginTop: 38,
-    marginLeft: 25,
+    marginTop: 9,
+    marginLeft: 68,
     fontSize: 21,
     color: "white",
     fontFamily: "Poppins_400Regular",

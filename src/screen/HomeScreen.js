@@ -2,11 +2,10 @@ import {
   View,
   StyleSheet,
   Dimensions,
-  ImageBackground,
-  FlatList,
   Image,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { Text } from "@react-native-material/core";
@@ -21,13 +20,13 @@ import {
 } from "@expo-google-fonts/poppins";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { ProgressBar } from "react-native-paper";
 import axios from "axios";
 import HomeScreenChart from "../components/HomeScreenChart";
 import Weather from "../components/Weather";
 import Reminder from "../components/Reminder";
 import { add } from "../../store1/slices/root";
 import Item from "../components/Item";
+import * as Notifications from "expo-notifications";
 
 import i18n from "../i18n/i18nHelper";
 
@@ -39,8 +38,13 @@ export default function HomeScreen({ navigation }) {
   const dispatch = useDispatch();
 
   const base_url = "https://farmer-test.onrender.com/api/profile/";
+  const base_url_chart = "https://farmer-test.onrender.com/api/categorie/graph";
 
   const [profile, setProfile] = useState({ name: "user" });
+  const [refreshing, setRefreshing] = useState(false);
+
+  const [chart, setChart] = useState([]);
+  const [notifi, setNotifi] = useState([]);
 
   let [fontsLoaded] = useFonts({
     Poppins_200ExtraLight,
@@ -60,6 +64,31 @@ export default function HomeScreen({ navigation }) {
     setProfile(response.data.profile);
   };
 
+  const getChart = async () => {
+    const response = await axios.get(base_url_chart, {
+      headers: {
+        "x-access-token": userToken,
+      },
+    });
+    console.log("Chart response in home screen", response.data);
+    setChart(response.data.graph);
+  };
+
+  const getNotifi = async () => {
+    const response = await Notifications.getAllScheduledNotificationsAsync();
+    console.log("Notification response from home screen", response);
+    setNotifi(response);
+    //setReminder(response);
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    getProfile();
+    getChart();
+    getNotifi();
+    setTimeout(() => setRefreshing(false), 2000);
+  };
+
   const addLanguage = async () => {
     console.log(lang);
     if (lang == "en") {
@@ -74,40 +103,49 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     getProfile();
+    getChart();
+    getNotifi();
   }, []);
 
   if (!fontsLoaded) {
     return null;
   } else {
     return (
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.Scroll}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
         <View style={styles.container}>
           <View style={styles.greetingCont}>
             <Text style={styles.greeting}>
               {i18n.t("hi")}, {profile.name}!
             </Text>
-            <TouchableOpacity
-              onPress={() => {
-                addLanguage();
-              }}
-            >
-              <Image
-                source={require("../../assets/Kannada.png")}
-                style={styles.language}
-              />
-            </TouchableOpacity>
+            <View style={{ position: "absolute" }}>
+              <TouchableOpacity
+                onPress={() => {
+                  addLanguage();
+                }}
+              >
+                <Image
+                  source={require("../../assets/Kannada.png")}
+                  style={styles.language}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
           <Weather />
           <Text style={styles.revenue1}>{i18n.t("totalCategories")}</Text>
           <View style={styles.PieChart}>
-            <HomeScreenChart />
+            <HomeScreenChart chart={chart} />
           </View>
 
           <Text style={styles.revenue}>{i18n.t("reminder")}</Text>
           <Reminder />
           <Text style={styles.revenue}>{i18n.t("Upcomingreminder")}</Text>
 
-          <Item />
+          <Item notification={notifi} />
         </View>
       </ScrollView>
     );

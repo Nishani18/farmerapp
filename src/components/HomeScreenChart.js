@@ -17,8 +17,8 @@ import {
 import { useSelector } from "react-redux";
 import i18n from "../i18n/i18nHelper";
 
-const HomeScreenChart = () => {
-  const [data, setData] = useState([]);
+const HomeScreenChart = ({ chart }) => {
+  const [data, setData] = useState(chart);
 
   const baseURL = "https://farmer-test.onrender.com/api/categorie/graph";
 
@@ -26,17 +26,8 @@ const HomeScreenChart = () => {
   const lang = useSelector((state) => state.root.lang);
 
   useEffect(() => {
-    axios
-      .get(baseURL, {
-        headers: {
-          "x-access-token": userToken,
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        setData(response.data.graph);
-      });
-  }, []);
+    setData(chart);
+  }, [chart]);
 
   let [fontsLoaded] = useFonts({
     Poppins_200ExtraLight,
