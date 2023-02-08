@@ -30,6 +30,14 @@ const en = {
   reminderMessage1: "No reminders set!",
   reminderMessage2: "Add a reminder to remind you for an expense later",
   reminderMessage3: "Add a reminder",
+  Upcomingreminder: "Upcoming Reminders",
+  reminderMessage4: "Long press to delete Reminders",
+  reminderTitle: "Add Reminder",
+  reminderDate: "Date",
+  reminderTime: "Time",
+  reminderInput: "Insert Note",
+  reminderSubmit: "Submit",
+  reminderRemaining: " days remaining",
 
   //Category Screen
   categorytitle: "Categories",
@@ -104,6 +112,14 @@ const kn = {
   reminderMessage1: "ಯಾವುದೇ ಜ್ಞಾಪನೆಗಳನ್ನು ಹೊಂದಿಸಲಾಗಿಲ್ಲ!",
   reminderMessage2: "ನಂತರದ ವೆಚ್ಚಕ್ಕಾಗಿ ನಿಮಗೆ ನೆನಪಿಸಲು ಜ್ಞಾಪನೆಯನ್ನು ಸೇರಿಸಿ",
   reminderMessage3: "ಜ್ಞಾಪನೆಯನ್ನು ಸೇರಿಸಿ",
+  Upcomingreminder: "ಮುಂಬರುವ ಜ್ಞಾಪನೆಗಳು",
+  reminderMessage4: "ಜ್ಞಾಪನೆಗಳನ್ನು ಅಳಿಸಲು ದೀರ್ಘವಾಗಿ ಒತ್ತಿರಿ",
+  reminderTitle: "ಜ್ಞಾಪನೆಯನ್ನು ಸೇರಿಸಿ",
+  reminderDate: "ದಿನಾಂಕ",
+  reminderTime: "ಸಮಯ",
+  reminderInput: "ಟಿಪ್ಪಣಿಯನ್ನು ಸೇರಿಸಿ",
+  reminderSubmit: "ಸಲ್ಲಿಸು",
+  reminderRemaining: "ಉಳಿದಿರುವ ದಿನಗಳು",
 
   //Category Screen
   categorytitle: "ವರ್ಗಗಳು",

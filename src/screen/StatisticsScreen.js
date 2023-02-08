@@ -33,7 +33,7 @@ import i18n from "../i18n/i18nHelper";
 const StatisticsScreen = () => {
   const [data, setData] = useState([]);
   const [week, setWeek] = useState([]);
-  const [refreshing, setRefreshing] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
 
   const baseURL = "https://farmer-test.onrender.com/api/categorie/";
 
@@ -50,7 +50,6 @@ const StatisticsScreen = () => {
         },
       })
       .then((response) => {
-        setRefreshing(false);
         console.log(response.data.response);
         setWeek(response.data.response);
       })
@@ -64,6 +63,13 @@ const StatisticsScreen = () => {
     getWeekGraph();
   }, []);
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    loadUserData();
+    getWeekGraph();
+    setTimeout(() => setRefreshing(false), 2000);
+  };
+
   const loadUserData = () => {
     axios
       .get(baseURL + "main", {
@@ -72,7 +78,6 @@ const StatisticsScreen = () => {
         },
       })
       .then((response) => {
-        setRefreshing(false);
         console.log(response.data);
         setData(response.data.result);
       });
@@ -95,17 +100,7 @@ const StatisticsScreen = () => {
         <ScrollView
           contentContainerStyle={styles.scrollView}
           refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={() => {
-                {
-                  loadUserData;
-                }
-                {
-                  getWeekGraph;
-                }
-              }}
-            />
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
           <View style={styles.titleContainer}>
@@ -117,7 +112,7 @@ const StatisticsScreen = () => {
               fontFamily: "Poppins_500Medium",
               fontSize: 20,
               textAlign: "center",
-              top: 20,
+              top: 29,
             }}
           >
             {i18n.t("statisticsmonthly")}
@@ -127,12 +122,19 @@ const StatisticsScreen = () => {
               justifyContent: "center",
               alignItems: "center",
               fontFamily: "Poppins_400Regular",
-              marginLeft: 45,
+              backgroundColor: "white",
+              marginLeft: 11,
+              marginRight: 19,
+              marginTop: 46,
+              width: Dimensions.get("window").width / 1.05,
+              height: Dimensions.get("window").height / 2.2,
+              elevation: 4,
+              borderRadius: 10,
             }}
           >
             <VictoryChart
               height={350}
-              width={455}
+              width={415}
               domainPadding={{ x: 30, y: [0, 40] }}
             >
               <VictoryAxis dependentAxis tickFormat={(t) => `${t / 1000}k`} />
@@ -157,16 +159,16 @@ const StatisticsScreen = () => {
                 style={{
                   data: {
                     fill: ({ datum }) =>
-                      datum.x === 3 ? "#000000" : "#c43a31",
+                      datum.x === 3 ? "#70b581" : "#233d29",
                     stroke: ({ index }) =>
-                      +index % 2 === 0 ? "#000000" : "#c43a31",
+                      +index % 2 === 0 ? "#70b581" : "#233d29",
                     fillOpacity: 0.7,
                     strokeWidth: 3,
                   },
                   labels: {
                     fontSize: 15,
                     fill: ({ datum }) =>
-                      datum.x === 3 ? "#000000" : "#c43a31",
+                      datum.x === 3 ? "#70b581" : "#233d29",
                   },
                 }}
                 barWidth={20}
@@ -175,35 +177,47 @@ const StatisticsScreen = () => {
               />
             </VictoryChart>
           </View>
-
-          <Text
-            style={{
-              fontFamily: "Poppins_500Medium",
-              fontSize: 20,
-              textAlign: "center",
-              marginTop: 20,
-            }}
-          >
-            {i18n.t("statisticsweekly")}
-          </Text>
-          <View style={{ paddingBottom: 100, marginLeft: 6 }}>
-            <VictoryChart polar={false} height={390}>
-              <VictoryAxis
-                dependentAxis
-                tickFormat={[1500, 5000, 10000, 15000, 20000]}
-              />
-              <VictoryAxis tickValues={[0, 1, 2, 3, 4, 5, 6]} />
-              <VictoryLine
-                interpolation={"linear"}
-                data={week}
-                style={{ data: { stroke: "#c43a31" } }}
-              />
-              <VictoryScatter
-                data={week}
-                size={5}
-                style={{ data: { fill: "#c43a31" } }}
-              />
-            </VictoryChart>
+          <View style={{ paddingBottom: 100 }}>
+            <Text
+              style={{
+                fontFamily: "Poppins_500Medium",
+                fontSize: 20,
+                textAlign: "center",
+                marginTop: 30,
+              }}
+            >
+              {i18n.t("statisticsweekly")}
+            </Text>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                fontFamily: "Poppins_400Regular",
+                backgroundColor: "white",
+                marginLeft: 11,
+                marginRight: 12,
+                marginTop: 28,
+                width: Dimensions.get("window").width / 1.06,
+                height: Dimensions.get("window").height / 2.18,
+                elevation: 4,
+                borderRadius: 10,
+              }}
+            >
+              <VictoryChart polar={false} height={350} width={380}>
+                <VictoryAxis dependentAxis tickFormat={(t) => `${t / 1000}k`} />
+                <VictoryAxis tickValues={[0, 1, 2, 3, 4, 5, 6]} />
+                <VictoryLine
+                  interpolation={"linear"}
+                  data={week}
+                  style={{ data: { stroke: "#1e391e" } }}
+                />
+                <VictoryScatter
+                  data={week}
+                  size={5}
+                  style={{ data: { fill: "#70b581" } }}
+                />
+              </VictoryChart>
+            </View>
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -221,7 +235,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    marginTop: 80,
+    // marginTop: 80,
     textAlign: "center",
     fontSize: 28,
     marginLeft: 42,

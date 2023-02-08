@@ -55,7 +55,7 @@ const Reminder = () => {
             source={require("../../assets/reminder.png")}
             style={styles.imageChart}
           />
-          <Text style={styles.heading}>{i18n.t("reminderMessage1")}</Text>
+          {/* <Text style={styles.heading}>{i18n.t("reminderMessage1")}</Text> */}
           <Text style={styles.paragraph}>{i18n.t("reminderMessage2")}</Text>
         </View>
       </View>
@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
   paragraph: {
     fontFamily: "Poppins_400Regular",
     marginLeft: 20,
+    marginTop: 30,
     marginRight: 20,
     textAlign: "center",
   },
