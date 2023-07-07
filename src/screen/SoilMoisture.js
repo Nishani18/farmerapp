@@ -17,10 +17,10 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 
 import i18n from "../i18n/i18nHelper";
 
-const writeapiKey = "UDB6MQSW0H31JT9K";
-const readapiKey = "585ADARCBF7ZCCQM";
-const channelId = 2028274;
-const writeApiUrl = `https://api.thingspeak.com/update?api_key=${writeapiKey}&field3=`;
+const writeapiKey = "674TZA68SA9VKM8G";
+const readapiKey = "2CNH8S72LCOAM1HM";
+const channelId = 2214829;
+const writeApiUrl = `https://api.thingspeak.com/update?api_key=${writeapiKey}&field1=`;
 const readApiUrl = `https://api.thingspeak.com/channels/${channelId}/feeds.json?results=1&api_key=${readapiKey}`;
 
 const SoilMoisture = () => {
@@ -32,20 +32,20 @@ const SoilMoisture = () => {
 
   const turnOn = async () => {
     const response = await axios.get(`${writeApiUrl}1`);
-    // console.log(response.data);
+    console.log(response.data);
     return response;
   };
 
   const turnOff = async () => {
     const response = await axios.get(`${writeApiUrl}0`);
-    // console.log(response.data);
+    console.log(response.data);
     return response;
   };
 
   const getRelayStatus = async () => {
     const response = await axios.get(readApiUrl);
     const relayStatus = response.data.feeds[0].field3;
-    // console.log(relayStatus);
+    console.log(relayStatus);
     return relayStatus;
   };
 
@@ -78,7 +78,7 @@ const SoilMoisture = () => {
         originWhitelist={["*"]}
         javaScriptEnabled={true}
         source={{
-          uri: "https://api.thingspeak.com/channels/2028274/charts/2?api_key=585ADARCBF7ZCCQM&width=auto&height=630",
+          uri: "https://api.thingspeak.com/channels/2214829/charts/2?api_key=2CNH8S72LCOAM1HM&width=auto&height=630",
         }}
         renderLoading={() => <ActivityIndicator />}
       />
