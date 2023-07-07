@@ -14,6 +14,7 @@ import * as SQLite from "expo-sqlite";
 import * as Notifications from "expo-notifications";
 import { useSelector } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 import i18n from "../i18n/i18nHelper";
 import { useNavigation } from "@react-navigation/native";
@@ -59,10 +60,18 @@ const ReminderScreen = () => {
     const tdy = new Date();
     const diffTime = Math.abs(tdy - date);
     const currentTime = diffTime - date.getMilliseconds();
-    console.log("Current time", currentTime);
+    // console.log("Current time", currentTime);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    console.log(diffTime + " milliseconds");
-    console.log(diffDays + " days");
+    showMessage({
+      message: i18n.t("ReminderSucess"),
+      type: "success",
+      floating: true,
+      duration: 5000,
+      icon: { icon: "success", position: "left" },
+      style: { marginTop: 5, paddingVertical: 20, paddingHorizontal: 20 },
+    });
+    // console.log(diffTime + " milliseconds");
+    // console.log(diffDays + " days");
     await Notifications.scheduleNotificationAsync({
       content: {
         title: "Reminder",
@@ -82,17 +91,17 @@ const ReminderScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} backgroundColor="white">
       <View style={styles.titleContainer}>
         <TouchableOpacity
-          style={{ top: 52, marginLeft: 20 }}
+          style={{ top: 48, marginLeft: 20 }}
           onPress={() => {
             navigation.goBack();
           }}
         >
           <AntDesign name="left" size={25} color="white" />
         </TouchableOpacity>
-        <Text style={styles.title}> {i18n.t("reminderTitle")}</Text>
+        <Text style={styles.title}>{i18n.t("reminderTitle")}</Text>
       </View>
       <View>
         <Text
@@ -232,7 +241,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   container: {
-    backgroundColor: "#e5e5e5",
+    backgroundColor: "#fffff",
     height: "100%",
   },
 });

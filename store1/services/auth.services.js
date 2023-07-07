@@ -1,4 +1,3 @@
-import { createIconSetFromFontello } from "@expo/vector-icons";
 import axios from "axios";
 import * as secureStore from "expo-secure-store";
 

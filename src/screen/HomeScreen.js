@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
+  ImageBackground,
 } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { Text } from "@react-native-material/core";
@@ -28,9 +29,9 @@ import { add } from "../../store1/slices/root";
 import Item from "../components/Item";
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
-
 import i18n from "../i18n/i18nHelper";
 import SoilMoisture from "./SoilMoisture";
+import Schemes from "../components/Schemes";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -60,6 +61,148 @@ export default function HomeScreen({ navigation }) {
   const [chart, setChart] = useState([]);
   const [notifi, setNotifi] = useState([]);
   const [soilMoisture, setSoilMoisture] = useState(0);
+  const [selectedComponent, setSelectedComponent] = useState("categoryChart");
+
+  const handleComponentClick = (component) => {
+    setSelectedComponent(component);
+  };
+
+  const CategoryChart = () => {
+    return (
+      <View style={{}}>
+        <Text style={styles.revenue1}>{i18n.t("totalCategories")}</Text>
+        <View
+          style={{
+            backgroundColor: "#f1f1ed",
+            bottom: 100,
+            left: 20,
+            marginRight: 40,
+            borderRadius: 20,
+            paddingBottom: 150,
+          }}
+        >
+          <HomeScreenChart chart={chart} />
+        </View>
+      </View>
+    );
+  };
+
+  const ReminderSection = () => {
+    return (
+      <View>
+        <Text style={styles.revenue}>{i18n.t("reminder")}</Text>
+        <View
+          style={{
+            backgroundColor: "#f1f1ed",
+            bottom: 100,
+            height: Dimensions.get("window").height / 2.8,
+            left: 20,
+            marginRight: 40,
+            marginBottom: 20,
+            borderRadius: 20,
+          }}
+        >
+          <Reminder />
+        </View>
+        <Text style={styles.revenue}>{i18n.t("Upcomingreminder")}</Text>
+
+        <Item notification={notifi} />
+      </View>
+    );
+  };
+
+  const SoilMoistureSection = () => {
+    return (
+      <View>
+        <Text style={styles.revenue}>{i18n.t("soilmoisturetitle")}</Text>
+        <View
+          style={{
+            backgroundColor: "#f1f1ed",
+            bottom: 100,
+            height: Dimensions.get("window").height / 4.3,
+            left: 20,
+            marginRight: 40,
+            marginBottom: 20,
+            borderRadius: 20,
+          }}
+        >
+          <View
+            style={{
+              top: 100,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <TouchableOpacity
+              style={{ height: 200, width: 300 }}
+              onPress={() =>
+                navigation.navigate("SoilMoistureNavigation", {
+                  screen: "SoilMoisture",
+                })
+              }
+            >
+              <View
+                style={{
+                  backgroundColor: "#ffffff",
+                  elevation: 10,
+                  bottom: 50,
+                  borderRadius: 40,
+                }}
+              >
+                <Text
+                  style={{
+                    fontFamily: "Poppins_500Medium",
+                    fontSize: 17,
+                    marginTop: 20,
+                    marginBottom: 20,
+                    textAlign: "center",
+                  }}
+                >
+                  {i18n.t("soilmoisturebutton")}
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    );
+  };
+
+  const SchemeSection = () => {
+    return (
+      <View style={{ bottom: 100 }}>
+        <Text
+          style={{
+            fontSize: 21,
+            marginTop: 2,
+            marginBottom: 10,
+            fontFamily: "Poppins_600SemiBold",
+            color: "black",
+            marginLeft: 35,
+            marginRight: 35,
+          }}
+        >
+          {i18n.t("schemeTitle")}
+        </Text>
+        <Schemes />
+      </View>
+    );
+  };
+
+  const renderComponent = () => {
+    switch (selectedComponent) {
+      case "categoryChart":
+        return <CategoryChart />;
+      case "reminderSection":
+        return <ReminderSection />;
+      case "soilMoistureSection":
+        return <SoilMoistureSection />;
+      case "schemeSection":
+        return <SchemeSection />;
+      default:
+        return null;
+    }
+  };
 
   let [fontsLoaded] = useFonts({
     Poppins_200ExtraLight,
@@ -85,13 +228,13 @@ export default function HomeScreen({ navigation }) {
         "x-access-token": userToken,
       },
     });
-    console.log("Chart response in home screen", response.data);
+    // console.log("Chart response in home screen", response.data);
     setChart(response.data.graph);
   };
 
   const getNotifi = async () => {
     const response = await Notifications.getAllScheduledNotificationsAsync();
-    console.log("Notification response from home screen", response);
+    // console.log("Notification response from home screen", response);
     setNotifi(response);
     //setReminder(response);
   };
@@ -108,7 +251,7 @@ export default function HomeScreen({ navigation }) {
     console.log(lang);
     if (lang == "en") {
       dispatch(add("kn"));
-      console.log("Inside", lang);
+      // console.log("Inside", lang);
     } else {
       dispatch(add("en"));
     }
@@ -126,7 +269,7 @@ export default function HomeScreen({ navigation }) {
     async function getSoilMoisture() {
       const response = await axios.get(readApiUrl);
       const soilMoisture = response.data.feeds[0].field2;
-      console.log("Soil moisture", response.data);
+      // console.log("Soil moisture", response.data);
       setSoilMoisture(soilMoisture);
     }
 
@@ -143,7 +286,7 @@ export default function HomeScreen({ navigation }) {
 
   useEffect(() => {
     async function checkSoilMoisture() {
-      if (soilMoisture == null) {
+      if (soilMoisture > 700) {
         await Notifications.scheduleNotificationAsync({
           content: {
             title: "Low Soil Moisture",
@@ -168,11 +311,30 @@ export default function HomeScreen({ navigation }) {
         }
       >
         <View style={styles.container}>
-          <View style={styles.greetingCont}>
+          {/* <ImageBackground
+            source={require("../../assets/homeBgNew.png")}
+            style={styles.greetingCont}
+            borderBottomLeftRadius={30}
+            borderBottomRightRadius={30}
+          > */}
+          <View
+            style={styles.greetingCont}
+            borderBottomLeftRadius={30}
+            borderBottomRightRadius={30}
+          >
             <Text style={styles.greeting}>
               {i18n.t("hi")}, {profile.name}!
             </Text>
-            <View style={{ position: "absolute" }}>
+            <View
+              style={{
+                flex: 1,
+                alignItems: "flex-end",
+                justifyContent: "center",
+                paddingHorizontal: 20,
+                bottom: 70,
+                right: 5,
+              }}
+            >
               <TouchableOpacity
                 onPress={() => {
                   addLanguage();
@@ -184,72 +346,127 @@ export default function HomeScreen({ navigation }) {
                 />
               </TouchableOpacity>
             </View>
+            {/* </ImageBackground> */}
           </View>
+
           <Weather />
-          <Text style={styles.revenue1}>{i18n.t("totalCategories")}</Text>
-          <View style={styles.PieChart}>
-            <HomeScreenChart chart={chart} />
-          </View>
 
-          <Text
-            style={{
-              fontSize: 21,
-              bottom: 95,
-              marginBottom: 10,
-              fontFamily: "Poppins_600SemiBold",
-              color: "black",
-              marginLeft: 36,
-              marginTop: 20,
-            }}
-          >
-            {i18n.t("soilmoisturetitle")}
-          </Text>
-          <View
-            style={{
-              marginTop: 20,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <TouchableOpacity
-              style={{ height: 200, width: 300 }}
-              onPress={() =>
-                navigation.navigate("SoilMoistureNavigation", {
-                  screen: "SoilMoisture",
-                })
-              }
+          <View style={styles.ScrollCont}>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
             >
-              <View
+              <TouchableOpacity
                 style={{
-                  // height: 100,
-                  backgroundColor: "#ffffff",
-                  elevation: 10,
-                  bottom: 50,
+                  backgroundColor:
+                    selectedComponent === "categoryChart"
+                      ? "#386342"
+                      : "#EDF1D6",
 
-                  // width: 300,
-                  borderRadius: 40,
+                  width: 170,
+                  height: 50,
+                  borderRadius: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
+                onPress={() => handleComponentClick("categoryChart")}
               >
                 <Text
                   style={{
-                    fontFamily: "Poppins_500Medium",
-                    fontSize: 17,
-                    marginTop: 20,
-                    marginBottom: 20,
-                    textAlign: "center",
+                    fontFamily: "Poppins_400Regular",
+                    color:
+                      selectedComponent === "categoryChart" ? "white" : "black",
                   }}
                 >
-                  {i18n.t("soilmoisturebutton")}
+                  {i18n.t("categoryChart")}
                 </Text>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{
+                  backgroundColor:
+                    selectedComponent === "reminderSection"
+                      ? "#386342"
+                      : "#EDF1D6",
+                  width: 120,
+                  height: 50,
+                  borderRadius: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginLeft: 15,
+                }}
+                onPress={() => handleComponentClick("reminderSection")}
+              >
+                <Text
+                  style={{
+                    fontFamily: "Poppins_400Regular",
+                    color:
+                      selectedComponent === "reminderSection"
+                        ? "white"
+                        : "black",
+                  }}
+                >
+                  {i18n.t("reminderScroll")}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{
+                  backgroundColor:
+                    selectedComponent === "soilMoistureSection"
+                      ? "#386342"
+                      : "#EDF1D6",
+                  width: 150,
+                  height: 50,
+                  borderRadius: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginLeft: 15,
+                }}
+                onPress={() => handleComponentClick("soilMoistureSection")}
+              >
+                <Text
+                  style={{
+                    fontFamily: "Poppins_400Regular",
+                    color:
+                      selectedComponent === "soilMoistureSection"
+                        ? "white"
+                        : "black",
+                  }}
+                >
+                  {i18n.t("soilmoisturetitle1")}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={{
+                  backgroundColor:
+                    selectedComponent === "schemeSection"
+                      ? "#386342"
+                      : "#EDF1D6",
+                  width: 110,
+                  height: 50,
+                  borderRadius: 20,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginLeft: 15,
+                  marginRight: 15,
+                }}
+                onPress={() => handleComponentClick("schemeSection")}
+              >
+                <Text
+                  style={{
+                    fontFamily: "Poppins_400Regular",
+                    color:
+                      selectedComponent === "schemeSection" ? "white" : "black",
+                  }}
+                >
+                  {i18n.t("Scheme")}
+                </Text>
+              </TouchableOpacity>
+            </ScrollView>
           </View>
-
-          <Text style={styles.revenue}>{i18n.t("reminder")}</Text>
-          <Reminder />
-          <Text style={styles.revenue}>{i18n.t("Upcomingreminder")}</Text>
-
-          <Item notification={notifi} />
+          {renderComponent()}
         </View>
       </ScrollView>
     );
@@ -259,16 +476,16 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f2f2f2",
+    backgroundColor: "#ffffff",
   },
 
   greetingCont: {
     width: Dimensions.get("window").width / 1,
-    height: Dimensions.get("window").height / 3,
-    backgroundColor: "#233d29",
+    height: Dimensions.get("window").height / 3.7,
+    backgroundColor: "#386342",
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-    elevation: 30,
+    elevation: 5,
     flexDirection: "row",
   },
 
@@ -276,13 +493,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     fontSize: 28,
     color: "#ffffff",
-    marginLeft: 40,
-    marginTop: 70,
+    marginLeft: 30,
+    marginTop: 55,
     fontFamily: "Poppins_500Medium",
   },
 
   weatherContainer: {
-    backgroundColor: "white",
+    alignItems: "center",
     elevation: 10,
     marginLeft: 35,
     bottom: 125,
@@ -449,10 +666,17 @@ const styles = StyleSheet.create({
   },
 
   language: {
-    position: "absolute",
+    position: "relative",
+    alignItems: "flex-end",
     width: Dimensions.get("window").width / 9,
     height: Dimensions.get("window").height / 19,
-    marginLeft: 330,
-    marginTop: 67,
+    marginRight: 3,
+    marginTop: 80,
+  },
+  ScrollCont: {
+    bottom: 100,
+    marginTop: 30,
+    marginBottom: 30,
+    marginLeft: 30,
   },
 });

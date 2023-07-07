@@ -45,7 +45,7 @@ const RegisterScreen = ({ navigation }) => {
       .then((Response) => {
         console.log(Response.data);
         showMessage({
-          message: "Account Created",
+          message: i18n.t("RegisterAlert"),
           type: "success",
           floating: true,
           duration: 5000,
@@ -55,9 +55,9 @@ const RegisterScreen = ({ navigation }) => {
         navigation.navigate("AuthNavigator", { screen: "Login" });
       })
       .catch((error) => {
-        console.log(error);
+        // console.log(error);
         showMessage({
-          message: "Error creating your account!",
+          message: i18n.t("RegisterError"),
           type: "danger",
           floating: true,
           duration: 5000,
@@ -232,6 +232,14 @@ const RegisterScreen = ({ navigation }) => {
               borderRadius: 10,
               marginHorizontal: 20,
               marginTop: 3,
+              shadowColor: "#153200",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.5,
+              shadowRadius: 3.84,
+              elevation: 5,
             }}
             title={i18n.t("signUpBtn")}
             type="clear"

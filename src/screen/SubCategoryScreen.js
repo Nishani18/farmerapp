@@ -21,11 +21,10 @@ import {
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
 import { AntDesign } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
-import { createCategory } from "../../store1/slices/cat";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
+import { IconButton, FAB } from "react-native-paper";
 
 import i18n from "../i18n/i18nHelper";
 
@@ -45,10 +44,6 @@ const SubCategoryScreen = ({ route }) => {
   const [subCategory, setSubCategory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-
-  const handlerLongClick = () => {
-    alert("Do you want to delete?");
-  };
 
   if (loading) {
     return (
@@ -77,29 +72,59 @@ const SubCategoryScreen = ({ route }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        console.log("subcategory screen", data);
         setSubCategory(data.response);
       })
       .catch((error) => console.error(error));
   };
 
-  const deleteSub = async (sub_id) => {
-    const url = baseURL + sub_id;
-    console.log(url);
-    axios
-      .delete(url, {
-        headers: {
-          "x-access-token": userToken,
+  const deleteSub = async (sub_id, sub_title) => {
+    Alert.alert(i18n.t("subcateoryAlertHead"), i18n.t("subcategoryAlertPara"), [
+      {
+        text: i18n.t("subcategoryCancel"),
+        style: "cancel",
+      },
+      {
+        text: i18n.t("subcategoryDelete"),
+        onPress: () => {
+          const url = baseURL + sub_id;
+          console.log(url);
+          axios
+            .delete(url, {
+              headers: {
+                "x-access-token": userToken,
+              },
+            })
+            .then((response) => {
+              // console.log(response);
+              getSub(id);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
         },
-      })
-      .then((response) => {
-        console.log(response);
-        getSub(id);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        style: "destructive",
+      },
+    ]);
   };
+
+  // const deleteSub = async (sub_id) => {
+  //   const url = baseURL + sub_id;
+  //   console.log(url);
+  //   axios
+  //     .delete(url, {
+  //       headers: {
+  //         "x-access-token": userToken,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       // console.log(response);
+  //       getSub(id);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   useEffect(() => {
     getSub();
@@ -127,7 +152,7 @@ const SubCategoryScreen = ({ route }) => {
         }
       )
       .then((response) => {
-        console.log("Added a sub", response.data);
+        // console.log("Added a sub", response.data);
         getSub();
       })
       .catch((err) => {
@@ -159,17 +184,15 @@ const SubCategoryScreen = ({ route }) => {
           </View>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity
+      <IconButton
+        icon="delete"
+        iconColor="#2b422e"
+        size={25}
         onPress={() => {
           console.log(id);
-          deleteSub(id);
+          deleteSub(id, title);
         }}
-      >
-        <Image
-          source={require("../../assets/garbage.png")}
-          style={styles.imagePin}
-        ></Image>
-      </TouchableOpacity>
+      />
     </View>
   );
 
@@ -180,13 +203,14 @@ const SubCategoryScreen = ({ route }) => {
       <View style={styles.container}>
         <View style={styles.titleContainer}>
           <TouchableOpacity
-            style={{ top: 55, marginLeft: 20 }}
+            style={{ top: 50, marginLeft: 20 }}
             onPress={() => {
               navigation.goBack();
             }}
           >
             <AntDesign name="left" size={30} color="white" />
           </TouchableOpacity>
+
           <Text style={styles.title}>
             {route.params.title} {i18n.t("subcategorytitle")}
           </Text>
@@ -220,16 +244,15 @@ const SubCategoryScreen = ({ route }) => {
           </View>
         )}
 
-        <TouchableOpacity
-          onLongPress={handlerLongClick}
+        <FAB
           style={styles.plus}
+          size="medium"
+          icon="plus"
+          color="#ffffff"
           onPress={() => {
             setToggle(true);
           }}
-          showsVerticalScrollIndicator={false}
-        >
-          <AntDesign name="pluscircle" size={60} color="#2a4330" />
-        </TouchableOpacity>
+        />
 
         {toggle ? (
           <Modal
@@ -245,19 +268,15 @@ const SubCategoryScreen = ({ route }) => {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <View style={styles.modaltitle}>
-                  <TouchableOpacity
+                  <IconButton
+                    iconColor="white"
                     style={styles.exit}
+                    icon="close"
+                    size={30}
                     onPress={() => {
                       setToggle(false);
                     }}
-                  >
-                    <Entypo
-                      name="cross"
-                      size={30}
-                      style={styles.cross}
-                      color="white"
-                    />
-                  </TouchableOpacity>
+                  />
 
                   <Text style={styles.modalText}>
                     {i18n.t("subcategorytoggle")}
@@ -269,6 +288,10 @@ const SubCategoryScreen = ({ route }) => {
                 <View style={styles.inputButton}>
                   <TextInput
                     style={styles.input}
+                    variant="standard"
+                    inputStyle={{
+                      fontFamily: "Poppins_400Regular",
+                    }}
                     color="#2a4330"
                     placeholder={i18n.t("subcategorytoggletitle")}
                     onChangeText={(newText) => setText(newText)}
@@ -302,7 +325,7 @@ export default SubCategoryScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#e5e5e5",
+    backgroundColor: "#edeee7",
     height: "100%",
   },
 
@@ -323,25 +346,25 @@ const styles = StyleSheet.create({
   },
 
   SubCategoryCont: {
-    width: Dimensions.get("window").width / 1.2,
+    width: Dimensions.get("window").width / 1.25,
     height: Dimensions.get("window").height / 8,
     backgroundColor: "#ffffff",
     elevation: 6,
-    marginLeft: 1,
+    marginLeft: 5,
     marginTop: 15,
-    borderRadius: 3,
+    borderRadius: 10,
     flexDirection: "row",
   },
   SubCategoryTitleCont: {
     alignItems: "flex-start",
-    left: 25,
+    left: 20,
     marginTop: 20,
   },
 
   SubCategoryEstimate: {
     position: "absolute",
     alignItems: "flex-end",
-    left: 250,
+    right: 20,
     marginTop: 20,
   },
 
@@ -366,6 +389,7 @@ const styles = StyleSheet.create({
   },
 
   plus: {
+    backgroundColor: "#2b422e",
     bottom: 30,
     position: "absolute",
     justifyContent: "flex-end",
@@ -466,5 +490,9 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginRight: 20,
     textAlign: "center",
+  },
+  exit: {
+    top: 10,
+    left: 10,
   },
 });

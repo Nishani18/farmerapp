@@ -1,4 +1,11 @@
-import { View, Text, TouchableOpacity, Dimensions, Image } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  StyleSheet,
+} from "react-native";
 import React, { useEffect } from "react";
 import * as Notifications from "expo-notifications";
 import { useSelector } from "react-redux";
@@ -13,7 +20,7 @@ const Item = ({ notification }) => {
 
   const getNotifi = async () => {
     const response = await Notifications.getAllScheduledNotificationsAsync();
-    console.log(response);
+    // console.log(response);
     setReminder(response);
   };
 
@@ -33,32 +40,12 @@ const Item = ({ notification }) => {
       <View>
         <Image
           source={require("../../assets/alert.png")}
-          style={{
-            width: Dimensions.get("window").width / 18,
-            height: Dimensions.get("window").height / 41,
-            bottom: 83,
-            marginLeft: 36,
-          }}
+          style={styles.Image}
         />
-        <Text
-          style={{
-            color: "black",
-            bottom: 100,
-            fontFamily: "Poppins_400Regular",
-            marginLeft: 70,
-          }}
-        >
-          {i18n.t("reminderMessage4")}
-        </Text>
+        <Text style={styles.Text}>{i18n.t("reminderMessage4")}</Text>
       </View>
 
-      <View
-        style={{
-          paddingBottom: 30,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <View style={styles.container}>
         {reminder.map((item) => (
           <View
             style={{
@@ -122,3 +109,25 @@ const Item = ({ notification }) => {
 };
 
 export default Item;
+
+const styles = StyleSheet.create({
+  Image: {
+    width: Dimensions.get("window").width / 18,
+    height: Dimensions.get("window").height / 41,
+    bottom: 83,
+    marginLeft: 36,
+  },
+
+  Text: {
+    color: "black",
+    bottom: 100,
+    fontFamily: "Poppins_400Regular",
+    marginLeft: 70,
+  },
+
+  container: {
+    paddingBottom: 30,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

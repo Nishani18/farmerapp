@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
-  Platform,
   Text,
   Dimensions,
   Image,
   RefreshControl,
   ScrollView,
+  Alert,
 } from "react-native";
 import {
   useFonts,
@@ -23,10 +23,12 @@ import * as Print from "expo-print";
 import { shareAsync } from "expo-sharing";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 import i18n from "../i18n/i18nHelper";
 
-export default function Profile({ route, navigation }) {
+export default function Profile({ route }) {
+  const navigation = useNavigation();
   const [data, setData] = useState([]);
   const [selectedPrinter, setSelectedPrinter] = useState();
   const [profile, setProfile] = useState({ name: "user" });
@@ -312,7 +314,7 @@ footer {
         },
       })
       .then((response) => {
-        console.log(response.data.response);
+        // console.log(response.data.response);
         setData(response.data.response);
       })
       .catch((err) => {
@@ -340,8 +342,23 @@ footer {
   });
 
   const dispatch = useDispatch();
-  const submit = () => {
-    dispatch(logout());
+
+  const handleLogout = () => {
+    Alert.alert(
+      i18n.t("ProfileLogoutAlertHead"),
+      i18n.t("ProfileLogoutAlertPara"),
+      [
+        {
+          text: i18n.t("ProfileLogoutCancel"),
+          style: "cancel",
+        },
+        {
+          text: i18n.t("ProfileLogoutLogout"),
+          onPress: () => dispatch(logout()),
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   const getProfile = async () => {
@@ -426,39 +443,6 @@ footer {
             />
           </View>
 
-          <View
-            style={{ top: 20, justifyContent: "center", alignItems: "center" }}
-          >
-            <Button
-              mode="contained"
-              width={350}
-              onPress={submit}
-              style={{
-                marginTop: 20,
-                borderRadius: 7,
-                backgroundColor: "#2a4330",
-              }}
-            >
-              {i18n.t("profilelogout")}
-            </Button>
-          </View>
-
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 70,
-            }}
-          >
-            <View
-              style={{
-                width: Dimensions.get("window").width / 1.2,
-                height: 1,
-                backgroundColor: "#c6c3bd",
-              }}
-            />
-          </View>
-
           <Text
             style={{
               fontFamily: "Poppins_400Regular",
@@ -477,6 +461,9 @@ footer {
               mode="contained"
               width={350}
               onPress={printToFile}
+              labelStyle={{
+                fontFamily: "Poppins_500Medium",
+              }}
               style={{
                 marginTop: 20,
                 borderRadius: 7,
@@ -501,8 +488,96 @@ footer {
               }}
             />
           </View>
+
+          <Text
+            style={{
+              fontFamily: "Poppins_400Regular",
+              top: 30,
+              fontSize: 17,
+              left: 50,
+            }}
+          >
+            {i18n.t("receiptButtonHead")}
+          </Text>
+
+          <View
+            style={{ top: 30, justifyContent: "center", alignItems: "center" }}
+          >
+            <Button
+              mode="contained"
+              width={350}
+              labelStyle={{
+                fontFamily: "Poppins_500Medium",
+              }}
+              style={{
+                marginTop: 20,
+                borderRadius: 7,
+                backgroundColor: "#2a4330",
+              }}
+              onPress={() =>
+                navigation.navigate("ProfileNavigation", {
+                  screen: "ReceiptManagement",
+                })
+              }
+            >
+              {i18n.t("receiptButton")}
+            </Button>
+          </View>
+
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 70,
+            }}
+          >
+            <View
+              style={{
+                width: Dimensions.get("window").width / 1.2,
+                height: 1,
+                backgroundColor: "#c6c3bd",
+              }}
+            />
+          </View>
+        </View>
+
+        <View
+          style={{ top: 20, justifyContent: "center", alignItems: "center" }}
+        >
+          <Button
+            mode="contained"
+            width={350}
+            onPress={handleLogout}
+            labelStyle={{
+              fontFamily: "Poppins_500Medium",
+            }}
+            style={{
+              marginTop: 20,
+              borderRadius: 7,
+              backgroundColor: "#2a4330",
+            }}
+          >
+            {i18n.t("profilelogout")}
+          </Button>
+        </View>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 70,
+          }}
+        >
+          <View
+            style={{
+              width: Dimensions.get("window").width / 1.2,
+              height: 1,
+              backgroundColor: "#c6c3bd",
+            }}
+          />
         </View>
       </View>
+
+      <View style={{ paddingBottom: 100 }}></View>
     </ScrollView>
   );
 }
@@ -510,24 +585,25 @@ footer {
 const styles = StyleSheet.create({
   container: {
     // justifyContent: "center",
+    backgroundColor: "#f2f2f2",
   },
 
   titleContainer: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height / 5.5,
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: "#2a4330",
-    justifyContent: "space-evenly",
-    alignItems: "flex-start",
+    flexDirection: "row",
   },
 
   title: {
-    marginTop: 80,
     textAlign: "center",
     fontSize: 28,
-    marginLeft: 42,
     color: "white",
     fontFamily: "Poppins_500Medium",
     marginTop: 40,
+    right: 100,
   },
   language: {
     width: Dimensions.get("window").width / 7,
