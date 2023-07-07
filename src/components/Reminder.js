@@ -70,15 +70,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
-    height: Dimensions.get("window").height / 4,
+    height: Dimensions.get("window").height / 3.5,
     bottom: 115,
   },
 
   graphcontainer: {
     justifyContent: "center",
     alignItems: "center",
-    bottom: 75,
-    paddingBottom: 70,
+    paddingBottom: 80,
   },
   imageChart: {
     width: Dimensions.get("window").width / 4,
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
   },
   reminderCont: {
     flexDirection: "row",
-    marginTop: 15,
+    marginTop: 35,
     marginBottom: 25,
   },
   bellIcon: {

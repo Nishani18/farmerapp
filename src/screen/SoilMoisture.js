@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import React from "react";
 import { Button } from "react-native-paper";
@@ -12,6 +13,7 @@ import axios from "axios";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 import i18n from "../i18n/i18nHelper";
 
@@ -30,28 +32,28 @@ const SoilMoisture = () => {
 
   const turnOn = async () => {
     const response = await axios.get(`${writeApiUrl}1`);
-    console.log(response.data);
+    // console.log(response.data);
     return response;
   };
 
   const turnOff = async () => {
     const response = await axios.get(`${writeApiUrl}0`);
-    console.log(response.data);
+    // console.log(response.data);
     return response;
   };
 
   const getRelayStatus = async () => {
     const response = await axios.get(readApiUrl);
     const relayStatus = response.data.feeds[0].field3;
-    console.log(relayStatus);
+    // console.log(relayStatus);
     return relayStatus;
   };
 
   return (
-    <View style={{ flex: 3, marginBottom: 300 }}>
+    <View style={{ flex: 1, marginBottom: 300 }}>
       <View style={styles.titleContainer}>
         <TouchableOpacity
-          style={{ top: 52, marginLeft: 20 }}
+          style={{ top: 48, marginLeft: 20 }}
           onPress={() => {
             navigation.goBack();
           }}
@@ -63,72 +65,106 @@ const SoilMoisture = () => {
       <Text
         style={{
           fontSize: 18,
-          marginTop: 20,
-          marginBottom: 20,
+          marginTop: 15,
+          marginBottom: 15,
           textAlign: "center",
-          fontFamily: "Poppins_400Regular",
+          fontFamily: "Poppins_500Medium",
         }}
       >
         {i18n.t("soilmoistureanalytics")}
       </Text>
       <WebView
-        style={{
-          //   marginTop: 20,
-          width: "100%",
-        }}
+        style={{ flex: 1, width: "100%" }}
         originWhitelist={["*"]}
         javaScriptEnabled={true}
         source={{
           uri: "https://api.thingspeak.com/channels/2028274/charts/2?api_key=585ADARCBF7ZCCQM&width=auto&height=630",
         }}
+        renderLoading={() => <ActivityIndicator />}
       />
 
-      <Text
-        style={{
-          fontSize: 18,
-          marginTop: 20,
-          textAlign: "center",
-          fontFamily: "Poppins_400Regular",
-        }}
-      >
-        {i18n.t("clickonpump")}
-      </Text>
       <View
         style={{
-          flexDirection: "row",
+          top: 70,
+          backgroundColor: "#ffffff",
+          width: Dimensions.get("window").width / 1.15,
           justifyContent: "center",
-          alignItems: "center",
+          alignSelf: "center",
+          borderRadius: 10,
+          elevation: 4,
         }}
       >
-        <Button
-          mode="contained"
-          width={100}
+        <Text
           style={{
-            marginTop: 20,
-            borderRadius: 7,
-            backgroundColor: "#2a4330",
-          }}
-          onPress={() => {
-            turnOn();
+            top: 7,
+            fontSize: 18,
+            textAlign: "center",
+            fontFamily: "Poppins_400Regular",
           }}
         >
-          {i18n.t("on")}
-        </Button>
-        <Button
-          mode="contained"
-          width={100}
+          {i18n.t("clickonpump")}
+        </Text>
+        <View
           style={{
-            marginTop: 20,
-            marginLeft: 20,
-            borderRadius: 7,
-            backgroundColor: "#2a4330",
-          }}
-          onPress={() => {
-            turnOff();
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          {i18n.t("off")}
-        </Button>
+          <Button
+            mode="contained"
+            width={100}
+            style={{
+              top: 20,
+              borderRadius: 7,
+              backgroundColor: "#2a4330",
+            }}
+            onPress={() => {
+              turnOn();
+              showMessage({
+                message: i18n.t("PumpOn"),
+                type: "success",
+                floating: true,
+                duration: 5000,
+                icon: { icon: "success", position: "left" },
+                style: {
+                  marginTop: 5,
+                  paddingVertical: 20,
+                  paddingHorizontal: 20,
+                },
+              });
+            }}
+          >
+            {i18n.t("on")}
+          </Button>
+          <Button
+            mode="contained"
+            width={100}
+            style={{
+              top: 20,
+              marginLeft: 20,
+              borderRadius: 7,
+              backgroundColor: "#2a4330",
+            }}
+            onPress={() => {
+              turnOff();
+              showMessage({
+                message: i18n.t("PumpOff"),
+                type: "success",
+                floating: true,
+                duration: 5000,
+                icon: { icon: "success", position: "left" },
+                style: {
+                  marginTop: 5,
+                  paddingVertical: 20,
+                  paddingHorizontal: 20,
+                },
+              });
+            }}
+          >
+            {i18n.t("off")}
+          </Button>
+        </View>
       </View>
     </View>
   );
@@ -148,7 +184,7 @@ const styles = StyleSheet.create({
   title: {
     marginTop: 9,
     marginLeft: 60,
-    fontSize: 21,
+    fontSize: 20,
     color: "white",
     fontFamily: "Poppins_400Regular",
   },

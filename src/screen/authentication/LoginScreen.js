@@ -5,9 +5,9 @@ import {
   StyleSheet,
   View,
   Dimensions,
-  ActivityIndicator,
   Image,
 } from "react-native";
+import { ActivityIndicator, Colors } from "react-native-paper";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Text, Input, Button } from "@rneui/base";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +21,6 @@ import {
 import { MaterialIcons, Foundation } from "@expo/vector-icons";
 import { login } from "../../../store1/slices/auth";
 import { add } from "../../../store1/slices/root";
-import * as secureStore from "expo-secure-store";
 
 import i18n from "../../../src/i18n/i18nHelper";
 
@@ -41,7 +40,7 @@ export default function LoginScreen({ navigation }) {
     console.log(lang);
     if (lang == "en") {
       dispatch(add("kn"));
-      console.log("Inside", lang);
+      // console.log("Inside", lang);
     } else {
       dispatch(add("en"));
     }
@@ -59,7 +58,7 @@ export default function LoginScreen({ navigation }) {
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
-        <ActivityIndicator size="large" color="green" />
+        <ActivityIndicator animating={true} color={Colors.red800} />
       </View>
     );
   }
@@ -74,7 +73,12 @@ export default function LoginScreen({ navigation }) {
             style={{ width: "100%", height: "100%" }}
             source={require("../../../assets/Village.jpg")}
           >
-            <Text style={styles.logo}>{i18n.t("welcome")}</Text>
+            <View style={styles.LogoContainer}>
+              <Image
+                style={styles.logo}
+                source={require("../../../assets/krishi-nidhi-logo.png")}
+              />
+            </View>
           </ImageBackground>
         </View>
         <View style={styles.content}>
@@ -127,6 +131,14 @@ export default function LoginScreen({ navigation }) {
               borderRadius: 10,
               marginHorizontal: 20,
               marginTop: 3,
+              shadowColor: "#153200",
+              shadowOffset: {
+                width: 0,
+                height: 2,
+              },
+              shadowOpacity: 0.5,
+              shadowRadius: 3.84,
+              elevation: 5,
             }}
             type="clear"
             disabled={!email || !password}
@@ -178,6 +190,14 @@ export default function LoginScreen({ navigation }) {
                 borderRadius: 10,
                 marginHorizontal: 20,
                 marginTop: 15,
+                shadowColor: "#153200",
+                shadowOffset: {
+                  width: 0,
+                  height: 2,
+                },
+                shadowOpacity: 0.5,
+                shadowRadius: 3.84,
+                elevation: 5,
               }}
               onPress={() =>
                 navigation.navigate("Register", { screen: "Register" })
@@ -215,13 +235,17 @@ const styles = StyleSheet.create({
     flex: 2,
     height: 300,
   },
+  LogoContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 
   logo: {
-    marginTop: 60,
-    fontSize: 35,
-    color: "#0c1e20",
-    textAlign: "center",
-    fontFamily: "Poppins_400Regular",
+    height: Dimensions.get("screen").height / 9.7,
+    width: Dimensions.get("screen").width / 1.82,
+    alignSelf: "center",
+    bottom: 60,
   },
   title: {
     marginLeft: 20,

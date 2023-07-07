@@ -9,7 +9,6 @@ import {
   Alert,
   FlatList,
   Image,
-  ScrollView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { TextInput } from "@react-native-material/core";
@@ -22,9 +21,9 @@ import {
 } from "@expo-google-fonts/poppins";
 import { useSelector } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
 import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
+import { FAB, IconButton } from "react-native-paper";
 
 import i18n from "../i18n/i18nHelper";
 
@@ -50,7 +49,7 @@ const SubCategoryListScreen = ({ navigation, route }) => {
         },
       })
       .then((response) => {
-        console.log("Expenses response", response.data);
+        // console.log("Expenses response", response.data);
         setExpense(response.data.response);
       })
       .catch((err) => {
@@ -58,22 +57,54 @@ const SubCategoryListScreen = ({ navigation, route }) => {
       });
   };
 
-  const deleteSub = async (exp_id) => {
+  // const deleteSub = async (exp_id) => {
+  //   const url = baseURL + exp_id;
+  //   console.log(url);
+  //   axios
+  //     .delete(url, {
+  //       headers: {
+  //         "x-access-token": accessToken,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       // console.log(response);
+  //       getExpenses(id);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+
+  const deleteSub = async (exp_id, title) => {
     const url = baseURL + exp_id;
-    console.log(url);
-    axios
-      .delete(url, {
-        headers: {
-          "x-access-token": accessToken,
+    Alert.alert(
+      i18n.t("subcateorylistAlertHead"),
+      i18n.t("subcategorylistAlertPara"),
+      [
+        {
+          text: i18n.t("subcategorylistCancel"),
+          style: "cancel",
         },
-      })
-      .then((response) => {
-        console.log(response);
-        getExpenses(id);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        {
+          text: i18n.t("subcategorylistDelete"),
+          style: "destructive",
+          onPress: () => {
+            axios
+              .delete(url, {
+                headers: {
+                  "x-access-token": accessToken,
+                },
+              })
+              .then((response) => {
+                getExpenses(id);
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          },
+        },
+      ]
+    );
   };
 
   useEffect(() => {
@@ -96,7 +127,7 @@ const SubCategoryListScreen = ({ navigation, route }) => {
         }
       )
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         getExpenses();
         //setExpense([...expense,repo])
       })
@@ -122,17 +153,14 @@ const SubCategoryListScreen = ({ navigation, route }) => {
           <Text style={styles.pricetitle}>₹ {price}</Text>
         </View>
       </View>
-      <TouchableOpacity
+      <IconButton
+        icon="delete"
+        iconColor="#2b422e"
+        size={25}
         onPress={() => {
-          console.log(id);
-          deleteSub(id);
+          deleteSub(id, title);
         }}
-      >
-        <Image
-          source={require("../../assets/garbage.png")}
-          style={styles.imagePin}
-        ></Image>
-      </TouchableOpacity>
+      />
     </View>
   );
 
@@ -182,14 +210,15 @@ const SubCategoryListScreen = ({ navigation, route }) => {
           </View>
         )}
 
-        <TouchableOpacity
+        <FAB
           style={styles.plus}
+          size="medium"
+          icon="plus"
+          color="#ffffff"
           onPress={() => {
             setToggle(true);
           }}
-        >
-          <AntDesign name="pluscircle" size={60} color="#2a4330" />
-        </TouchableOpacity>
+        />
 
         {toggle ? (
           <Modal
@@ -203,14 +232,15 @@ const SubCategoryListScreen = ({ navigation, route }) => {
             style={{ height: "100%", backgroundColor: "#e5e5e5" }}
           >
             <View style={styles.centeredView}>
-              <TouchableOpacity
+              <IconButton
+                iconColor="black"
+                style={{ bottom: 40, left: 5 }}
+                icon="close"
+                size={30}
                 onPress={() => {
                   setToggle(!toggle);
                 }}
-                style={{ bottom: 170, marginLeft: 20 }}
-              >
-                <Entypo name="cross" size={34} color="#103103" />
-              </TouchableOpacity>
+              />
               <Text style={styles.title1}>
                 {i18n.t("subcategorylisttitle")}
               </Text>
@@ -219,38 +249,24 @@ const SubCategoryListScreen = ({ navigation, route }) => {
                   <View style={styles.inputContainer}>
                     <View style={styles.inputButton}>
                       <TextInput
+                        variant="standard"
+                        inputStyle={{
+                          fontFamily: "Poppins_400Regular",
+                        }}
                         style={styles.input}
                         placeholder={i18n.t("subcategorylisttoggleinput1")}
                         color="#2a4330"
                         onChangeText={(newText) => setText(newText)}
                         defaultValue={text}
                       />
-
-                      {/* {text.length == 0 && (
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            marginTop: 15,
-                            // marginBottom: 10,
-                          }}
-                        >
-                          <Ionicons
-                            name="ios-warning"
-                            size={20}
-                            color="rgba(0,0,0,0.5)"
-                          />
-                          <Text
-                            style={{ fontSize: 12, color: "rgba(0,0,0,0.5)" }}
-                          >
-                            Item should not be empty
-                          </Text>
-                        </View>
-                      )} */}
                     </View>
 
                     <View style={styles.inputButton1}>
                       <TextInput
+                        variant="standard"
+                        inputStyle={{
+                          fontFamily: "Poppins_400Regular",
+                        }}
                         style={styles.input}
                         keyboardType="numeric"
                         placeholder={i18n.t("subcategorylisttoggleinput2")}
@@ -289,7 +305,6 @@ const SubCategoryListScreen = ({ navigation, route }) => {
                   style={[styles.button, styles.buttonClose]}
                   disabled={!text || !amount || amount <= 0}
                   onPress={() => {
-                    // dispatch(createCategory({ text, accessToken }));
                     addExpense();
                     setToggle(!toggle);
                     setText("");
@@ -316,7 +331,7 @@ export default SubCategoryListScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#e5e5e5",
+    backgroundColor: "#edeee7",
     height: "100%",
   },
 
@@ -337,6 +352,7 @@ const styles = StyleSheet.create({
   },
 
   plus: {
+    backgroundColor: "#2b422e",
     bottom: 30,
     position: "absolute",
     justifyContent: "flex-end",
@@ -380,7 +396,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     fontFamily: "Poppins_200ExtraLight",
     borderRadius: 20,
-    width: Dimensions.get("window").width / 2.05,
+    width: Dimensions.get("window").width / 2.15,
     height: Dimensions.get("window").height / 17,
     borderBottomColor: "none",
   },
@@ -404,11 +420,15 @@ const styles = StyleSheet.create({
     marginTop: 60,
   },
   inputButton: {
+    position: "relative",
+    marginLeft: 40,
     marginTop: 30,
     justifyContent: "center",
     alignItems: "center",
   },
   inputButton1: {
+    position: "relative",
+    marginRight: 40,
     marginTop: 30,
     justifyContent: "center",
     alignItems: "center",
@@ -422,7 +442,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   centeredView: {
-    marginTop: 200,
+    top: 50,
   },
   title1: {
     color: "black",
@@ -435,13 +455,13 @@ const styles = StyleSheet.create({
     fontSize: 17,
   },
   ListCont: {
-    width: Dimensions.get("window").width / 1.2,
+    width: Dimensions.get("window").width / 1.27,
     height: Dimensions.get("window").height / 11,
     backgroundColor: "#ffffff",
-    elevation: 10,
+    elevation: 6,
     marginLeft: 1,
     marginTop: 15,
-    borderRadius: 3,
+    borderRadius: 10,
     flexDirection: "row",
   },
   ItemCont: {
@@ -452,7 +472,7 @@ const styles = StyleSheet.create({
   priceCont: {
     position: "absolute",
     alignItems: "flex-end",
-    left: 250,
+    right: 20,
     marginTop: 20,
   },
   pricetitle: {
@@ -465,7 +485,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   FlatListButtonCont: {
-    backgroundColor: "#e5e5e5",
+    backgroundColor: "#edeee7",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",

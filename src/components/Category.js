@@ -1,27 +1,60 @@
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
-import { Button } from "react-native-paper";
-import React, { useState } from "react";
+import { StyleSheet, View, TouchableOpacity, Text, Alert } from "react-native";
+import { IconButton } from "react-native-paper";
+import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCategory, getCategory } from "../../store1/slices/cat";
+import { format, isValid, parseISO } from "date-fns";
+import i18n from "../i18n/i18nHelper";
 
-const Category = ({ title, id }) => {
+const Category = ({ title, id, createdAt, updatedAt }) => {
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
   const accessToken = useSelector((state) => state.auth.userToken);
+  const category = useSelector((state) => state.cat.category);
+  const lang = useSelector((state) => state.root.lang);
+
+  i18n.locale = lang;
+
+  console.log("from categpry comp", category);
+
+  const handleDelete = () => {
+    Alert.alert(
+      i18n.t("cateoryAlertHead"),
+      i18n.t("categoryAlertPara"),
+      [
+        {
+          text: i18n.t("categoryDelete"),
+          style: "cancel",
+        },
+        {
+          text: i18n.t("categoryCancel"),
+          style: "destructive",
+          onPress: () => {
+            dispatch(deleteCategory({ id, accessToken }));
+            dispatch(getCategory({ accessToken }));
+          },
+        },
+      ],
+      {
+        // Custom styles for the alert
+        containerStyle: alertStyles.container,
+        titleStyle: alertStyles.title,
+        messageStyle: alertStyles.message,
+        textStyle: alertStyles.button,
+      },
+      { cancelable: false }
+    );
+  };
+
+  const createdDate = format(new Date(createdAt), "yyyy-MM-dd"); // Format the created date
+  const updatedDate = format(new Date(updatedAt), "yyyy-MM-dd"); // Format the updated date
 
   return (
     <View style={styles.container}>
-      <Button
+      <TouchableOpacity
         style={styles.list}
-        labelStyle={{
-          fontFamily: "Poppins_400Regular",
-          marginTop: 11,
-          fontSize: 17,
-          justifyContent: "flex-start",
-          textAlign: "left",
-        }}
         textColor="white"
         title={title}
         onPress={() =>
@@ -34,19 +67,15 @@ const Category = ({ title, id }) => {
           })
         }
       >
-        {title}
-      </Button>
-      <TouchableOpacity
-        onPress={() => {
-          dispatch(deleteCategory({ id, accessToken }));
-          dispatch(getCategory({ accessToken }));
-        }}
-      >
-        <Image
-          source={require("../../assets/garbage.png")}
-          style={styles.imagePin}
-        ></Image>
+        <Text style={styles.CategoryTitle}>{title}</Text>
+        <Text style={styles.dateText}>Created At: {createdDate}</Text>
       </TouchableOpacity>
+      <IconButton
+        icon="delete"
+        iconColor="#2b422e"
+        size={25}
+        onPress={handleDelete}
+      />
     </View>
   );
 };
@@ -64,14 +93,55 @@ const styles = StyleSheet.create({
   list: {
     width: 300,
     padding: 3,
-    height: 50,
-    backgroundColor: "#2a4330",
-    borderRadius: 4,
-    fontSize: 20,
+    height: 100,
+    backgroundColor: "#ffffff",
+    borderColor: "#e9e9ea",
+    borderWidth: 2,
+    borderRadius: 15,
+    // elevation: 5,
   },
   imagePin: {
     width: 35,
     height: 35,
     marginLeft: 10,
+  },
+  CategoryTitle: {
+    fontFamily: "Poppins_400Regular",
+    color: "#000000",
+    fontSize: 17,
+    marginTop: 17,
+    marginLeft: 10,
+  },
+  dateText: {
+    fontFamily: "Poppins_400Regular",
+    color: "#848992",
+    fontSize: 12,
+    marginLeft: 10,
+    marginTop: 10,
+  },
+});
+
+// Custom alert styles
+const alertStyles = StyleSheet.create({
+  container: {
+    backgroundColor: "#2a4330",
+    borderRadius: 8,
+    padding: 16,
+  },
+  title: {
+    color: "#ffffff",
+    fontSize: 18,
+    marginBottom: 8,
+    fontFamily: "Poppins_500Medium",
+  },
+  message: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontFamily: "Poppins_400Regular",
+  },
+  button: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontFamily: "Poppins_500Medium",
   },
 });

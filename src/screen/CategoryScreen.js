@@ -3,14 +3,12 @@ import {
   View,
   FlatList,
   Dimensions,
-  TouchableOpacity,
   Modal,
   Pressable,
   Alert,
-  ScrollView,
   Image,
+  ActivityIndicator,
 } from "react-native";
-import { Feather, Entypo } from "@expo/vector-icons";
 import { Text, TextInput } from "@react-native-material/core";
 import {
   useFonts,
@@ -21,16 +19,23 @@ import {
 } from "@expo-google-fonts/poppins";
 import React, { useEffect, useState } from "react";
 import Category from "../components/Category";
-import { Provider, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createCategory, getCategory } from "../../store1/slices/cat";
+import { FAB, IconButton } from "react-native-paper";
+import { format, isValid, parseISO } from "date-fns";
 
 import i18n from "../i18n/i18nHelper";
 
 const CategoryScreen = () => {
-  const renderItem = (item) => {
+  const renderItem = ({ item }) => {
     return (
       <View>
-        <Category title={item.item.name} id={item.item._id} />
+        <Category
+          title={item.name}
+          id={item._id}
+          createdAt={item.createdAt}
+          updatedAt={item.updatedAt}
+        />
       </View>
     );
   };
@@ -47,6 +52,8 @@ const CategoryScreen = () => {
 
   i18n.locale = lang;
 
+  console.log("category screen", category);
+
   useEffect(() => {
     const get = (accessToken) => {
       dispatch(getCategory({ accessToken }));
@@ -62,7 +69,7 @@ const CategoryScreen = () => {
 
   const onSubmit = ({ name, accessToken }) => {
     dispatch(createCategory({ name, accessToken }));
-    console.log("Deleted");
+    // console.log("Deleted");
     dispatch(getCategory({ accessToken }));
   };
 
@@ -88,14 +95,22 @@ const CategoryScreen = () => {
       <View style={styles.container}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{i18n.t("categorytitle")}</Text>
-          <TouchableOpacity
-            style={styles.plus}
+
+          <FAB
+            style={{
+              position: "absolute",
+              right: 30,
+              bottom: 40,
+              elevation: 5,
+              backgroundColor: "#ffffff",
+            }}
+            size="small"
+            icon="plus"
+            color="#2b422e"
             onPress={() => {
               setToggle(true);
             }}
-          >
-            <Feather name="plus-circle" size={50} color="white" />
-          </TouchableOpacity>
+          />
         </View>
 
         {category != 0 ? (
@@ -122,48 +137,60 @@ const CategoryScreen = () => {
         {toggle ? (
           <Modal
             animationType="slide"
-            presentationStyle="pageSheet"
+            transparent={true}
             visible={toggle}
             onRequestClose={() => {
               Alert.alert("Do you want to exit?");
               setToggle(!toggle);
             }}
           >
-            <View style={styles1.centeredView}>
-              <TouchableOpacity
-                style={styles1.exit}
-                onPress={() => {
-                  setToggle(false);
-                }}
-              >
-                <Entypo name="circle-with-cross" size={35} color="black" />
-              </TouchableOpacity>
-              <View style={styles1.modalView}>
-                <Text style={styles1.modalText}>
-                  {i18n.t("categorytoggle")}
-                </Text>
-                <TextInput
-                  style={styles1.input}
-                  color="#103103"
-                  placeholder={i18n.t("caetgoryInput")}
-                  onChangeText={(text) => setName(text)}
-                  defaultValue={name}
-                />
-                <Pressable
-                  style={[styles1.button, styles1.buttonClose]}
-                  onPress={() => {
-                    console.log(name);
-                    setLoading(true);
-                    onSubmit({ name, accessToken });
-                    setLoading(false);
-                    setToggle(!toggle);
-                    setName("");
-                  }}
-                >
-                  <Text style={styles1.textStyle}>
-                    {i18n.t("categorysubmit")}
+            <View
+              style={{
+                backgroundColor: "rgba(52, 52, 52, 0.97)",
+                flex: 1,
+              }}
+            >
+              <View style={styles1.centeredView}>
+                <View style={styles1.modalView}>
+                  <IconButton
+                    iconColor="black"
+                    style={styles1.exit}
+                    icon="close"
+                    size={30}
+                    onPress={() => {
+                      setToggle(false);
+                    }}
+                  />
+                  <Text style={styles1.modalText}>
+                    {i18n.t("categorytoggle")}
                   </Text>
-                </Pressable>
+                  <TextInput
+                    inputStyle={{
+                      fontFamily: "Poppins_400Regular",
+                    }}
+                    variant="standard"
+                    style={styles1.input}
+                    color="#103103"
+                    placeholder={i18n.t("caetgoryInput")}
+                    onChangeText={(text) => setName(text)}
+                    defaultValue={name}
+                  />
+                  <Pressable
+                    style={[styles1.button, styles1.buttonClose]}
+                    onPress={() => {
+                      console.log(name);
+                      setLoading(true);
+                      onSubmit({ name, accessToken });
+                      setLoading(false);
+                      setToggle(!toggle);
+                      setName("");
+                    }}
+                  >
+                    <Text style={styles1.textStyle}>
+                      {i18n.t("categorysubmit")}
+                    </Text>
+                  </Pressable>
+                </View>
               </View>
             </View>
           </Modal>
@@ -180,6 +207,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#edeee7",
   },
 
   titleContainer: {
@@ -198,7 +226,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_500Medium",
     alignItems: "flex-start",
     marginTop: 40,
-    right: 20,
+    right: 70,
   },
 
   plus: {
@@ -233,66 +261,57 @@ const styles = StyleSheet.create({
 
 const styles1 = StyleSheet.create({
   centeredView: {
-    display: "flex",
-    flex: 1,
+    top: 190,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
   },
   modalView: {
-    backgroundColor: "#103103",
-    borderRadius: 25,
+    backgroundColor: "#ffffff",
+    borderRadius: 15,
     width: 300,
+    height: 300,
     padding: 30,
     alignItems: "center",
-    shadowColor: "#fff",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 8,
+    elevation: 10,
   },
   button: {
-    marginTop: 30,
-    borderRadius: 20,
+    top: 10,
+    width: 120,
+    borderRadius: 15,
     padding: 10,
-    elevation: 2,
+    elevation: 5,
   },
   buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: "#2b422e",
   },
   buttonClose: {
-    backgroundColor: "white",
+    backgroundColor: "#2b422e",
   },
   textStyle: {
-    color: "black",
+    color: "white",
     padding: 5,
     fontFamily: "Poppins_500Medium",
     textAlign: "center",
   },
   modalText: {
+    bottom: 40,
     marginBottom: 20,
-    color: "white",
+    color: "black",
     fontSize: 23,
     fontFamily: "Poppins_400Regular",
     textAlign: "center",
   },
   input: {
-    backgroundColor: "#f7faf8",
-    fontFamily: "Poppins_200ExtraLight",
+    bottom: 30,
+    backgroundColor: "#ffffff",
     borderRadius: 20,
     width: 230,
     height: 40,
     borderBottomColor: "none",
   },
   exit: {
-    // backgroundColor: "black",
-    shadowRadius: 30,
-    marginLeft: 300,
-    shadowOffset: 0.8,
-    elevation: 3,
+    bottom: 30,
+    left: 120,
   },
   FlatListContainer: {},
 });
