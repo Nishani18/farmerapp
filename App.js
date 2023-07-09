@@ -50,47 +50,6 @@ const RootNavigation = () => {
     bootstrapAsync();
   }, []);
 
-  // async function registerForPushNotificationsAsync() {
-  //   let token;
-
-  //   if (Platform.OS === "android") {
-  //     await Notifications.setNotificationChannelAsync("default", {
-  //       name: "default",
-  //       importance: Notifications.AndroidImportance.MAX,
-  //       vibrationPattern: [0, 250, 250, 250],
-  //       lightColor: "#FF231F7C",
-  //     });
-  //   }
-
-  //   if (Device.isDevice) {
-  //     const { status: existingStatus } =
-  //       await Notifications.getPermissionsAsync();
-  //     let finalStatus = existingStatus;
-  //     if (existingStatus !== "granted") {
-  //       const { status } = await Notifications.requestPermissionsAsync();
-  //       finalStatus = status;
-  //     }
-  //     if (finalStatus !== "granted") {
-  //       alert("Failed to get push token for push notification!");
-  //       return;
-  //     }
-  //     token = (await Notifications.getExpoPushTokenAsync()).data;
-  //     console.log(token);
-  //   } else {
-  //     alert("Must use physical device for Push Notifications");
-  //   }
-
-  //   return token;
-  // }
-
-  // useEffect(() => {
-  //   const getToken = async () => {
-  //     registerForPushNotificationsAsync().then((token) => setExpoToken(token));
-  //     Notifications.regist;
-  //   };
-  //   getToken();
-  // });
-
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>

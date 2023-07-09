@@ -20,7 +20,7 @@ import i18n from "../i18n/i18nHelper";
 const writeapiKey = "674TZA68SA9VKM8G";
 const readapiKey = "2CNH8S72LCOAM1HM";
 const channelId = 2214829;
-const writeApiUrl = `https://api.thingspeak.com/update?api_key=${writeapiKey}&field1=`;
+const writeApiUrl = `https://api.thingspeak.com/update?api_key=${writeapiKey}&field=1`;
 const readApiUrl = `https://api.thingspeak.com/channels/${channelId}/feeds.json?results=1&api_key=${readapiKey}`;
 
 const SoilMoisture = () => {
