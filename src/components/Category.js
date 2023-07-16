@@ -4,7 +4,7 @@ import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCategory, getCategory } from "../../store1/slices/cat";
-import { format, isValid, parseISO } from "date-fns";
+import { format } from "date-fns";
 import i18n from "../i18n/i18nHelper";
 
 const Category = ({ title, id, createdAt, updatedAt }) => {
@@ -48,8 +48,7 @@ const Category = ({ title, id, createdAt, updatedAt }) => {
     );
   };
 
-  const createdDate = format(new Date(createdAt), "yyyy-MM-dd"); // Format the created date
-  const updatedDate = format(new Date(updatedAt), "yyyy-MM-dd"); // Format the updated date
+  const createdDate = format(new Date(createdAt), "yyyy-MM-dd"); //  created date
 
   return (
     <View style={styles.container}>
@@ -96,9 +95,8 @@ const styles = StyleSheet.create({
     height: 100,
     backgroundColor: "#ffffff",
     borderColor: "#e9e9ea",
-    borderWidth: 2,
+    borderWidth: 4.8,
     borderRadius: 15,
-    // elevation: 5,
   },
   imagePin: {
     width: 35,
@@ -108,16 +106,16 @@ const styles = StyleSheet.create({
   CategoryTitle: {
     fontFamily: "Poppins_400Regular",
     color: "#000000",
-    fontSize: 17,
-    marginTop: 17,
+    fontSize: 17.5,
+    marginTop: 14,
     marginLeft: 10,
   },
   dateText: {
     fontFamily: "Poppins_400Regular",
     color: "#848992",
-    fontSize: 12,
+    fontSize: 13,
     marginLeft: 10,
-    marginTop: 10,
+    marginTop: 7,
   },
 });
 

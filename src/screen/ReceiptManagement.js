@@ -9,6 +9,7 @@ import {
   Modal,
   RefreshControl,
   Alert,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { FAB, IconButton } from "react-native-paper";
@@ -24,7 +25,6 @@ const ReceiptManagement = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
-
   const [receipts, setReceipts] = useState([]);
 
   const accessToken = useSelector((state) => state.auth.userToken);
@@ -140,14 +140,7 @@ const ReceiptManagement = () => {
     );
   };
 
-  const DetailsModal = ({
-    file,
-    receiptname,
-    date,
-    comment,
-    visible,
-    onClose,
-  }) => (
+  const DetailsModal = ({ file, receiptname, comment, visible, onClose }) => (
     <Modal visible={visible} animationType="slide" transparent>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
@@ -166,7 +159,7 @@ const ReceiptManagement = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
         <TouchableOpacity
           style={{ top: 52, marginLeft: 20 }}
@@ -223,7 +216,7 @@ const ReceiptManagement = () => {
           })
         }
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -232,7 +225,7 @@ export default ReceiptManagement;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#edeee7",
-    height: "100%",
+    flex: 1,
   },
 
   titleContainer: {
@@ -321,10 +314,7 @@ const styles = StyleSheet.create({
   },
   modalImage: {
     resizeMode: "contain",
-    // width: Dimensions.get("window").width / 1.2,
     width: "100%", // Set the width of the image to 100% of its container
-    // aspectRatio: 1,
-    // height: Dimensions.get("window").height / 2.5,
     height: undefined,
     aspectRatio: 1,
     borderRadius: 1,

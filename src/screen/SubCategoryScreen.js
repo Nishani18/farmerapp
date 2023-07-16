@@ -10,6 +10,7 @@ import {
   FlatList,
   Image,
   RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "@react-native-material/core";
@@ -72,7 +73,7 @@ const SubCategoryScreen = ({ route }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("subcategory screen", data);
+        // console.log("subcategory screen", data);
         setSubCategory(data.response);
       })
       .catch((error) => console.error(error));
@@ -107,24 +108,6 @@ const SubCategoryScreen = ({ route }) => {
       },
     ]);
   };
-
-  // const deleteSub = async (sub_id) => {
-  //   const url = baseURL + sub_id;
-  //   console.log(url);
-  //   axios
-  //     .delete(url, {
-  //       headers: {
-  //         "x-access-token": userToken,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       // console.log(response);
-  //       getSub(id);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
 
   useEffect(() => {
     getSub();
@@ -200,7 +183,7 @@ const SubCategoryScreen = ({ route }) => {
     return null;
   } else {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.titleContainer}>
           <TouchableOpacity
             style={{ top: 50, marginLeft: 20 }}
@@ -316,7 +299,7 @@ const SubCategoryScreen = ({ route }) => {
         ) : (
           <></>
         )}
-      </View>
+      </SafeAreaView>
     );
   }
 };
@@ -326,7 +309,7 @@ export default SubCategoryScreen;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#edeee7",
-    height: "100%",
+    flex: 1,
   },
 
   titleContainer: {

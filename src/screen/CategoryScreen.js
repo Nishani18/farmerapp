@@ -8,6 +8,7 @@ import {
   Alert,
   Image,
   ActivityIndicator,
+  SafeAreaView,
 } from "react-native";
 import { Text, TextInput } from "@react-native-material/core";
 import {
@@ -22,7 +23,6 @@ import Category from "../components/Category";
 import { useDispatch, useSelector } from "react-redux";
 import { createCategory, getCategory } from "../../store1/slices/cat";
 import { FAB, IconButton } from "react-native-paper";
-import { format, isValid, parseISO } from "date-fns";
 
 import i18n from "../i18n/i18nHelper";
 
@@ -92,19 +92,19 @@ const CategoryScreen = () => {
     return null;
   } else {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{i18n.t("categorytitle")}</Text>
 
           <FAB
             style={{
               position: "absolute",
-              right: 30,
-              bottom: 40,
+              right: 50,
+              bottom: 30,
               elevation: 5,
               backgroundColor: "#ffffff",
             }}
-            size="small"
+            size="medium"
             icon="plus"
             color="#2b422e"
             onPress={() => {
@@ -197,7 +197,7 @@ const CategoryScreen = () => {
         ) : (
           <></>
         )}
-      </View>
+      </SafeAreaView>
     );
   }
 };
@@ -313,5 +313,4 @@ const styles1 = StyleSheet.create({
     bottom: 30,
     left: 120,
   },
-  FlatListContainer: {},
 });

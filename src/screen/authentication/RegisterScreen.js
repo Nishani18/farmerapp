@@ -5,9 +5,10 @@ import {
   Text,
   View,
   ActivityIndicator,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   useFonts,
   Poppins_200ExtraLight,
@@ -16,10 +17,8 @@ import {
 } from "@expo-google-fonts/poppins";
 import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 import { Input, Button } from "@rneui/base";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import axios from "axios";
-import { showMessage, hideMessage } from "react-native-flash-message";
-
+import { showMessage } from "react-native-flash-message";
 import i18n from "../../../src/i18n/i18nHelper";
 
 const baseURL = "https://farmer-test.onrender.com";
@@ -29,7 +28,6 @@ const RegisterScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [cpassword, setCPassword] = useState("");
-
   const [passError, setPassError] = useState(false);
 
   const loading = useSelector((state) => state.auth.loading);
@@ -96,7 +94,7 @@ const RegisterScreen = ({ navigation }) => {
     return null;
   } else {
     return (
-      <KeyboardAwareScrollView style={styles.container}>
+      <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.header}>
           <ImageBackground
             source={require("../../../assets/RegisterImage.jpg")}
@@ -247,7 +245,7 @@ const RegisterScreen = ({ navigation }) => {
             onPress={() => signUpHandler()}
           />
         </View>
-      </KeyboardAwareScrollView>
+      </SafeAreaView>
     );
   }
 };
@@ -255,13 +253,6 @@ const RegisterScreen = ({ navigation }) => {
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    height: Dimensions.get("screen").height,
-    backgroundColor: "white",
-  },
-
   header: {
     flex: 2,
     height: 300,

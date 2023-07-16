@@ -9,6 +9,7 @@ import {
   Alert,
   FlatList,
   Image,
+  SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { TextInput } from "@react-native-material/core";
@@ -56,24 +57,6 @@ const SubCategoryListScreen = ({ navigation, route }) => {
         console.log(err);
       });
   };
-
-  // const deleteSub = async (exp_id) => {
-  //   const url = baseURL + exp_id;
-  //   console.log(url);
-  //   axios
-  //     .delete(url, {
-  //       headers: {
-  //         "x-access-token": accessToken,
-  //       },
-  //     })
-  //     .then((response) => {
-  //       // console.log(response);
-  //       getExpenses(id);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
 
   const deleteSub = async (exp_id, title) => {
     const url = baseURL + exp_id;
@@ -168,7 +151,7 @@ const SubCategoryListScreen = ({ navigation, route }) => {
     return null;
   } else {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.titleContainer}>
           <TouchableOpacity
             style={{ top: 60, marginLeft: 20 }}
@@ -322,7 +305,7 @@ const SubCategoryListScreen = ({ navigation, route }) => {
         ) : (
           <></>
         )}
-      </View>
+      </SafeAreaView>
     );
   }
 };
@@ -332,7 +315,7 @@ export default SubCategoryListScreen;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#edeee7",
-    height: "100%",
+    flex: 1,
   },
 
   titleContainer: {

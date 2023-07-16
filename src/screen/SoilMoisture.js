@@ -5,6 +5,7 @@ import {
   Dimensions,
   TouchableOpacity,
   ActivityIndicator,
+  SafeAreaView,
 } from "react-native";
 import React from "react";
 import { Button } from "react-native-paper";
@@ -32,25 +33,27 @@ const SoilMoisture = () => {
 
   const turnOn = async () => {
     const response = await axios.get(`${writeApiUrl}1`);
-    console.log(response.data);
+    // console.log(response.data);
     return response;
   };
 
   const turnOff = async () => {
     const response = await axios.get(`${writeApiUrl}0`);
-    console.log(response.data);
+    // console.log(response.data);
     return response;
   };
 
   const getRelayStatus = async () => {
     const response = await axios.get(readApiUrl);
     const relayStatus = response.data.feeds[0].field3;
-    console.log(relayStatus);
+    // console.log(relayStatus);
     return relayStatus;
   };
 
   return (
-    <View style={{ flex: 1, marginBottom: 300 }}>
+    <SafeAreaView
+      style={{ flex: 1, marginBottom: 300, backgroundColor: "#edeee7" }}
+    >
       <View style={styles.titleContainer}>
         <TouchableOpacity
           style={{ top: 48, marginLeft: 20 }}
@@ -166,7 +169,7 @@ const SoilMoisture = () => {
           </Button>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

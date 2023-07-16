@@ -7,19 +7,17 @@ import {
   Dimensions,
   TextInput,
   ActivityIndicator,
+  SafeAreaView,
 } from "react-native";
 import { Button } from "@react-native-material/core";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import * as SQLite from "expo-sqlite";
 import * as Notifications from "expo-notifications";
 import { useSelector } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 import i18n from "../i18n/i18nHelper";
 import { useNavigation } from "@react-navigation/native";
-
-const db = SQLite.openDatabase("reminder.db");
 
 const ReminderScreen = () => {
   const navigation = useNavigation();
@@ -91,7 +89,7 @@ const ReminderScreen = () => {
   }
 
   return (
-    <View style={styles.container} backgroundColor="white">
+    <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
         <TouchableOpacity
           style={{ top: 48, marginLeft: 20 }}
@@ -180,6 +178,7 @@ const ReminderScreen = () => {
       <View>
         <TextInput
           style={styles.input}
+          cursorColor={"#323232"}
           placeholder={i18n.t("reminderInput")}
           onChangeText={(text) => {
             setDescription(text);
@@ -195,15 +194,19 @@ const ReminderScreen = () => {
           marginRight: 25,
           padding: 10,
         }}
+        titleStyle={{
+          fontFamily: "Poppins_400Regular",
+          fontSize: 16,
+        }}
+        uppercase={false}
         onPress={async () => {
           await add();
           navigation.goBack();
         }}
         title={i18n.t("reminderSubmit")}
         textColor="white"
-        fontFamily="Poppins_400Regular"
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -226,7 +229,7 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_400Regular",
   },
   input: {
-    backgroundColor: "d0d0d0",
+    // backgroundColor: "d0d0d0",
     color: "black",
     fontFamily: "Poppins_400Regular",
     borderRadius: 20,
@@ -241,7 +244,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   container: {
-    backgroundColor: "#fffff",
+    backgroundColor: "#edeee7",
     height: "100%",
   },
 });
