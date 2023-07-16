@@ -8,6 +8,7 @@ import {
   RefreshControl,
   ScrollView,
   Alert,
+  SafeAreaView,
 } from "react-native";
 import {
   useFonts,
@@ -30,7 +31,6 @@ import i18n from "../i18n/i18nHelper";
 export default function Profile({ route }) {
   const navigation = useNavigation();
   const [data, setData] = useState([]);
-  const [selectedPrinter, setSelectedPrinter] = useState();
   const [profile, setProfile] = useState({ name: "user" });
   const [refreshing, setRefreshing] = useState(false);
 
@@ -376,169 +376,167 @@ footer {
   }, []);
 
   return (
-    <ScrollView
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-    >
-      <View style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>{i18n.t("profiletitle")}</Text>
-          </View>
-          <View style={styles.nameDPCont}>
-            <Image
-              source={require("../../assets/user.png")}
-              style={styles.language}
-            />
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#edeee7" }}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>{i18n.t("profiletitle")}</Text>
+        </View>
+        <View style={styles.nameDPCont}>
+          <Image
+            source={require("../../assets/user.png")}
+            style={styles.language}
+          />
 
-            <View style={{ flexDirection: "column", left: 100, top: 50 }}>
-              <Text style={{ fontFamily: "Poppins_400Regular" }}>
-                {i18n.t("profilename")}:
-              </Text>
-              <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 19 }}>
-                {profile.name}
-              </Text>
-            </View>
-          </View>
-
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 30,
-            }}
-          >
-            <View
-              style={{
-                width: Dimensions.get("window").width / 1.2,
-                height: 1,
-                backgroundColor: "#c6c3bd",
-              }}
-            />
-          </View>
-
-          <View style={{ top: 40, left: 50 }}>
+          <View style={{ flexDirection: "column", left: 100, top: 50 }}>
             <Text style={{ fontFamily: "Poppins_400Regular" }}>
-              {i18n.t("profieemail")}:
+              {i18n.t("profilename")}:
             </Text>
             <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 19 }}>
-              {profile.email}
+              {profile.name}
             </Text>
           </View>
+        </View>
 
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 30,
+          }}
+        >
           <View
             style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 70,
+              width: Dimensions.get("window").width / 1.2,
+              height: 1,
+              backgroundColor: "#c6c3bd",
             }}
-          >
-            <View
-              style={{
-                width: Dimensions.get("window").width / 1.2,
-                height: 1,
-                backgroundColor: "#c6c3bd",
-              }}
-            />
-          </View>
+          />
+        </View>
 
-          <Text
-            style={{
-              fontFamily: "Poppins_400Regular",
-              top: 30,
-              fontSize: 17,
-              left: 50,
-            }}
-          >
-            {i18n.t("profilepdftitle")}
+        <View style={{ top: 40, left: 50 }}>
+          <Text style={{ fontFamily: "Poppins_400Regular" }}>
+            {i18n.t("profieemail")}:
           </Text>
-
-          <View
-            style={{ top: 30, justifyContent: "center", alignItems: "center" }}
-          >
-            <Button
-              mode="contained"
-              width={350}
-              onPress={printToFile}
-              labelStyle={{
-                fontFamily: "Poppins_500Medium",
-              }}
-              style={{
-                marginTop: 20,
-                borderRadius: 7,
-                backgroundColor: "#2a4330",
-              }}
-            >
-              {i18n.t("profileprint")}
-            </Button>
-          </View>
-          <View
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 70,
-            }}
-          >
-            <View
-              style={{
-                width: Dimensions.get("window").width / 1.2,
-                height: 1,
-                backgroundColor: "#c6c3bd",
-              }}
-            />
-          </View>
-
-          <Text
-            style={{
-              fontFamily: "Poppins_400Regular",
-              top: 30,
-              fontSize: 17,
-              left: 50,
-            }}
-          >
-            {i18n.t("receiptButtonHead")}
+          <Text style={{ fontFamily: "Poppins_400Regular", fontSize: 19 }}>
+            {profile.email}
           </Text>
+        </View>
 
-          <View
-            style={{ top: 30, justifyContent: "center", alignItems: "center" }}
-          >
-            <Button
-              mode="contained"
-              width={350}
-              labelStyle={{
-                fontFamily: "Poppins_500Medium",
-              }}
-              style={{
-                marginTop: 20,
-                borderRadius: 7,
-                backgroundColor: "#2a4330",
-              }}
-              onPress={() =>
-                navigation.navigate("ProfileNavigation", {
-                  screen: "ReceiptManagement",
-                })
-              }
-            >
-              {i18n.t("receiptButton")}
-            </Button>
-          </View>
-
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 70,
+          }}
+        >
           <View
             style={{
-              justifyContent: "center",
-              alignItems: "center",
-              marginTop: 70,
+              width: Dimensions.get("window").width / 1.2,
+              height: 1,
+              backgroundColor: "#c6c3bd",
+            }}
+          />
+        </View>
+
+        <Text
+          style={{
+            fontFamily: "Poppins_400Regular",
+            top: 30,
+            fontSize: 17,
+            left: 50,
+          }}
+        >
+          {i18n.t("profilepdftitle")}
+        </Text>
+
+        <View
+          style={{ top: 30, justifyContent: "center", alignItems: "center" }}
+        >
+          <Button
+            mode="contained"
+            width={330}
+            onPress={printToFile}
+            labelStyle={{
+              fontFamily: "Poppins_500Medium",
+            }}
+            style={{
+              marginTop: 20,
+              borderRadius: 7,
+              backgroundColor: "#2a4330",
             }}
           >
-            <View
-              style={{
-                width: Dimensions.get("window").width / 1.2,
-                height: 1,
-                backgroundColor: "#c6c3bd",
-              }}
-            />
-          </View>
+            {i18n.t("profileprint")}
+          </Button>
+        </View>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 70,
+          }}
+        >
+          <View
+            style={{
+              width: Dimensions.get("window").width / 1.2,
+              height: 1,
+              backgroundColor: "#c6c3bd",
+            }}
+          />
+        </View>
+
+        <Text
+          style={{
+            fontFamily: "Poppins_400Regular",
+            top: 30,
+            fontSize: 17,
+            left: 50,
+          }}
+        >
+          {i18n.t("receiptButtonHead")}
+        </Text>
+
+        <View
+          style={{ top: 30, justifyContent: "center", alignItems: "center" }}
+        >
+          <Button
+            mode="contained"
+            width={330}
+            labelStyle={{
+              fontFamily: "Poppins_500Medium",
+            }}
+            style={{
+              marginTop: 20,
+              borderRadius: 7,
+              backgroundColor: "#2a4330",
+            }}
+            onPress={() =>
+              navigation.navigate("ProfileNavigation", {
+                screen: "ReceiptManagement",
+              })
+            }
+          >
+            {i18n.t("receiptButton")}
+          </Button>
+        </View>
+
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: 70,
+          }}
+        >
+          <View
+            style={{
+              width: Dimensions.get("window").width / 1.2,
+              height: 1,
+              backgroundColor: "#c6c3bd",
+            }}
+          />
         </View>
 
         <View
@@ -546,7 +544,7 @@ footer {
         >
           <Button
             mode="contained"
-            width={350}
+            width={330}
             onPress={handleLogout}
             labelStyle={{
               fontFamily: "Poppins_500Medium",
@@ -575,19 +573,14 @@ footer {
             }}
           />
         </View>
-      </View>
 
-      <View style={{ paddingBottom: 100 }}></View>
-    </ScrollView>
+        <View style={{ paddingBottom: 100 }}></View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    // justifyContent: "center",
-    backgroundColor: "#f2f2f2",
-  },
-
   titleContainer: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height / 5.5,

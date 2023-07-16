@@ -5,20 +5,19 @@ import {
   Dimensions,
   TouchableOpacity,
   Image,
+  SafeAreaView,
 } from "react-native";
 import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Input } from "@rneui/base";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import "react-native-get-random-values";
-import { v4 as uuidv4 } from "uuid";
 import { useSelector } from "react-redux";
 import i18n from "../i18n/i18nHelper";
 import axios from "axios";
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 const ReceiptFormScreen = () => {
   const navigation = useNavigation();
@@ -51,7 +50,7 @@ const ReceiptFormScreen = () => {
     try {
       // Upload image as multipart form data
       const imageFormData = new FormData();
-      const ImageName = `${uuidv4()}.jpg`;
+      const ImageName = `1.jpg`;
       imageFormData.append("myFile", {
         uri: image,
         type: "image/jpeg", // Change the type if necessary
@@ -111,7 +110,7 @@ const ReceiptFormScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
         <TouchableOpacity
           style={{ top: 52, marginLeft: 20 }}
@@ -123,12 +122,11 @@ const ReceiptFormScreen = () => {
         </TouchableOpacity>
         <Text style={styles.title}>{i18n.t("receiptCont2Title")}</Text>
       </View>
-      <KeyboardAwareScrollView
+      <View
         style={{
           flex: 1,
           width: "100%",
           height: Dimensions.get("screen").height,
-          backgroundColor: "white",
           marginTop: 40,
         }}
       >
@@ -140,6 +138,7 @@ const ReceiptFormScreen = () => {
             marginHorizontal: 20,
             fontFamily: "Poppins_200ExtraLight",
           }}
+          cursorColor={"#323232"}
           inputStyle={styles.input}
           onBlur={() => {}}
           value={receiptName}
@@ -194,6 +193,7 @@ const ReceiptFormScreen = () => {
             marginHorizontal: 20,
             fontFamily: "Poppins_200ExtraLight",
           }}
+          cursorColor={"#323232"}
           inputStyle={styles.input}
           onBlur={() => {}}
           value={comments}
@@ -224,8 +224,8 @@ const ReceiptFormScreen = () => {
             {i18n.t("submitReceipt")}
           </Text>
         </TouchableOpacity>
-      </KeyboardAwareScrollView>
-    </View>
+      </View>
+    </SafeAreaView>
   );
 };
 
@@ -233,9 +233,8 @@ export default ReceiptFormScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-    height: "100%",
-    paddingBottom: 10,
+    flex: 1,
+    backgroundColor: "#edeee7",
   },
 
   titleContainer: {

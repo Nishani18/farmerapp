@@ -6,9 +6,9 @@ import {
   View,
   Dimensions,
   Image,
+  SafeAreaView,
 } from "react-native";
 import { ActivityIndicator, Colors } from "react-native-paper";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { Text, Input, Button } from "@rneui/base";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -67,7 +67,7 @@ export default function LoginScreen({ navigation }) {
     return null;
   } else {
     return (
-      <KeyboardAwareScrollView style={styles.container}>
+      <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.Image}>
           <ImageBackground
             style={{ width: "100%", height: "100%" }}
@@ -151,7 +151,11 @@ export default function LoginScreen({ navigation }) {
           </Button>
 
           <View
-            style={{ flexDirection: "row", alignItems: "center", marginTop: 6 }}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: 6,
+            }}
           >
             <View
               style={{
@@ -219,18 +223,12 @@ export default function LoginScreen({ navigation }) {
             </TouchableOpacity>
           </View>
         </View>
-      </KeyboardAwareScrollView>
+      </SafeAreaView>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    height: Dimensions.get("screen").height,
-    backgroundColor: "white",
-  },
   Image: {
     flex: 2,
     height: 300,
@@ -242,8 +240,8 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    height: Dimensions.get("screen").height / 9.7,
-    width: Dimensions.get("screen").width / 1.82,
+    height: Dimensions.get("screen").height / 10.8,
+    width: Dimensions.get("screen").width / 2,
     alignSelf: "center",
     bottom: 60,
   },

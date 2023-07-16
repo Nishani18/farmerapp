@@ -1,28 +1,26 @@
 {
   "expo": {
-    "name": "farmerapp",
+    "name": "Krishi-Nidhi",
     "slug": "farmerapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/krishi-nidhi-icon-small.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/krishi-nidhi-icon-image.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/krishi-nidhi-icon-image.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.nishani.farmerapp"

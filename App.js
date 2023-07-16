@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import "react-native-gesture-handler";
 import { View, ActivityIndicator } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider, useDispatch, useSelector } from "react-redux";
@@ -21,7 +22,6 @@ import ProfileNavigation from "./src/navigations/ProfileNavigation";
 const Stack = createStackNavigator();
 
 const RootNavigation = () => {
-  const [expoToken, setExpoToken] = useState("");
   const accesstoken = useSelector((state) => state.auth.userToken);
   const isLoggedin = useSelector((state) => state.auth.isLoggedIn);
   const loading = useSelector((state) => state.auth.loading);
@@ -53,7 +53,7 @@ const RootNavigation = () => {
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
-        <ActivityIndicator size="large" color="blue" />
+        <ActivityIndicator size="large" color="#386342" />
       </View>
     );
   }

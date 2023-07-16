@@ -6,9 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   RefreshControl,
-  ImageBackground,
+  SafeAreaView,
 } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
 import { Text } from "@react-native-material/core";
 import {
   useFonts,
@@ -28,9 +27,7 @@ import Reminder from "../components/Reminder";
 import { add } from "../../store1/slices/root";
 import Item from "../components/Item";
 import * as Notifications from "expo-notifications";
-import * as Permissions from "expo-permissions";
 import i18n from "../i18n/i18nHelper";
-import SoilMoisture from "./SoilMoisture";
 import Schemes from "../components/Schemes";
 
 Notifications.setNotificationHandler({
@@ -69,7 +66,7 @@ export default function HomeScreen({ navigation }) {
 
   const CategoryChart = () => {
     return (
-      <View style={{}}>
+      <View>
         <Text style={styles.revenue1}>{i18n.t("totalCategories")}</Text>
         <View
           style={{
@@ -304,19 +301,13 @@ export default function HomeScreen({ navigation }) {
     return null;
   } else {
     return (
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        <View style={styles.container}>
-          {/* <ImageBackground
-            source={require("../../assets/homeBgNew.png")}
-            style={styles.greetingCont}
-            borderBottomLeftRadius={30}
-            borderBottomRightRadius={30}
-          > */}
+      <SafeAreaView style={styles.container}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
           <View
             style={styles.greetingCont}
             borderBottomLeftRadius={30}
@@ -346,7 +337,6 @@ export default function HomeScreen({ navigation }) {
                 />
               </TouchableOpacity>
             </View>
-            {/* </ImageBackground> */}
           </View>
 
           <Weather />
@@ -467,8 +457,8 @@ export default function HomeScreen({ navigation }) {
             </ScrollView>
           </View>
           {renderComponent()}
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
     );
   }
 }
@@ -567,7 +557,6 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins_600SemiBold",
     color: "black",
     marginLeft: 36,
-    // marginTop: 30,
   },
 
   revenueContainer1: {
@@ -650,10 +639,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
     width: Dimensions.get("window").width / 1.2,
     height: Dimensions.get("window").height / 4,
-  },
-
-  Scroll: {
-    // flexDirection: "row",
   },
 
   revenue1: {

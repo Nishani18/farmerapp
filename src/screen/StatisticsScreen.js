@@ -145,9 +145,8 @@ const StatisticsScreen = () => {
     return null;
   } else {
     return (
-      <SafeAreaView>
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#edeee7" }}>
         <ScrollView
-          contentContainerStyle={{ backgroundColor: "#edeee7" }}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
@@ -202,7 +201,6 @@ const StatisticsScreen = () => {
                     setYear(val);
                     loadUserData();
                   }}
-                  // onSelect={(val) => setYearSelect(val)}
                   data={yearDropdown}
                   save="value"
                   placeholder={i18n.t("selectYear")}
@@ -383,7 +381,6 @@ const StatisticsScreen = () => {
                       setYear(val);
                       getWeekGraph();
                     }}
-                    // onSelect={(val) => setYearSelect(val)}
                     data={yearDropdown}
                     save="value"
                     placeholder={i18n.t("selectYear")}
@@ -395,7 +392,6 @@ const StatisticsScreen = () => {
                       width: 150,
                       borderColor: "#d8dbdf",
                       borderWidth: 2,
-                      // elevation: 10,
                     }}
                     boxStyles={{
                       width: 150,
@@ -403,7 +399,6 @@ const StatisticsScreen = () => {
                       backgroundColor: "white",
                       borderColor: "#d8dbdf",
                       borderWidth: 2,
-                      // elevation: 10,
                     }}
                     closeicon={<AntDesign name="up" size={12} color="black" />}
                   />
@@ -435,14 +430,6 @@ const StatisticsScreen = () => {
                     />
                     <VictoryAxis
                       tickValues={[0, 1, 2, 3, 4, 5]}
-                      // tickFormat={[
-                      //   "Week 1",
-                      //   "Week 2",
-                      //   "Week 3",
-                      //   "Week 4",
-                      //   "Week 5",
-                      //   "Week 6",
-                      // ]}
                       label="Week"
                       style={{
                         axisLabel: {
@@ -476,17 +463,6 @@ const StatisticsScreen = () => {
                 )}
               </View>
             </View>
-
-            {/* <Text
-              style={{
-                fontFamily: "Poppins_500Medium",
-                fontSize: 20,
-                textAlign: "center",
-                marginTop: 30,
-              }}
-            >
-              {i18n.t("statisticssoilmoisture")}
-            </Text> */}
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -504,7 +480,6 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    // marginTop: 80,
     textAlign: "center",
     fontSize: 28,
     marginLeft: 42,
@@ -521,7 +496,6 @@ const styles = StyleSheet.create({
   },
   graphcontainer1: {
     top: 80,
-    // left: 10,
     justifyContent: "center",
     alignItems: "center",
   },
