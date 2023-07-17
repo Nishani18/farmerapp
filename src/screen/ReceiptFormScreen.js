@@ -7,12 +7,12 @@ import {
   Image,
   SafeAreaView,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Input } from "@rneui/base";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import "react-native-get-random-values";
 import { useSelector } from "react-redux";
 import i18n from "../i18n/i18nHelper";
@@ -111,6 +111,11 @@ const ReceiptFormScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        style="light"
+        backgroundColor="transparent"
+        translucent={true}
+      />
       <View style={styles.titleContainer}>
         <TouchableOpacity
           style={{ top: 52, marginLeft: 20 }}

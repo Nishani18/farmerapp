@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { Button } from "@react-native-material/core";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import * as Notifications from "expo-notifications";
@@ -90,6 +91,11 @@ const ReminderScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        style="light"
+        backgroundColor="transparent"
+        translucent={true}
+      />
       <View style={styles.titleContainer}>
         <TouchableOpacity
           style={{ top: 48, marginLeft: 20 }}

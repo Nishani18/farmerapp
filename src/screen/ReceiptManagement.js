@@ -11,6 +11,7 @@ import {
   Alert,
   SafeAreaView,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { FAB, IconButton } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
@@ -160,6 +161,11 @@ const ReceiptManagement = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar
+        style="light"
+        backgroundColor="transparent"
+        translucent={true}
+      />
       <View style={styles.titleContainer}>
         <TouchableOpacity
           style={{ top: 52, marginLeft: 20 }}

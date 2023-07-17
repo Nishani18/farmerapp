@@ -8,6 +8,7 @@ import {
   RefreshControl,
   Image,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import {
   VictoryBar,
@@ -146,6 +147,11 @@ const StatisticsScreen = () => {
   } else {
     return (
       <SafeAreaView style={{ flex: 1, backgroundColor: "#edeee7" }}>
+        <StatusBar
+          style="light"
+          backgroundColor="transparent"
+          translucent={true}
+        />
         <ScrollView
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

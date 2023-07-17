@@ -11,6 +11,7 @@ import {
   Image,
   SafeAreaView,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { TextInput } from "@react-native-material/core";
 import {
@@ -152,6 +153,11 @@ const SubCategoryListScreen = ({ navigation, route }) => {
   } else {
     return (
       <SafeAreaView style={styles.container}>
+        <StatusBar
+          style="light"
+          backgroundColor="transparent"
+          translucent={true}
+        />
         <View style={styles.titleContainer}>
           <TouchableOpacity
             style={{ top: 60, marginLeft: 20 }}

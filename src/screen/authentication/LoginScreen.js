@@ -8,6 +8,7 @@ import {
   Image,
   SafeAreaView,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { ActivityIndicator, Colors } from "react-native-paper";
 import { Text, Input, Button } from "@rneui/base";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,6 +69,11 @@ export default function LoginScreen({ navigation }) {
   } else {
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar
+          style="dark"
+          backgroundColor="transparent"
+          translucent={true}
+        />
         <View style={styles.Image}>
           <ImageBackground
             style={{ width: "100%", height: "100%" }}
@@ -94,6 +100,7 @@ export default function LoginScreen({ navigation }) {
               marginHorizontal: 20,
               fontFamily: "Poppins_200ExtraLight",
             }}
+            cursorColor={"#323232"}
             rightIcon={<MaterialIcons name="email" size={20} color="black" />}
             placeholder={i18n.t("loginInputPlaceholder")}
             autoCapitalize="none"
@@ -110,6 +117,7 @@ export default function LoginScreen({ navigation }) {
               marginHorizontal: 20,
               fontFamily: "Poppins_200ExtraLight",
             }}
+            cursorColor={"#323232"}
             secureTextEntry={true}
             rightIcon={<Foundation name="key" size={24} color="black" />}
             placeholder={i18n.t("passwordInputPlaceholder")}
