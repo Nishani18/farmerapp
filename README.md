@@ -1,4 +1,4 @@
-<h1 align="center">KRISHI MITHRA 🧑🏽‍🌾</h1>
+<h1 align="center">KRISHI NIDHI 🧑🏽‍🌾</h1>
 
 <h3 align="center">🌱 A Farmer Expenditure Application 📱</h3>
 
