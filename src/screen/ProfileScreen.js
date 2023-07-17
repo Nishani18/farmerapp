@@ -10,6 +10,7 @@ import {
   Alert,
   SafeAreaView,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import {
   useFonts,
   Poppins_200ExtraLight,
@@ -377,6 +378,11 @@ footer {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#edeee7" }}>
+      <StatusBar
+        style="light"
+        backgroundColor="transparent"
+        translucent={true}
+      />
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

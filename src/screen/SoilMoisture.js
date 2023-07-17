@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import React from "react";
 import { Button } from "react-native-paper";
 import { WebView } from "react-native-webview";
@@ -54,6 +55,11 @@ const SoilMoisture = () => {
     <SafeAreaView
       style={{ flex: 1, marginBottom: 300, backgroundColor: "#edeee7" }}
     >
+      <StatusBar
+        style="light"
+        backgroundColor="transparent"
+        translucent={true}
+      />
       <View style={styles.titleContainer}>
         <TouchableOpacity
           style={{ top: 48, marginLeft: 20 }}

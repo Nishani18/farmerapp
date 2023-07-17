@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { Text, TextInput } from "@react-native-material/core";
 import {
   useFonts,
@@ -93,6 +94,11 @@ const CategoryScreen = () => {
   } else {
     return (
       <SafeAreaView style={styles.container}>
+        <StatusBar
+          style="light"
+          backgroundColor="transparent"
+          translucent={true}
+        />
         <View style={styles.titleContainer}>
           <Text style={styles.title}>{i18n.t("categorytitle")}</Text>
 

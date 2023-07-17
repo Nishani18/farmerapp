@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -95,6 +96,11 @@ const RegisterScreen = ({ navigation }) => {
   } else {
     return (
       <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar
+          style="dark"
+          backgroundColor="transparent"
+          translucent={true}
+        />
         <View style={styles.header}>
           <ImageBackground
             source={require("../../../assets/RegisterImage.jpg")}
@@ -122,9 +128,9 @@ const RegisterScreen = ({ navigation }) => {
               marginHorizontal: 20,
               fontFamily: "Poppins_200ExtraLight",
             }}
+            cursorColor={"#323232"}
             rightIcon={<MaterialIcons name="email" size={20} color="black" />}
             inputStyle={styles.input}
-            onBlur={() => {}}
             value={email}
             autoCapitalize="none"
             onChangeText={setEmail}
@@ -139,9 +145,9 @@ const RegisterScreen = ({ navigation }) => {
               marginHorizontal: 20,
               fontFamily: "Poppins_200ExtraLight",
             }}
+            cursorColor={"#323232"}
             rightIcon={<MaterialIcons name="person" size={20} color="black" />}
             inputStyle={styles.input}
-            onBlur={() => {}}
             value={name}
             autoCapitalize="none"
             onChangeText={setName}
@@ -156,9 +162,9 @@ const RegisterScreen = ({ navigation }) => {
               marginHorizontal: 20,
               fontFamily: "Poppins_200ExtraLight",
             }}
+            cursorColor={"#323232"}
             rightIcon={<Entypo name="lock" size={24} color="black" />}
             inputStyle={styles.input}
-            onBlur={() => {}}
             secureTextEntry={true}
             value={password}
             autoCapitalize="none"
@@ -192,9 +198,9 @@ const RegisterScreen = ({ navigation }) => {
               marginHorizontal: 20,
               fontFamily: "Poppins_200ExtraLight",
             }}
+            cursorColor={"#323232"}
             rightIcon={<Entypo name="lock" size={24} color="black" />}
             inputStyle={styles.input}
-            onBlur={() => {}}
             value={cpassword}
             secureTextEntry={true}
             autoCapitalize="none"

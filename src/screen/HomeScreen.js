@@ -8,6 +8,7 @@ import {
   RefreshControl,
   SafeAreaView,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { Text } from "@react-native-material/core";
 import {
   useFonts,
@@ -302,6 +303,11 @@ export default function HomeScreen({ navigation }) {
   } else {
     return (
       <SafeAreaView style={styles.container}>
+        <StatusBar
+          style="dark"
+          backgroundColor="transparent"
+          translucent={true}
+        />
         <ScrollView
           showsVerticalScrollIndicator={false}
           refreshControl={

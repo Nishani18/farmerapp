@@ -12,6 +12,7 @@ import {
   RefreshControl,
   SafeAreaView,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "@react-native-material/core";
 import {
@@ -184,6 +185,11 @@ const SubCategoryScreen = ({ route }) => {
   } else {
     return (
       <SafeAreaView style={styles.container}>
+        <StatusBar
+          style="light"
+          backgroundColor="transparent"
+          translucent={true}
+        />
         <View style={styles.titleContainer}>
           <TouchableOpacity
             style={{ top: 50, marginLeft: 20 }}
