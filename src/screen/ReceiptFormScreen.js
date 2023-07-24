@@ -50,11 +50,11 @@ const ReceiptFormScreen = () => {
     try {
       // Upload image as multipart form data
       const imageFormData = new FormData();
-      const ImageName = `1.jpg`;
+      const ImageName = Math.random().toString(36).substring(7);
       imageFormData.append("myFile", {
         uri: image,
         type: "image/jpeg", // Change the type if necessary
-        name: ImageName, // Change the name if necessary
+        name: `${ImageName}.jpg`, // Change the name if necessary
       });
 
       const imageResponse = await axios.post(
