@@ -31,12 +31,14 @@ import { IconButton, FAB } from "react-native-paper";
 import i18n from "../i18n/i18nHelper";
 
 const SubCategoryScreen = ({ route }) => {
+  console.log(route.params.title);
+  console.log(route.params.id);
   const navigation = useNavigation();
 
   const id = route.params.id;
   const baseURL = "https://farmer-test.onrender.com/api/sub/";
   const userToken = useSelector((state) => state.auth.userToken);
-  console.log(userToken);
+  // console.log(userToken);
   const lang = useSelector((state) => state.root.lang);
 
   i18n.locale = lang;
@@ -63,7 +65,7 @@ const SubCategoryScreen = ({ route }) => {
   });
 
   const getSub = async () => {
-    console.log(userToken);
+    // console.log(userToken);
     const url = baseURL + id;
     fetch(url, {
       method: "GET",
@@ -74,13 +76,13 @@ const SubCategoryScreen = ({ route }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // console.log("subcategory screen", data);
+        console.log("subcategory screen", data);
         setSubCategory(data.response);
       })
       .catch((error) => console.error(error));
   };
 
-  const deleteSub = async (sub_id, sub_title) => {
+  const deleteSub = async (sub_id) => {
     Alert.alert(i18n.t("subcateoryAlertHead"), i18n.t("subcategoryAlertPara"), [
       {
         text: i18n.t("subcategoryCancel"),

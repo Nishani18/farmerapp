@@ -1,52 +1,86 @@
-import { StyleSheet, View, TouchableOpacity, Text, Alert } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Text,
+  Alert,
+  ActivityIndicator,
+} from "react-native";
 import { IconButton } from "react-native-paper";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteCategory, getCategory } from "../../store1/slices/cat";
+import { useSelector } from "react-redux";
 import { format } from "date-fns";
 import i18n from "../i18n/i18nHelper";
+import axios from "axios";
 
-const Category = ({ title, id, createdAt, updatedAt }) => {
+const Category = ({ title, id, createdAt }) => {
+  console.log(id);
   const navigation = useNavigation();
 
-  const dispatch = useDispatch();
+  const [category, setCategory] = useState([]);
+  const [loading, setLoading] = useState(false); // Refresh state variable
+
+  const baseURL = "https://farmer-test.onrender.com/api/categorie/";
+
   const accessToken = useSelector((state) => state.auth.userToken);
-  const category = useSelector((state) => state.cat.category);
   const lang = useSelector((state) => state.root.lang);
 
   i18n.locale = lang;
 
-  console.log("from categpry comp", category);
+  const getCategory = async () => {
+    console.log("Category comp COmes here!!!!");
+    try {
+      const response = await axios.get(baseURL, {
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": accessToken,
+        },
+      });
+      setCategory(response.data.response);
+      console.log(response.data.response);
+    } catch (error) {
+      console.error("Category comp Error:", error);
+    }
+  };
 
   const handleDelete = () => {
-    Alert.alert(
-      i18n.t("cateoryAlertHead"),
-      i18n.t("categoryAlertPara"),
-      [
-        {
-          text: i18n.t("categoryDelete"),
-          style: "cancel",
-        },
-        {
-          text: i18n.t("categoryCancel"),
-          style: "destructive",
-          onPress: () => {
-            dispatch(deleteCategory({ id, accessToken }));
-            dispatch(getCategory({ accessToken }));
-          },
-        },
-      ],
+    const url = baseURL + id;
+    Alert.alert(i18n.t("cateoryAlertHead"), i18n.t("categoryAlertPara"), [
       {
-        // Custom styles for the alert
-        containerStyle: alertStyles.container,
-        titleStyle: alertStyles.title,
-        messageStyle: alertStyles.message,
-        textStyle: alertStyles.button,
+        text: i18n.t("categoryDelete"),
+        style: "cancel",
+        onPress: () => {
+          setLoading(true); // Set loading to true
+          axios
+            .delete(url, {
+              headers: {
+                "x-access-token": accessToken,
+              },
+            })
+            .then((response) => {
+              console.log(response.data);
+              // Perform any necessary actions after successful deletion
+            })
+            .catch((error) => {
+              console.error("Delete Error:", error);
+              // Handle any errors that occur during deletion
+            })
+            .finally(() => {
+              setLoading(false); // Set loading back to false
+            });
+        },
       },
-      { cancelable: false }
-    );
+      {
+        text: i18n.t("categoryCancel"),
+        style: "destructive",
+      },
+    ]);
   };
+
+  useEffect(() => {
+    getCategory();
+  }, []);
 
   const createdDate = format(new Date(createdAt), "yyyy-MM-dd"); //  created date
 
@@ -75,6 +109,7 @@ const Category = ({ title, id, createdAt, updatedAt }) => {
         size={25}
         onPress={handleDelete}
       />
+      {loading && <ActivityIndicator size="small" color="green" />}
     </View>
   );
 };

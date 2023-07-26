@@ -9,6 +9,7 @@ import {
   Image,
   ActivityIndicator,
   SafeAreaView,
+  RefreshControl,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Text, TextInput } from "@react-native-material/core";
@@ -22,56 +23,97 @@ import {
 import React, { useEffect, useState } from "react";
 import Category from "../components/Category";
 import { useDispatch, useSelector } from "react-redux";
-import { createCategory, getCategory } from "../../store1/slices/cat";
 import { FAB, IconButton } from "react-native-paper";
+import axios from "axios";
 
 import i18n from "../i18n/i18nHelper";
 
 const CategoryScreen = () => {
+  const baseURL = "https://farmer-test.onrender.com/api/categorie/";
+
   const renderItem = ({ item }) => {
     return (
       <View>
-        <Category
-          title={item.name}
-          id={item._id}
-          createdAt={item.createdAt}
-          updatedAt={item.updatedAt}
-        />
+        <Category title={item.name} id={item._id} createdAt={item.createdAt} />
       </View>
     );
   };
 
   const [toggle, setToggle] = useState(false);
   const [name, setName] = useState("");
+  const [category, setCategory] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const category = useSelector((state) => state.cat.category);
   const accessToken = useSelector((state) => state.auth.userToken);
-  const subCategory = useSelector((state) => state.cat.subCategory);
   const lang = useSelector((state) => state.root.lang);
-
-  const dispatch = useDispatch();
 
   i18n.locale = lang;
 
-  console.log("category screen", category);
+  // console.log("category screen", category);
+
+  const authHeader = (token) => {
+    if (token) {
+      return {
+        "x-access-token": token,
+      };
+    }
+    return {};
+  };
+
+  const getCategory = async () => {
+    console.log("COmesssssssssss");
+    try {
+      const response = await axios.get(baseURL, {
+        headers: {
+          "Content-Type": "application/json",
+          "x-access-token": accessToken,
+        },
+      });
+      console.log(response.data.result);
+      setCategory(response.data.result);
+      //console.log(response.data.response);
+    } catch (error) {
+      console.error("category screen get Error:", error);
+    }
+  };
+
+  const addCategory = async ({ name }) => {
+    try {
+      setLoading(true); // Set loading to true
+      const response = await axios.post(
+        baseURL,
+        {
+          name: name,
+        },
+        {
+          headers: {
+            "x-access-token": accessToken,
+          },
+        }
+      );
+      console.log("Category Screen Main response", response.data);
+    } catch (error) {
+      console.error("Category Screen Add Error:", error);
+    } finally {
+      setLoading(false); // Set loading back to false
+    }
+  };
 
   useEffect(() => {
-    const get = (accessToken) => {
-      dispatch(getCategory({ accessToken }));
-    };
-    get(accessToken);
-  }, [subCategory]);
+    getCategory();
+  }, []);
 
-  useEffect(() => {
-    dispatch(getCategory({ accessToken }));
-  }, [loading]);
+  const onSubmit = ({ name }) => {
+    addCategory({ name });
+    getCategory();
+  };
 
-  const [loading, setLoading] = useState(false);
-
-  const onSubmit = ({ name, accessToken }) => {
-    dispatch(createCategory({ name, accessToken }));
-    // console.log("Deleted");
-    dispatch(getCategory({ accessToken }));
+  const onRefresh = () => {
+    setRefreshing(true);
+    getCategory();
+    // addCategory({ name });
+    setTimeout(() => setRefreshing(false), 2000);
   };
 
   let [fontsLoaded] = useFonts({
@@ -128,6 +170,9 @@ const CategoryScreen = () => {
               paddingBottom: 300,
             }}
             showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
           />
         ) : (
           <View style={styles.graphcontainer}>

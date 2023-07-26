@@ -20,7 +20,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/krishi-nidhi-icon-image.png",
+        "foregroundImage": "./assets/krishi-nidhi-icon-small.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.nishani.farmerapp"

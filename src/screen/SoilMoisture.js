@@ -22,7 +22,7 @@ import i18n from "../i18n/i18nHelper";
 const writeapiKey = "674TZA68SA9VKM8G";
 const readapiKey = "2CNH8S72LCOAM1HM";
 const channelId = 2214829;
-const writeApiUrl = `https://api.thingspeak.com/update?api_key=${writeapiKey}&field=1`;
+const writeApiUrl = `https://api.thingspeak.com/update?api_key=${writeapiKey}&field1=`;
 const readApiUrl = `https://api.thingspeak.com/channels/${channelId}/feeds.json?results=1&api_key=${readapiKey}`;
 
 const SoilMoisture = () => {
@@ -33,14 +33,38 @@ const SoilMoisture = () => {
   i18n.locale = lang;
 
   const turnOn = async () => {
-    const response = await axios.get(`${writeApiUrl}1`);
-    // console.log(response.data);
+    const response = await axios.get(`${writeApiUrl}0`);
+    console.log(response.data);
+    showMessage({
+      message: i18n.t("PumpOn") + "Value:" + response.data,
+      type: "success",
+      floating: true,
+      duration: 5000,
+      icon: { icon: "success", position: "left" },
+      style: {
+        marginTop: 5,
+        paddingVertical: 20,
+        paddingHorizontal: 20,
+      },
+    });
     return response;
   };
 
   const turnOff = async () => {
-    const response = await axios.get(`${writeApiUrl}0`);
-    // console.log(response.data);
+    const response = await axios.get(`${writeApiUrl}1`);
+    console.log(response.data);
+    showMessage({
+      message: i18n.t("PumpOff") + "Value:" + response.data,
+      type: "success",
+      floating: true,
+      duration: 5000,
+      icon: { icon: "success", position: "left" },
+      style: {
+        marginTop: 5,
+        paddingVertical: 20,
+        paddingHorizontal: 20,
+      },
+    });
     return response;
   };
 
@@ -130,18 +154,6 @@ const SoilMoisture = () => {
             }}
             onPress={() => {
               turnOn();
-              showMessage({
-                message: i18n.t("PumpOn"),
-                type: "success",
-                floating: true,
-                duration: 5000,
-                icon: { icon: "success", position: "left" },
-                style: {
-                  marginTop: 5,
-                  paddingVertical: 20,
-                  paddingHorizontal: 20,
-                },
-              });
             }}
           >
             {i18n.t("on")}
@@ -157,18 +169,6 @@ const SoilMoisture = () => {
             }}
             onPress={() => {
               turnOff();
-              showMessage({
-                message: i18n.t("PumpOff"),
-                type: "success",
-                floating: true,
-                duration: 5000,
-                icon: { icon: "success", position: "left" },
-                style: {
-                  marginTop: 5,
-                  paddingVertical: 20,
-                  paddingHorizontal: 20,
-                },
-              });
             }}
           >
             {i18n.t("off")}
