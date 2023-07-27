@@ -26,6 +26,7 @@ import { AntDesign } from "@expo/vector-icons";
 import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import { FAB, IconButton } from "react-native-paper";
+import { showMessage } from "react-native-flash-message";
 
 import i18n from "../i18n/i18nHelper";
 
@@ -81,9 +82,28 @@ const SubCategoryListScreen = ({ navigation, route }) => {
               })
               .then((response) => {
                 getExpenses(id);
+                showMessage({
+                  message: i18n.t("itemDeleteSuccess"),
+                  type: "success",
+                  floating: true,
+                  duration: 5000,
+                  icon: { icon: "success", position: "left" },
+                  style: {
+                    paddingVertical: 20,
+                    paddingHorizontal: 20,
+                  },
+                });
               })
               .catch((err) => {
                 console.log(err);
+                showMessage({
+                  message: i18n.t("itemDeleteError"),
+                  type: "danger",
+                  floating: true,
+                  duration: 5000,
+                  icon: { icon: "danger", position: "left" },
+                  style: { paddingVertical: 20, paddingHorizontal: 20 },
+                });
               });
           },
         },
@@ -113,10 +133,29 @@ const SubCategoryListScreen = ({ navigation, route }) => {
       .then((response) => {
         // console.log(response.data);
         getExpenses();
+        showMessage({
+          message: i18n.t("itemAddedSuccess"),
+          type: "success",
+          floating: true,
+          duration: 5000,
+          icon: { icon: "success", position: "left" },
+          style: {
+            paddingVertical: 20,
+            paddingHorizontal: 20,
+          },
+        });
         //setExpense([...expense,repo])
       })
       .catch((err) => {
         console.log(err);
+        showMessage({
+          message: i18n.t("itemAddedError"),
+          type: "danger",
+          floating: true,
+          duration: 5000,
+          icon: { icon: "danger", position: "left" },
+          style: { paddingVertical: 20, paddingHorizontal: 20 },
+        });
       });
   };
 

@@ -27,6 +27,7 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { IconButton, FAB } from "react-native-paper";
+import { showMessage } from "react-native-flash-message";
 
 import i18n from "../i18n/i18nHelper";
 
@@ -76,7 +77,7 @@ const SubCategoryScreen = ({ route }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("subcategory screen", data);
+        // console.log("subcategory screen", data);
         setSubCategory(data.response);
       })
       .catch((error) => console.error(error));
@@ -102,9 +103,28 @@ const SubCategoryScreen = ({ route }) => {
             .then((response) => {
               // console.log(response);
               getSub(id);
+              showMessage({
+                message: i18n.t("subcategoryDeleteAlertMessages"),
+                type: "success",
+                floating: true,
+                duration: 5000,
+                icon: { icon: "success", position: "left" },
+                style: {
+                  paddingVertical: 20,
+                  paddingHorizontal: 20,
+                },
+              });
             })
             .catch((err) => {
               console.log(err);
+              showMessage({
+                message: i18n.t("subcategoryDeleteAlertErrorMessages"),
+                type: "danger",
+                floating: true,
+                duration: 5000,
+                icon: { icon: "danger", position: "left" },
+                style: { paddingVertical: 20, paddingHorizontal: 20 },
+              });
             });
         },
         style: "destructive",
@@ -140,6 +160,17 @@ const SubCategoryScreen = ({ route }) => {
       .then((response) => {
         // console.log("Added a sub", response.data);
         getSub();
+        showMessage({
+          message: i18n.t("subcategoryAddAlertMessages"),
+          type: "success",
+          floating: true,
+          duration: 5000,
+          icon: { icon: "success", position: "left" },
+          style: {
+            paddingVertical: 20,
+            paddingHorizontal: 20,
+          },
+        });
       })
       .catch((err) => {
         console.log(err);

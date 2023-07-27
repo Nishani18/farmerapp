@@ -11,70 +11,98 @@ const SchemesData = [
     id: 1,
     name: i18n.t("listTitle1"),
     description: i18n.t("description1"),
-    link: "https://raitamitra.karnataka.gov.in/info-2/Chief+Minister+Raitha+Vidya+Nidhi/kn",
+    kannadalink:
+      "https://raitamitra.karnataka.gov.in/info-2/Chief+Minister+Raitha+Vidya+Nidhi/kn",
+    englishLink:
+      "https://raitamitra.karnataka.gov.in/info-2/Chief+Minister+Raitha+Vidya+Nidhi/en",
   },
   {
     id: 2,
     name: "Pradhan Mantri Kisan Samman Nidhi (PM KISAN)",
     description:
       "Pradhan Mantri Kisan Samman Nidhi (PM KISAN) is a scheme by the Government of India that provides income support to small and marginal farmers. Eligible farmers receive Rs. 6,000 per year in three equal installments, directly into their bank accounts, to help with agricultural expenses and household needs.",
-    link: "https://raitamitra.karnataka.gov.in/info-2/Pradhan+Mantri+KIsan+SAmman+Nidhi+(PM+KISAN)/kn",
+    kannadalink:
+      "https://raitamitra.karnataka.gov.in/info-2/Pradhan+Mantri+KIsan+SAmman+Nidhi+(PM+KISAN)/kn",
+    englishLink:
+      "https://raitamitra.karnataka.gov.in/info-2/Pradhan+Mantri+KIsan+SAmman+Nidhi+(PM+KISAN)/en",
   },
   {
     id: 3,
     name: "Savayava Siri",
     description:
       "Savayava Siri is a Karnataka government initiative to promote organic farming by providing subsidies, training, and support to farmers. Its aim is to encourage sustainable agriculture and protect the environment.",
-    link: "https://raitamitra.karnataka.gov.in/info-2/Organic+Farming+and+Millet+Promotional+Programs/Savayava+Siri/kn",
+    kannadalink:
+      "https://raitamitra.karnataka.gov.in/info-2/Organic+Farming+and+Millet+Promotional+Programs/Savayava+Siri/kn",
+    englishLink:
+      "https://raitamitra.karnataka.gov.in/info-2/Organic+Farming+and+Millet+Promotional+Programs/Savayava+Siri/en",
   },
   {
     id: 4,
     name: "Rashtriya Krishi Vikas Yojana(RKVY RAFTAAR)",
     description:
       "Rashtriya Krishi Vikas Yojana (RKVY RAFTAAR) is an Indian government scheme that promotes agricultural development by providing financial support to states for implementing innovative projects. It aims to achieve a 4% annual growth rate in the agriculture sector and focuses on enhancing productivity, value addition, and infrastructure.",
-    link: "https://raitamitra.karnataka.gov.in/info-2/Rashtriya+Krishi+Vikas+Yojana(RKVY+RAFTAAR)/kn",
+    kannadalink:
+      "https://raitamitra.karnataka.gov.in/info-2/Rashtriya+Krishi+Vikas+Yojana(RKVY+RAFTAAR)/kn",
+    englishLink:
+      "https://raitamitra.karnataka.gov.in/info-2/Rashtriya+Krishi+Vikas+Yojana(RKVY+RAFTAAR)/en",
   },
   {
     id: 5,
     name: "Fertilizer and Manure",
     description:
       "The Government of Karnataka offers a Fertilizer and Manure service to farmers, providing easy access to quality fertilizers and manure through subsidized distribution centers. The service also includes soil testing facilities to promote sustainable farming practices.",
-    link: "https://raitamitra.karnataka.gov.in/info-2/FERTILIZER+AND+MANURE/Guideline+and+Circulars/kn",
+    kannadalink:
+      "https://raitamitra.karnataka.gov.in/info-2/FERTILIZER+AND+MANURE/Guideline+and+Circulars/kn",
+    englishLink:
+      "https://raitamitra.karnataka.gov.in/info-2/FERTILIZER+AND+MANURE/Guideline+and+Circulars/en",
   },
   {
     id: 6,
     name: "Krushi Bhagya",
     description:
       "Krushi Bhagya is a Karnataka government scheme that provides financial support to small and marginal farmers for crop cultivation, including land preparation, seed treatment, and marketing. The scheme aims to improve agricultural productivity and is implemented by the Department of Agriculture, Government of Karnataka.",
-    link: "https://raitamitra.karnataka.gov.in/info-2/krushi+Bhagya/kn",
+    kannadalink: "https://raitamitra.karnataka.gov.in/info-2/krushi+Bhagya/kn",
+    englishLink: "https://raitamitra.karnataka.gov.in/info-2/krushi+Bhagya/en",
   },
   {
     id: 7,
     name: "Seeds",
     description:
       "The Government of Karnataka provides a Seeds service to promote the use of quality seeds for agricultural purposes. The service includes seed production and distribution centers, training, and technical assistance for farmers. It is administered by the Department of Agriculture, Government of Karnataka, to support the agricultural sector and promote sustainable farming practices.",
-    link: "https://raitamitra.karnataka.gov.in/info-2/Seeds/Rate+Contract/kn",
+    kannadalink:
+      "https://raitamitra.karnataka.gov.in/info-2/Seeds/Rate+Contract/kn",
+    englishLink:
+      "https://raitamitra.karnataka.gov.in/info-2/Seeds/Rate+Contract/en",
   },
   {
     id: 8,
     name: "Micro Irrigation",
     description:
       "The Government of Karnataka provides Micro Irrigation services to promote efficient water use in agriculture. The service includes technical assistance, training, and financial support for adopting micro-irrigation technologies such as drip and sprinkler systems. The service is administered by the Department of Water Resources to promote sustainable water management practices in the state.",
-    link: "https://raitamitra.karnataka.gov.in/info-2/Micro+Irrigation/Guideline+Government+Order+and++Circulars/kn",
+    kannadalink:
+      "https://raitamitra.karnataka.gov.in/info-2/Micro+Irrigation/Guideline+Government+Order+and++Circulars/kn",
+    englishLink:
+      "https://raitamitra.karnataka.gov.in/info-2/Micro+Irrigation/Guideline+Government+Order+and++Circulars/en",
   },
   {
     id: 9,
     name: "Farm Mechanization And Agro processing",
     description:
       "The Government of Karnataka's Farm Mechanization and Agro-processing service provides financial assistance, training, and technical support to farmers for modern farming practices. This service helps increase agricultural productivity and income and is administered by the Department of Agriculture.",
-    link: "https://raitamitra.karnataka.gov.in/info-2/Farm+Mechanization+And++Agro+processing/Guideline+Government+Order+and++Circulars/kn",
+    kannadalink:
+      "https://raitamitra.karnataka.gov.in/info-2/Farm+Mechanization+And++Agro+processing/Guideline+Government+Order+and++Circulars/kn",
+    englishLink:
+      "https://raitamitra.karnataka.gov.in/info-2/Farm+Mechanization+And++Agro+processing/Guideline+Government+Order+and++Circulars/en",
   },
   {
     id: 10,
     name: "National Mission For Sustainable Agriculture(NMSA)",
     description:
       "NMSA is a Government of India scheme promoting sustainable agriculture practices, including soil health, water conservation, and productivity improvement. It supports integrated farming, agroforestry, and farmer skill development, implemented by the Department of Agriculture.",
-    link: "https://raitamitra.karnataka.gov.in/info-2/Natinal+Mission+For+Sustainable+Agriculture(NMSA)/Soil+Heath+Mission/kn",
+    kannadalink:
+      "https://raitamitra.karnataka.gov.in/info-2/Natinal+Mission+For+Sustainable+Agriculture(NMSA)/Soil+Heath+Mission/kn",
+    englishLink:
+      "https://raitamitra.karnataka.gov.in/info-2/Natinal+Mission+For+Sustainable+Agriculture(NMSA)/Soil+Heath+Mission/en",
   },
   {
     id: 11,

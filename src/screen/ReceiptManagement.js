@@ -19,6 +19,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import i18n from "../i18n/i18nHelper";
+import { showMessage } from "react-native-flash-message";
 
 const ReceiptManagement = () => {
   const navigation = useNavigation();
@@ -70,9 +71,28 @@ const ReceiptManagement = () => {
             })
             .then((response) => {
               console.log(response.data);
+              showMessage({
+                message: i18n.t("receiptDeleteAlertSuccess"),
+                type: "success",
+                floating: true,
+                duration: 5000,
+                icon: { icon: "success", position: "left" },
+                style: {
+                  paddingVertical: 20,
+                  paddingHorizontal: 20,
+                },
+              });
             })
             .catch((err) => {
               console.log(err);
+              showMessage({
+                message: i18n.t("receiptDeleteAlertFailure"),
+                type: "danger",
+                floating: true,
+                duration: 5000,
+                icon: { icon: "danger", position: "left" },
+                style: { paddingVertical: 20, paddingHorizontal: 20 },
+              });
             });
         },
       },
@@ -281,7 +301,7 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(52, 52, 52, 0.97)",
   },
   modalContent: {
     backgroundColor: "#fff",
@@ -291,13 +311,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   closeButton: {
-    marginTop: 2,
-    alignSelf: "center",
+    marginTop: 10,
+    backgroundColor: "#ccc",
+    padding: 10,
+    borderRadius: 5,
   },
   closeButtonText: {
-    fontSize: 15,
-    color: "red",
     fontFamily: "Poppins_400Regular",
+    fontSize: 13,
+    color: "red",
+    textAlign: "center",
   },
   mediaImage: {
     width: 80,
