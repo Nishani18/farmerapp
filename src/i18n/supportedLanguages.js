@@ -42,6 +42,10 @@ const en = {
   reminderRemaining: " days remaining",
   ReminderSucess: "Reminder set successfully",
 
+  reminderDeleteSucess: "Reminder deleted successfully",
+  reminderAlertDeleteTitle: "Delete Reminder",
+  reminderAlertDeleteMessage: "Are you sure you want to delete this reminder?",
+
   //Category Screen
   categorytitle: "Categories",
   categoryMessage1: "No Categories yet!",
@@ -54,6 +58,10 @@ const en = {
   categoryAlertPara: "Are you sure you want to delete this category?",
   categoryDelete: "DELETE",
   categoryCancel: "CANCEL",
+  categoryAddAlertMessages: "Category added successfully",
+  categoryAddAlertErrorMessages: "Failed to add category",
+  categoryDeleteAlertMessages: "Category deleted successfully",
+  categoryDeleteAlertErrorMessages: "Failed to delete category",
 
   //Sub Category Screen
   subcategorytitle: "lists",
@@ -67,6 +75,9 @@ const en = {
   subcategoryAlertPara: "Are you sure you want to delete?",
   subcategoryDelete: "DELETE",
   subcategoryCancel: "CANCEL",
+  subcategoryAddAlertMessages: "Sub Category added successfully",
+  subcategoryDeleteAlertMessages: "Sub Category deleted successfully",
+  subcategoryDeleteAlertErrorMessages: "Failed to delete sub category",
 
   //Sub Category List Screen
   subcategorylistmessage1: "No Items yet!",
@@ -80,6 +91,11 @@ const en = {
   subcategorylistAlertPara: "Are you sure you want to delete?",
   subcategorylistDelete: "DELETE",
   subcategorylistCancel: "CANCEL",
+
+  itemAddedSuccess: "Item added successfully",
+  itemAddedError: "Failed to add item",
+  itemDeleteSuccess: "Item deleted successfully",
+  itemDeleteError: "Failed to delete Item",
 
   //Statistics Screen
   statisticstitle: "Spendings",
@@ -269,10 +285,16 @@ const en = {
   description28:
     "Krishi Yantra Dhare (CHSC) is a scheme by the Karnataka government aimed at providing agricultural machinery and equipment to farmers on a rental basis. The scheme aims to improve farm productivity by making modern and efficient farming equipment available to farmers at affordable prices.",
 
+  readMoreEnglish: "Read more - English",
+  readMoreKannada: "Read more - Kannada",
+  closeScheme: "Close",
+  tapToReadMore: "Tap to read More",
+
   //Reciept Management
   receiptButton: "Receipt Management",
   receiptContTitle: "Receipts",
   closeButton: "Close",
+
   //Reciept Management Form
   receiptButtonHead: "Click to add receipts",
   receiptCont2Title: "New Receipt",
@@ -280,6 +302,7 @@ const en = {
   input2: "Add Image",
   input3: "Comment",
   submitReceipt: "Submit",
+
   //reciept management alert
   receiptAlertTitle: "Delete receipt",
   receiptAlertpara: "Are you sure you want to delete this receipt?",
@@ -287,6 +310,9 @@ const en = {
   receiptDecline: "Error, receipt could not be created!",
   receiptCancel: "CANCEL",
   receiptDelete: "DELETE",
+
+  receiptDeleteAlertSuccess: "Reminder deleted successfully",
+  receiptDeleteAlertFailure: "Failed to delete reminder",
 };
 
 const kn = {
@@ -333,6 +359,10 @@ const kn = {
   reminderRemaining: "ಉಳಿದಿರುವ ದಿನಗಳು",
   ReminderSucess: "ಜ್ಞಾಪನೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಹೊಂದಿಸಲಾಗಿದೆ",
 
+  reminderDeleteSucess: "ಜ್ಞಾಪನೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಅಳಿಸಲಾಗಿದೆ",
+  reminderAlertDeleteTitle: "ಜ್ಞಾಪನೆಯನ್ನು ಅಳಿಸಿ",
+  reminderAlertDeleteMessage: "ಈ ಜ್ಞಾಪನೆಯನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?",
+
   //Category Screen
   categorytitle: "ವರ್ಗಗಳು",
   categoryMessage1: "ಇನ್ನೂ ಯಾವುದೇ ವರ್ಗಗಳಿಲ್ಲ!",
@@ -345,6 +375,10 @@ const kn = {
   categoryAlertPara: "ಈ ವರ್ಗವನ್ನು ಅಳಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?",
   categoryDelete: "ಅಳಿಸು",
   categoryCancel: "ರದ್ದುಮಾಡು",
+  categoryAddAlertMessages: "ವರ್ಗವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಸೇರಿಸಲಾಗಿದೆ",
+  categoryAddAlertErrorMessages: "ವರ್ಗವನ್ನು ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ",
+  categoryDeleteAlertMessages: "ವರ್ಗವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಅಳಿಸಲಾಗಿದೆ",
+  categoryDeleteAlertErrorMessages: "ವರ್ಗವನ್ನು ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ",
 
   //Sub Category Screen
   subcategorytitle: "ಪಟ್ಟಿಗಳು",
@@ -368,10 +402,19 @@ const kn = {
   subcategoryDelete: "ಅಳಿಸು",
   subcategoryCancel: "ರದ್ದುಮಾಡು",
 
+  subcategoryAddAlertMessages: "ಉಪ ವರ್ಗವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಸೇರಿಸಲಾಗಿದೆ",
+  subcategoryDeleteAlertMessages: "ಉಪವರ್ಗವನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಅಳಿಸಲಾಗಿದೆ",
+  subcategoryDeleteAlertErrorMessages: "ಉಪ ವರ್ಗವನ್ನು ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ",
+
   subcateorylistAlertHead: "ಐಟಂ ಅಳಿಸಿ",
   subcategorylistAlertPara: "ನೀವು ಅಳಿಸಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?",
   subcategorylistDelete: "ಅಳಿಸು",
-  subcategorylistCancel: "ಅಳಿಸು",
+  subcategorylistCancel: "ರದ್ದುಮಾಡು",
+
+  itemAddedSuccess: "ಐಟಂ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಸೇರಿಸಲಾಗಿದೆ",
+  itemAddedError: "ಐಟಂ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ",
+  itemDeleteSuccess: "ಐಟಂ ಅನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಅಳಿಸಲಾಗಿದೆ",
+  itemDeleteError: "ಐಟಂ ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ",
 
   //Statistics Screen
   statisticstitle: "ಖರ್ಚುಗಳು",
@@ -561,6 +604,11 @@ const kn = {
   description28:
     "ಕೃಷಿ ಯಂತ್ರ ಧಾರೆ (CHSC) ಕರ್ನಾಟಕ ಸರ್ಕಾರದ ಯೋಜನೆಯಾಗಿದ್ದು, ರೈತರಿಗೆ ಬಾಡಿಗೆ ಆಧಾರದ ಮೇಲೆ ಕೃಷಿ ಯಂತ್ರೋಪಕರಣಗಳು ಮತ್ತು ಸಲಕರಣೆಗಳನ್ನು ಒದಗಿಸುವ ಗುರಿಯನ್ನು ಹೊಂದಿದೆ. ಆಧುನಿಕ ಮತ್ತು ಪರಿಣಾಮಕಾರಿ ಕೃಷಿ ಉಪಕರಣಗಳನ್ನು ಕೈಗೆಟುಕುವ ಬೆಲೆಯಲ್ಲಿ ರೈತರಿಗೆ ಲಭ್ಯವಾಗುವಂತೆ ಮಾಡುವ ಮೂಲಕ ಕೃಷಿ ಉತ್ಪಾದಕತೆಯನ್ನು ಸುಧಾರಿಸುವ ಗುರಿಯನ್ನು ಈ ಯೋಜನೆ ಹೊಂದಿದೆ.",
 
+  readMoreEnglish: "ಹೆಚ್ಚು ಓದಿ - ಇಂಗ್ಲೀಷ್",
+  readMoreKannada: "ಮುಂದೆ ಓದಿ - ಕನ್ನಡ",
+  closeScheme: "ಮುಚ್ಚಿ",
+  tapToReadMore: "ಇನ್ನಷ್ಟು ಓದಲು ಟ್ಯಾಪ್ ಮಾಡಿ",
+
   //Reciept Management
   receiptButtonHead: "ರಸೀದಿಗಳನ್ನು ಸೇರಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ",
   receiptButton: "ರಶೀದಿ ನಿರ್ವಹಣೆ",
@@ -579,6 +627,9 @@ const kn = {
   receiptDecline: "ದೋಷ, ರಶೀದಿಯನ್ನು ರಚಿಸಲಾಗಲಿಲ್ಲ!",
   receiptCancel: "ರದ್ದುಮಾಡು",
   receiptDelete: "ಅಳಿಸು",
+
+  receiptDeleteAlertSuccess: "ಜ್ಞಾಪನೆಯನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಅಳಿಸಲಾಗಿದೆ",
+  receiptDeleteAlertFailure: "ಜ್ಞಾಪನೆಯನ್ನು ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ",
 };
 
 export { en, kn };

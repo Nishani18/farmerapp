@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { format } from "date-fns";
 import i18n from "../i18n/i18nHelper";
 import axios from "axios";
+import { showMessage } from "react-native-flash-message";
 
 const Category = ({ title, id, createdAt }) => {
   console.log(id);
@@ -60,10 +61,29 @@ const Category = ({ title, id, createdAt }) => {
             })
             .then((response) => {
               console.log(response.data);
+              showMessage({
+                message: i18n.t("categoryDeleteAlertMessages"),
+                type: "success",
+                floating: true,
+                duration: 5000,
+                icon: { icon: "success", position: "left" },
+                style: {
+                  paddingVertical: 20,
+                  paddingHorizontal: 20,
+                },
+              });
               // Perform any necessary actions after successful deletion
             })
             .catch((error) => {
               console.error("Delete Error:", error);
+              showMessage({
+                message: i18n.t("categoryDeleteAlertErrorMessages"),
+                type: "danger",
+                floating: true,
+                duration: 5000,
+                icon: { icon: "danger", position: "left" },
+                style: { paddingVertical: 20, paddingHorizontal: 20 },
+              });
               // Handle any errors that occur during deletion
             })
             .finally(() => {

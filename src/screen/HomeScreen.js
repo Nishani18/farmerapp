@@ -132,33 +132,31 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <TouchableOpacity
-              style={{ height: 200, width: 300 }}
+              style={{
+                height: 68,
+                width: 300,
+                backgroundColor: "#ffffff",
+                elevation: 10,
+                bottom: 50,
+                borderRadius: 40,
+              }}
               onPress={() =>
                 navigation.navigate("SoilMoistureNavigation", {
                   screen: "SoilMoisture",
                 })
               }
             >
-              <View
+              <Text
                 style={{
-                  backgroundColor: "#ffffff",
-                  elevation: 10,
-                  bottom: 50,
-                  borderRadius: 40,
+                  fontFamily: "Poppins_500Medium",
+                  fontSize: 17,
+                  marginTop: 20,
+                  marginBottom: 20,
+                  textAlign: "center",
                 }}
               >
-                <Text
-                  style={{
-                    fontFamily: "Poppins_500Medium",
-                    fontSize: 17,
-                    marginTop: 20,
-                    marginBottom: 20,
-                    textAlign: "center",
-                  }}
-                >
-                  {i18n.t("soilmoisturebutton")}
-                </Text>
-              </View>
+                {i18n.t("soilmoisturebutton")}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

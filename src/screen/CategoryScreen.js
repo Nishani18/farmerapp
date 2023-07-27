@@ -25,7 +25,7 @@ import Category from "../components/Category";
 import { useDispatch, useSelector } from "react-redux";
 import { FAB, IconButton } from "react-native-paper";
 import axios from "axios";
-
+import { showMessage } from "react-native-flash-message";
 import i18n from "../i18n/i18nHelper";
 
 const CategoryScreen = () => {
@@ -93,8 +93,24 @@ const CategoryScreen = () => {
         }
       );
       console.log("Category Screen Main response", response.data);
+      showMessage({
+        message: i18n.t("categoryAddAlertMessages"),
+        type: "success",
+        floating: true,
+        duration: 5000,
+        icon: { icon: "success", position: "left" },
+        style: { paddingVertical: 20, paddingHorizontal: 20 },
+      });
     } catch (error) {
       console.error("Category Screen Add Error:", error);
+      showMessage({
+        message: i18n.t("categoryAddAlertErrorMessages"),
+        type: "danger",
+        floating: true,
+        duration: 5000,
+        icon: { icon: "danger", position: "left" },
+        style: { paddingVertical: 20, paddingHorizontal: 20 },
+      });
     } finally {
       setLoading(false); // Set loading back to false
     }

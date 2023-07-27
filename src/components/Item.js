@@ -5,10 +5,12 @@ import {
   Dimensions,
   Image,
   StyleSheet,
+  Alert,
 } from "react-native";
 import React, { useEffect } from "react";
 import * as Notifications from "expo-notifications";
 import { useSelector } from "react-redux";
+import { showMessage } from "react-native-flash-message";
 
 import i18n from "../i18n/i18nHelper";
 
@@ -31,8 +33,31 @@ const Item = ({ notification }) => {
   }, [notification]);
 
   const deleteNotification = async (id) => {
-    await Notifications.cancelScheduledNotificationAsync(id);
-    getNotifi();
+    Alert.alert(
+      i18n.t("reminderAlertDeleteTitle"),
+      i18n.t("reminderAlertDeleteMessage"),
+      [
+        {
+          text: i18n.t("categoryCancel"),
+          style: "cancel",
+        },
+        {
+          text: i18n.t("categoryDelete"),
+          onPress: async () => {
+            await Notifications.cancelScheduledNotificationAsync(id);
+            getNotifi();
+            showMessage({
+              message: i18n.t("reminderDeleteSucess"),
+              type: "success",
+              floating: true,
+              duration: 5000,
+              icon: { icon: "success", position: "left" },
+              style: { paddingVertical: 20, paddingHorizontal: 20 },
+            });
+          },
+        },
+      ]
+    );
   };
 
   return (

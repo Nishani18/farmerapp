@@ -41,11 +41,7 @@ const StatisticsScreen = () => {
   const [year, setYear] = useState();
   const [month, setMonth] = useState();
   const [refreshing, setRefreshing] = useState(false);
-
-  //filters
-  const [monthSelect, setMontSelect] = useState("");
-  const [yearSelect, setYearSelect] = useState("");
-  const [filteredMonth, setFilteredMonth] = useState([]);
+  const [animationDuration, setAnimationDuration] = useState(1000);
 
   const monthMap = {
     Jan: 1,
@@ -245,6 +241,10 @@ const StatisticsScreen = () => {
                   height={340}
                   width={380}
                   domainPadding={{ x: 30, y: [0, 40] }}
+                  animate={{
+                    duration: animationDuration,
+                    onLoad: { duration: animationDuration },
+                  }}
                 >
                   <VictoryAxis
                     dependentAxis
@@ -420,7 +420,15 @@ const StatisticsScreen = () => {
                 }}
               >
                 {data.length != 0 ? (
-                  <VictoryChart polar={false} height={340} width={350}>
+                  <VictoryChart
+                    polar={false}
+                    height={340}
+                    width={350}
+                    animate={{
+                      duration: animationDuration,
+                      onLoad: { duration: animationDuration },
+                    }}
+                  >
                     <VictoryAxis
                       dependentAxis
                       tickFormat={(t) => `${t / 1000}k`}
