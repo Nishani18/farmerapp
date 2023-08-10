@@ -109,60 +109,60 @@ export default function HomeScreen({ navigation }) {
     );
   };
 
-  const SoilMoistureSection = () => {
-    return (
-      <View>
-        <Text style={styles.revenue}>{i18n.t("soilmoisturetitle")}</Text>
-        <View
-          style={{
-            backgroundColor: "#f1f1ed",
-            bottom: 100,
-            height: Dimensions.get("window").height / 4.3,
-            left: 20,
-            marginRight: 40,
-            marginBottom: 20,
-            borderRadius: 20,
-          }}
-        >
-          <View
-            style={{
-              top: 100,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <TouchableOpacity
-              style={{
-                height: 68,
-                width: 300,
-                backgroundColor: "#ffffff",
-                elevation: 10,
-                bottom: 50,
-                borderRadius: 40,
-              }}
-              onPress={() =>
-                navigation.navigate("SoilMoistureNavigation", {
-                  screen: "SoilMoisture",
-                })
-              }
-            >
-              <Text
-                style={{
-                  fontFamily: "Poppins_500Medium",
-                  fontSize: 17,
-                  marginTop: 20,
-                  marginBottom: 20,
-                  textAlign: "center",
-                }}
-              >
-                {i18n.t("soilmoisturebutton")}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    );
-  };
+  // const SoilMoistureSection = () => {
+  //   return (
+  //     <View>
+  //       <Text style={styles.revenue}>{i18n.t("soilmoisturetitle")}</Text>
+  //       <View
+  //         style={{
+  //           backgroundColor: "#f1f1ed",
+  //           bottom: 100,
+  //           height: Dimensions.get("window").height / 4.3,
+  //           left: 20,
+  //           marginRight: 40,
+  //           marginBottom: 20,
+  //           borderRadius: 20,
+  //         }}
+  //       >
+  //         <View
+  //           style={{
+  //             top: 100,
+  //             justifyContent: "center",
+  //             alignItems: "center",
+  //           }}
+  //         >
+  //           <TouchableOpacity
+  //             style={{
+  //               height: 68,
+  //               width: 300,
+  //               backgroundColor: "#ffffff",
+  //               elevation: 10,
+  //               bottom: 50,
+  //               borderRadius: 40,
+  //             }}
+  //             onPress={() =>
+  //               navigation.navigate("SoilMoistureNavigation", {
+  //                 screen: "SoilMoisture",
+  //               })
+  //             }
+  //           >
+  //             <Text
+  //               style={{
+  //                 fontFamily: "Poppins_500Medium",
+  //                 fontSize: 17,
+  //                 marginTop: 20,
+  //                 marginBottom: 20,
+  //                 textAlign: "center",
+  //               }}
+  //             >
+  //               {i18n.t("soilmoisturebutton")}
+  //             </Text>
+  //           </TouchableOpacity>
+  //         </View>
+  //       </View>
+  //     </View>
+  //   );
+  // };
 
   const SchemeSection = () => {
     return (
@@ -191,8 +191,8 @@ export default function HomeScreen({ navigation }) {
         return <CategoryChart />;
       case "reminderSection":
         return <ReminderSection />;
-      case "soilMoistureSection":
-        return <SoilMoistureSection />;
+      // case "soilMoistureSection":
+      //   return <SoilMoistureSection />;
       case "schemeSection":
         return <SchemeSection />;
       default:
@@ -404,7 +404,7 @@ export default function HomeScreen({ navigation }) {
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={{
                   backgroundColor:
                     selectedComponent === "soilMoistureSection"
@@ -430,7 +430,7 @@ export default function HomeScreen({ navigation }) {
                 >
                   {i18n.t("soilmoisturetitle1")}
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
               <TouchableOpacity
                 style={{

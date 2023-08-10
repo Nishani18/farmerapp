@@ -11,6 +11,7 @@ import {
   Image,
   RefreshControl,
   SafeAreaView,
+  ScrollView,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
@@ -49,6 +50,7 @@ const SubCategoryScreen = ({ route }) => {
   const [subCategory, setSubCategory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [highestExpense, setHighestExpense] = useState({ name: "", amount: 0 });
 
   if (loading) {
     return (
@@ -66,7 +68,6 @@ const SubCategoryScreen = ({ route }) => {
   });
 
   const getSub = async () => {
-    // console.log(userToken);
     const url = baseURL + id;
     fetch(url, {
       method: "GET",
@@ -77,8 +78,16 @@ const SubCategoryScreen = ({ route }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        // console.log("subcategory screen", data);
         setSubCategory(data.response);
+
+        // Calculate the highest expense
+        let highest = { name: "", amount: 0 };
+        data.response.forEach((subcategory) => {
+          if (subcategory.total > highest.amount) {
+            highest = { name: subcategory.name, amount: subcategory.total };
+          }
+        });
+        setHighestExpense(highest);
       })
       .catch((error) => console.error(error));
   };
@@ -144,6 +153,11 @@ const SubCategoryScreen = ({ route }) => {
   };
 
   const addSub = () => {
+    const trimmedText = text.trim();
+    if (trimmedText === "") {
+      alert("Please enter a valid sub category before submitting👍🏽.");
+      return;
+    }
     axios
       .post(
         baseURL,
@@ -225,34 +239,44 @@ const SubCategoryScreen = ({ route }) => {
         />
         <View style={styles.titleContainer}>
           <TouchableOpacity
-            style={{ top: 50, marginLeft: 20 }}
+            style={{ top: 60, marginLeft: 20 }}
             onPress={() => {
               navigation.goBack();
             }}
           >
             <AntDesign name="left" size={30} color="white" />
           </TouchableOpacity>
-
-          <Text style={styles.title}>
-            {route.params.title} {i18n.t("subcategorytitle")}
-          </Text>
+          <View style={{ flexDirection: "column" }}>
+            <Text style={styles.title}>
+              {route.params.title} {i18n.t("subcategorytitle")}
+            </Text>
+            <Text
+              style={{
+                marginTop: 8,
+                marginLeft: 17,
+                fontSize: 15,
+                color: "white",
+                fontFamily: "Poppins_400Regular",
+              }}
+            >
+              Highest Expense: {highestExpense.name} = ₹ {highestExpense.amount}
+            </Text>
+          </View>
         </View>
         {subCategory.length != 0 ? (
-          <View>
-            <FlatList
-              data={subCategory}
-              renderItem={({ item }) => (
-                <Item id={item._id} title={item.name} amount={item.total} />
-              )}
-              keyExtractor={(item) => item._id}
-              contentContainerStyle={{
-                paddingBottom: 10,
-              }}
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }
-            />
-          </View>
+          <FlatList
+            data={subCategory}
+            renderItem={({ item }) => (
+              <Item id={item._id} title={item.name} amount={item.total} />
+            )}
+            keyExtractor={(item) => item._id}
+            contentContainerStyle={{
+              paddingBottom: 100,
+            }}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          />
         ) : (
           <View style={styles.graphcontainer}>
             <Image
@@ -352,16 +376,16 @@ const styles = StyleSheet.create({
   },
 
   titleContainer: {
+    flexDirection: "row",
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height / 7,
+    height: Dimensions.get("window").height / 5.5,
     backgroundColor: "#2a4330",
-    justifyContent: "space-evenly",
     alignItems: "flex-start",
   },
 
   title: {
-    marginTop: 9,
-    marginLeft: 68,
+    marginTop: 60,
+    marginLeft: 15,
     fontSize: 21,
     color: "white",
     fontFamily: "Poppins_400Regular",

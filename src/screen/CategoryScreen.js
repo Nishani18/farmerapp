@@ -79,41 +79,46 @@ const CategoryScreen = () => {
   };
 
   const addCategory = async ({ name }) => {
-    try {
-      setLoading(true); // Set loading to true
-      const response = await axios.post(
-        baseURL,
-        {
-          name: name,
-        },
-        {
-          headers: {
-            "x-access-token": accessToken,
+    if (name.trim() === "") {
+      alert("Please enter a category before submitting👍🏽.");
+      return;
+    } else
+      try {
+        setLoading(true); // Set loading to true
+        const response = await axios.post(
+          baseURL,
+          {
+            name: name,
           },
-        }
-      );
-      console.log("Category Screen Main response", response.data);
-      showMessage({
-        message: i18n.t("categoryAddAlertMessages"),
-        type: "success",
-        floating: true,
-        duration: 5000,
-        icon: { icon: "success", position: "left" },
-        style: { paddingVertical: 20, paddingHorizontal: 20 },
-      });
-    } catch (error) {
-      console.error("Category Screen Add Error:", error);
-      showMessage({
-        message: i18n.t("categoryAddAlertErrorMessages"),
-        type: "danger",
-        floating: true,
-        duration: 5000,
-        icon: { icon: "danger", position: "left" },
-        style: { paddingVertical: 20, paddingHorizontal: 20 },
-      });
-    } finally {
-      setLoading(false); // Set loading back to false
-    }
+          {
+            headers: {
+              "x-access-token": accessToken,
+            },
+          }
+        );
+        console.log("Category Screen Main response", response.data);
+        showMessage({
+          message: i18n.t("categoryAddAlertMessages"),
+          type: "success",
+          floating: true,
+          duration: 5000,
+          icon: { icon: "success", position: "left" },
+          style: { paddingVertical: 20, paddingHorizontal: 20 },
+        });
+      } catch (error) {
+        console.error("Category Screen Add Error:", error);
+        showMessage({
+          message: i18n.t("categoryAddAlertErrorMessages"),
+          type: "danger",
+          floating: true,
+          duration: 5000,
+          icon: { icon: "danger", position: "left" },
+          style: { paddingVertical: 20, paddingHorizontal: 20 },
+        });
+      } finally {
+        setLoading(false); // Set loading back to false
+      }
+    console.log("Submitting:", name);
   };
 
   useEffect(() => {
@@ -274,7 +279,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#edeee7",
+    // backgroundColor: "#edeee7",
   },
 
   titleContainer: {
@@ -315,8 +320,9 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "Poppins_500Medium",
     fontSize: 17,
-    marginTop: 16,
+    // marginTop: 16,
   },
+
   paragraph: {
     fontFamily: "Poppins_400Regular",
     marginLeft: 20,

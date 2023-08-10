@@ -16,7 +16,7 @@ import ReminderNavigation from "./src/navigations/ReminderNavigation";
 
 import { restore } from "./store1/slices/auth";
 import * as Notifications from "expo-notifications";
-import SoilMoistureNavigation from "./src/navigations/SoilMoistureNavigation";
+// import SoilMoistureNavigation from "./src/navigations/SoilMoistureNavigation";
 import ProfileNavigation from "./src/navigations/ProfileNavigation";
 
 const Stack = createStackNavigator();
@@ -77,10 +77,10 @@ const RootNavigation = () => {
           name="ReminderNavigation"
           component={ReminderNavigation}
         />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="SoilMoistureNavigation"
           component={SoilMoistureNavigation}
-        />
+        /> */}
         <Stack.Screen name="ProfileNavigation" component={ProfileNavigation} />
       </Stack.Navigator>
     </NavigationContainer>

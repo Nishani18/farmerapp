@@ -47,66 +47,76 @@ const ReceiptFormScreen = () => {
   };
 
   const handleSubmit = async () => {
-    try {
-      // Upload image as multipart form data
-      const imageFormData = new FormData();
-      const ImageName = Math.random().toString(36).substring(7);
-      imageFormData.append("myFile", {
-        uri: image,
-        type: "image/jpeg", // Change the type if necessary
-        name: `${ImageName}.jpg`, // Change the name if necessary
-      });
+    if (receiptName.trim === " ") {
+      alert("Please enter a valid Reciept name before submitting👍🏽.");
+      return;
+    } else if (comments.trim === " ") {
+      alert("Please enter a valid Reciept comment before submitting👍🏽.");
+      return;
+    } else if (image == null) {
+      alert("Please enter image before submitting👍🏽.");
+      return;
+    } else
+      try {
+        // Upload image as multipart form data
+        const imageFormData = new FormData();
+        const ImageName = Math.random().toString(36).substring(7);
+        imageFormData.append("myFile", {
+          uri: image,
+          type: "image/jpeg", // Change the type if necessary
+          name: `${ImageName}.jpg`, // Change the name if necessary
+        });
 
-      const imageResponse = await axios.post(
-        "https://farmer-test.onrender.com/api/receipt/uploadImage",
-        imageFormData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+        const imageResponse = await axios.post(
+          "https://farmer-test.onrender.com/api/receipt/uploadImage",
+          imageFormData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
-      const imageURL = imageResponse.data.url;
-      console.log("Image URL:", imageURL);
+        const imageURL = imageResponse.data.url;
+        console.log("Image URL:", imageURL);
 
-      // Pass the image URL to the next endpoint
-      const data = {
-        receipt_name: receiptName,
-        image_url: imageURL,
-        comment: comments,
-      };
+        // Pass the image URL to the next endpoint
+        const data = {
+          receipt_name: receiptName,
+          image_url: imageURL,
+          comment: comments,
+        };
 
-      const response = await axios.post(
-        "https://farmer-test.onrender.com/api/receipt/uploadReport",
-        data,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": accessToken,
-          },
-        }
-      );
-      console.log("Response from next endpoint:", response.data);
-      showMessage({
-        message: i18n.t("recieptSuccess"),
-        type: "success",
-        floating: true,
-        duration: 5000,
-        icon: { icon: "success", position: "left" },
-        style: { marginTop: 5, paddingVertical: 20, paddingHorizontal: 20 },
-      });
-    } catch (error) {
-      console.error("Error:", error);
-      showMessage({
-        message: i18n.t("recieptDecline"),
-        type: "danger",
-        floating: true,
-        duration: 5000,
-        icon: { icon: "danger", position: "left" },
-        style: { paddingVertical: 20, paddingHorizontal: 20 },
-      });
-    }
+        const response = await axios.post(
+          "https://farmer-test.onrender.com/api/receipt/uploadReport",
+          data,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": accessToken,
+            },
+          }
+        );
+        console.log("Response from next endpoint:", response.data);
+        showMessage({
+          message: i18n.t("recieptSuccess"),
+          type: "success",
+          floating: true,
+          duration: 5000,
+          icon: { icon: "success", position: "left" },
+          style: { marginTop: 5, paddingVertical: 20, paddingHorizontal: 20 },
+        });
+      } catch (error) {
+        console.error("Error:", error);
+        showMessage({
+          message: i18n.t("recieptDecline"),
+          type: "danger",
+          floating: true,
+          duration: 5000,
+          icon: { icon: "danger", position: "left" },
+          style: { paddingVertical: 20, paddingHorizontal: 20 },
+        });
+      }
   };
 
   return (
@@ -125,8 +135,10 @@ const ReceiptFormScreen = () => {
         >
           <AntDesign name="left" size={30} color="white" />
         </TouchableOpacity>
+
         <Text style={styles.title}>{i18n.t("receiptCont2Title")}</Text>
       </View>
+
       <View
         style={{
           flex: 1,
@@ -240,6 +252,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#edeee7",
+  },
+
+  keycontainer: {
+    flex: 1,
   },
 
   titleContainer: {

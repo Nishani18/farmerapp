@@ -350,4 +350,29 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   imageContainer: {},
+
+  graphcontainer: {
+    top: 200,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  imageChart: {
+    width: Dimensions.get("window").width / 4,
+    height: Dimensions.get("window").height / 8,
+  },
+
+  heading: {
+    fontFamily: "Poppins_500Medium",
+    fontSize: 17,
+    // marginTop: 16,
+  },
+
+  paragraph: {
+    fontFamily: "Poppins_400Regular",
+    marginLeft: 20,
+    fontSize: 15,
+    marginRight: 20,
+    textAlign: "center",
+  },
 });

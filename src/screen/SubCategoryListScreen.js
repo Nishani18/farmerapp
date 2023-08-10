@@ -35,6 +35,7 @@ const SubCategoryListScreen = ({ navigation, route }) => {
   const [text, setText] = useState("");
   const [expense, setExpense] = useState([]);
   const [amount, setAmount] = useState("");
+  const [highestExpense, setHighestExpense] = useState({ name: "", amount: 0 });
 
   const accessToken = useSelector((state) => state.auth.userToken);
   const lang = useSelector((state) => state.root.lang);
@@ -45,19 +46,28 @@ const SubCategoryListScreen = ({ navigation, route }) => {
   i18n.locale = lang;
 
   const getExpenses = async () => {
-    axios
-      .get(baseURL + id, {
-        headers: {
-          "x-access-token": accessToken,
-        },
+    const url = baseURL + id;
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": accessToken,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setExpense(data.response);
+
+        // Calculate the highest expense
+        let highest = { name: "", amount: 0 };
+        data.response.forEach((expense) => {
+          if (expense.amount > highest.amount) {
+            highest = { name: expense.name, amount: expense.amount };
+          }
+        });
+        setHighestExpense(highest);
       })
-      .then((response) => {
-        // console.log("Expenses response", response.data);
-        setExpense(response.data.response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((error) => console.error(error));
   };
 
   const deleteSub = async (exp_id, title) => {
@@ -116,47 +126,53 @@ const SubCategoryListScreen = ({ navigation, route }) => {
   }, []);
 
   const addExpense = async () => {
-    axios
-      .post(
-        baseURL,
-        {
-          id: id,
-          name: text,
-          amount: amount,
-        },
-        {
-          headers: {
-            "x-access-token": accessToken,
+    const trimmedText = text.trim();
+
+    if (trimmedText === "") {
+      alert("Please enter a valid Item and Price before submitting👍🏽.");
+      return;
+    } else
+      axios
+        .post(
+          baseURL,
+          {
+            id: id,
+            name: text,
+            amount: amount,
           },
-        }
-      )
-      .then((response) => {
-        // console.log(response.data);
-        getExpenses();
-        showMessage({
-          message: i18n.t("itemAddedSuccess"),
-          type: "success",
-          floating: true,
-          duration: 5000,
-          icon: { icon: "success", position: "left" },
-          style: {
-            paddingVertical: 20,
-            paddingHorizontal: 20,
-          },
+          {
+            headers: {
+              "x-access-token": accessToken,
+            },
+          }
+        )
+        .then((response) => {
+          // console.log(response.data);
+          getExpenses();
+          showMessage({
+            message: i18n.t("itemAddedSuccess"),
+            type: "success",
+            floating: true,
+            duration: 5000,
+            icon: { icon: "success", position: "left" },
+            style: {
+              paddingVertical: 20,
+              paddingHorizontal: 20,
+            },
+          });
+          //setExpense([...expense,repo])
+        })
+        .catch((err) => {
+          console.log(err);
+          showMessage({
+            message: i18n.t("itemAddedError"),
+            type: "danger",
+            floating: true,
+            duration: 5000,
+            icon: { icon: "danger", position: "left" },
+            style: { paddingVertical: 20, paddingHorizontal: 20 },
+          });
         });
-        //setExpense([...expense,repo])
-      })
-      .catch((err) => {
-        console.log(err);
-        showMessage({
-          message: i18n.t("itemAddedError"),
-          type: "danger",
-          floating: true,
-          duration: 5000,
-          icon: { icon: "danger", position: "left" },
-          style: { paddingVertical: 20, paddingHorizontal: 20 },
-        });
-      });
   };
 
   let [fontsLoaded] = useFonts({
@@ -206,10 +222,23 @@ const SubCategoryListScreen = ({ navigation, route }) => {
           >
             <AntDesign name="left" size={30} color="white" />
           </TouchableOpacity>
-          <Text style={styles.title}>{route.params.title}</Text>
+          <View style={{ flexDirection: "column" }}>
+            <Text style={styles.title}>{route.params.title}</Text>
+            <Text
+              style={{
+                marginTop: 8,
+                marginLeft: 17,
+                fontSize: 15,
+                color: "white",
+                fontFamily: "Poppins_400Regular",
+              }}
+            >
+              Highest Expense: {highestExpense.name} = ₹ {highestExpense.amount}
+            </Text>
+          </View>
         </View>
 
-        {expense.length != 0 ? (
+        {expense.length && expense != 0 ? (
           <FlatList
             data={expense}
             renderItem={({ item }) => (
@@ -219,7 +248,7 @@ const SubCategoryListScreen = ({ navigation, route }) => {
             )}
             keyExtractor={(item) => item._id}
             contentContainerStyle={{
-              paddingBottom: 10,
+              paddingBottom: 100,
             }}
             showsVerticalScrollIndicator={false}
           />
@@ -287,6 +316,28 @@ const SubCategoryListScreen = ({ navigation, route }) => {
                         onChangeText={(newText) => setText(newText)}
                         defaultValue={text}
                       />
+                      {text === " " && (
+                        <View
+                          style={{
+                            position: "Absolute",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            marginTop: 15,
+                            // marginBottom: 10,
+                          }}
+                        >
+                          <Ionicons
+                            name="ios-warning"
+                            size={20}
+                            color="rgba(0,0,0,0.5)"
+                          />
+                          <Text
+                            style={{ fontSize: 12, color: "rgba(0,0,0,0.5)" }}
+                          >
+                            Do not keep the Item Empty
+                          </Text>
+                        </View>
+                      )}
                     </View>
 
                     <View style={styles.inputButton1}>
@@ -366,7 +417,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height / 7.4,
+    height: Dimensions.get("window").height / 5.5,
     backgroundColor: "#2a4330",
     alignItems: "flex-start",
   },
@@ -486,9 +537,10 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width / 1.27,
     height: Dimensions.get("window").height / 11,
     backgroundColor: "#ffffff",
-    elevation: 6,
-    marginLeft: 1,
-    marginTop: 15,
+    elevation: 3,
+    marginLeft: 5,
+    marginTop: 17,
+    marginBottom: 5,
     borderRadius: 10,
     flexDirection: "row",
   },
