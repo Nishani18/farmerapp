@@ -18,7 +18,7 @@ import {
   Poppins_500Medium,
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
-import { Button } from "react-native-paper";
+import { Button, Avatar, MD2Colors, MD3Colors } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store1/slices/auth";
 import * as Print from "expo-print";
@@ -26,6 +26,7 @@ import { shareAsync } from "expo-sharing";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from "expo-linear-gradient";
 
 import i18n from "../i18n/i18nHelper";
 
@@ -388,13 +389,28 @@ footer {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>{i18n.t("profiletitle")}</Text>
+        <View>
+          <LinearGradient
+            colors={["#328d38", "#edeee7"]} // Adjust the colors as needed
+            start={{ x: 0, y: 0 }} // Top left corner
+            end={{ x: 0, y: 1 }} // Bottom left corner
+            style={styles.titleContainer}
+          >
+            <Text style={styles.title}>{i18n.t("profiletitle")}</Text>
+          </LinearGradient>
         </View>
         <View style={styles.nameDPCont}>
-          <Image
+          {/* <Image
             source={require("../../assets/user.png")}
             style={styles.language}
+          /> */}
+          <Avatar.Text
+            style={styles.language}
+            backgroundColor="#328d38"
+            label={profile.name
+              .split(" ")
+              .map((word) => word.charAt(0).toUpperCase())
+              .join("")}
           />
 
           <View style={{ flexDirection: "column", left: 100, top: 50 }}>
@@ -472,7 +488,7 @@ footer {
             style={{
               marginTop: 20,
               borderRadius: 7,
-              backgroundColor: "#2a4330",
+              backgroundColor: "#328d38",
             }}
           >
             {i18n.t("profileprint")}
@@ -517,7 +533,7 @@ footer {
             style={{
               marginTop: 20,
               borderRadius: 7,
-              backgroundColor: "#2a4330",
+              backgroundColor: "#328d38",
             }}
             onPress={() =>
               navigation.navigate("ProfileNavigation", {
@@ -558,7 +574,7 @@ footer {
             style={{
               marginTop: 20,
               borderRadius: 7,
-              backgroundColor: "#2a4330",
+              backgroundColor: "#328d38",
             }}
           >
             {i18n.t("profilelogout")}
@@ -599,16 +615,16 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     fontSize: 28,
-    color: "white",
+    color: "#1f1f1f",
     fontFamily: "Poppins_500Medium",
     marginTop: 40,
     right: 100,
   },
   language: {
-    width: Dimensions.get("window").width / 7,
-    height: Dimensions.get("window").height / 14,
+    // width: Dimensions.get("window").width / 7,
+    // height: Dimensions.get("window").height / 14,
     // left: 180,
-    marginTop: 50,
+    marginTop: 40,
   },
   nameDPCont: {
     flexDirection: "row",

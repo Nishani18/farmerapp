@@ -4,7 +4,7 @@
     "slug": "farmerapp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/krishi-nidhi-new-icon.png",
+    "icon": "./assets/krishiNidhifavicon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/krishi-nidhi-icon-image.png",
@@ -20,7 +20,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/krishi-nidhi-new-icon.png",
+        "foregroundImage": "./assets/krishiNidhifavicon.png",
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.nishani.farmerapp"

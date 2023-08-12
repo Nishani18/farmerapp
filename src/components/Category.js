@@ -49,8 +49,12 @@ const Category = ({ title, id, createdAt }) => {
     const url = baseURL + id;
     Alert.alert(i18n.t("cateoryAlertHead"), i18n.t("categoryAlertPara"), [
       {
-        text: i18n.t("categoryDelete"),
+        text: i18n.t("categoryCancel"),
         style: "cancel",
+      },
+      {
+        text: i18n.t("categoryDelete"),
+        style: "destructive",
         onPress: () => {
           setLoading(true); // Set loading to true
           axios
@@ -91,10 +95,6 @@ const Category = ({ title, id, createdAt }) => {
             });
         },
       },
-      {
-        text: i18n.t("categoryCancel"),
-        style: "destructive",
-      },
     ]);
   };
 
@@ -102,7 +102,7 @@ const Category = ({ title, id, createdAt }) => {
     getCategory();
   }, []);
 
-  const createdDate = format(new Date(createdAt), "yyyy-MM-dd"); //  created date
+  const createdDate = format(new Date(createdAt), "dd-MM-yyyy"); //  created date
 
   return (
     <View style={styles.container}>
@@ -125,7 +125,7 @@ const Category = ({ title, id, createdAt }) => {
       </TouchableOpacity>
       <IconButton
         icon="delete"
-        iconColor="#2b422e"
+        iconColor="#328d38"
         size={25}
         onPress={handleDelete}
       />
@@ -148,10 +148,10 @@ const styles = StyleSheet.create({
     width: 300,
     padding: 3,
     height: 100,
-    backgroundColor: "#ffffff",
-    borderColor: "#e9e9ea",
-    borderWidth: 4.8,
-    borderRadius: 15,
+    backgroundColor: "#edeee7",
+    borderColor: "#2b422e",
+    borderWidth: 1,
+    borderRadius: 12,
   },
   imagePin: {
     width: 35,
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
 // Custom alert styles
 const alertStyles = StyleSheet.create({
   container: {
-    backgroundColor: "#2a4330",
+    backgroundColor: "#edeee7",
     borderRadius: 8,
     padding: 16,
   },

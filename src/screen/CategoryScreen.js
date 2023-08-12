@@ -27,6 +27,7 @@ import { FAB, IconButton } from "react-native-paper";
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
 import i18n from "../i18n/i18nHelper";
+import { LinearGradient } from "expo-linear-gradient";
 
 const CategoryScreen = () => {
   const baseURL = "https://farmer-test.onrender.com/api/categorie/";
@@ -79,41 +80,46 @@ const CategoryScreen = () => {
   };
 
   const addCategory = async ({ name }) => {
-    try {
-      setLoading(true); // Set loading to true
-      const response = await axios.post(
-        baseURL,
-        {
-          name: name,
-        },
-        {
-          headers: {
-            "x-access-token": accessToken,
+    if (name.trim() === "") {
+      alert("Please enter a category before submitting👍🏽.");
+      return;
+    } else
+      try {
+        setLoading(true); // Set loading to true
+        const response = await axios.post(
+          baseURL,
+          {
+            name: name,
           },
-        }
-      );
-      console.log("Category Screen Main response", response.data);
-      showMessage({
-        message: i18n.t("categoryAddAlertMessages"),
-        type: "success",
-        floating: true,
-        duration: 5000,
-        icon: { icon: "success", position: "left" },
-        style: { paddingVertical: 20, paddingHorizontal: 20 },
-      });
-    } catch (error) {
-      console.error("Category Screen Add Error:", error);
-      showMessage({
-        message: i18n.t("categoryAddAlertErrorMessages"),
-        type: "danger",
-        floating: true,
-        duration: 5000,
-        icon: { icon: "danger", position: "left" },
-        style: { paddingVertical: 20, paddingHorizontal: 20 },
-      });
-    } finally {
-      setLoading(false); // Set loading back to false
-    }
+          {
+            headers: {
+              "x-access-token": accessToken,
+            },
+          }
+        );
+        console.log("Category Screen Main response", response.data);
+        showMessage({
+          message: i18n.t("categoryAddAlertMessages"),
+          type: "success",
+          floating: true,
+          duration: 5000,
+          icon: { icon: "success", position: "left" },
+          style: { paddingVertical: 20, paddingHorizontal: 20 },
+        });
+      } catch (error) {
+        console.error("Category Screen Add Error:", error);
+        showMessage({
+          message: i18n.t("categoryAddAlertErrorMessages"),
+          type: "danger",
+          floating: true,
+          duration: 5000,
+          icon: { icon: "danger", position: "left" },
+          style: { paddingVertical: 20, paddingHorizontal: 20 },
+        });
+      } finally {
+        setLoading(false); // Set loading back to false
+      }
+    console.log("Submitting:", name);
   };
 
   useEffect(() => {
@@ -157,24 +163,31 @@ const CategoryScreen = () => {
           backgroundColor="transparent"
           translucent={true}
         />
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>{i18n.t("categorytitle")}</Text>
+        <View>
+          <LinearGradient
+            colors={["#328d38", "#f2f2f2"]} // Adjust the colors as needed
+            start={{ x: 0, y: 0 }} // Top left corner
+            end={{ x: 0, y: 1 }} // Bottom left corner
+            style={styles.titleContainer}
+          >
+            <Text style={styles.title}>{i18n.t("categorytitle")}</Text>
 
-          <FAB
-            style={{
-              position: "absolute",
-              right: 50,
-              bottom: 30,
-              elevation: 5,
-              backgroundColor: "#ffffff",
-            }}
-            size="medium"
-            icon="plus"
-            color="#2b422e"
-            onPress={() => {
-              setToggle(true);
-            }}
-          />
+            <FAB
+              style={{
+                position: "absolute",
+                right: 50,
+                bottom: 30,
+                elevation: 10,
+                backgroundColor: "#ffffff",
+              }}
+              size="medium"
+              icon="plus"
+              color="#2b422e"
+              onPress={() => {
+                setToggle(true);
+              }}
+            />
+          </LinearGradient>
         </View>
 
         {category != 0 ? (
@@ -274,7 +287,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#edeee7",
+    // backgroundColor: "#edeee7",
   },
 
   titleContainer: {
@@ -289,7 +302,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 28,
-    color: "#fff",
+    color: "#1f1f1f",
     fontFamily: "Poppins_500Medium",
     alignItems: "flex-start",
     marginTop: 40,
@@ -315,8 +328,9 @@ const styles = StyleSheet.create({
   heading: {
     fontFamily: "Poppins_500Medium",
     fontSize: 17,
-    marginTop: 16,
+    // marginTop: 16,
   },
+
   paragraph: {
     fontFamily: "Poppins_400Regular",
     marginLeft: 20,
@@ -349,10 +363,10 @@ const styles1 = StyleSheet.create({
     elevation: 5,
   },
   buttonOpen: {
-    backgroundColor: "#2b422e",
+    backgroundColor: "#328d38",
   },
   buttonClose: {
-    backgroundColor: "#2b422e",
+    backgroundColor: "#328d38",
   },
   textStyle: {
     color: "white",

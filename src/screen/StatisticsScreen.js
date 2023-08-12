@@ -29,9 +29,8 @@ import {
 } from "@expo-google-fonts/poppins";
 import { useSelector } from "react-redux";
 import axios from "axios";
-
+import { LinearGradient } from "expo-linear-gradient";
 import i18n from "../i18n/i18nHelper";
-
 import { SelectList } from "react-native-dropdown-select-list";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -153,8 +152,15 @@ const StatisticsScreen = () => {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-          <View style={styles.titleContainer}>
-            <Text style={styles.title}>{i18n.t("statisticstitle")}</Text>
+          <View>
+            <LinearGradient
+              colors={["#328d38", "#edeee7"]} // Adjust the colors as needed
+              start={{ x: 0, y: 0 }} // Top left corner
+              end={{ x: 0, y: 1 }} // Bottom left corner
+              style={styles.titleContainer}
+            >
+              <Text style={styles.title}>{i18n.t("statisticstitle")}</Text>
+            </LinearGradient>
           </View>
 
           <Text
@@ -289,11 +295,11 @@ const StatisticsScreen = () => {
                     style={{
                       data: {
                         fill: ({ datum }) =>
-                          datum.x === 3 ? "#70b581" : "#233d29",
+                          datum.x === 3 ? "#328d38" : "#328d38",
                         stroke: ({ index }) =>
-                          +index % 2 === 0 ? "#70b581" : "#233d29",
+                          +index % 2 === 0 ? "#275e2a" : "#275e2a",
                         fillOpacity: 0.7,
-                        strokeWidth: 3,
+                        strokeWidth: 1,
                       },
                       labels: {
                         fontSize: 10,
@@ -497,7 +503,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 28,
     marginLeft: 42,
-    color: "white",
+    color: "#1f1f1f",
     fontFamily: "Poppins_500Medium",
     marginTop: 40,
   },

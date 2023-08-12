@@ -27,6 +27,8 @@ import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import { FAB, IconButton } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
+import { format } from "date-fns";
+import { LinearGradient } from "expo-linear-gradient";
 
 import i18n from "../i18n/i18nHelper";
 
@@ -35,6 +37,7 @@ const SubCategoryListScreen = ({ navigation, route }) => {
   const [text, setText] = useState("");
   const [expense, setExpense] = useState([]);
   const [amount, setAmount] = useState("");
+  const [highestExpense, setHighestExpense] = useState({ name: "", amount: 0 });
 
   const accessToken = useSelector((state) => state.auth.userToken);
   const lang = useSelector((state) => state.root.lang);
@@ -45,19 +48,20 @@ const SubCategoryListScreen = ({ navigation, route }) => {
   i18n.locale = lang;
 
   const getExpenses = async () => {
-    axios
-      .get(baseURL + id, {
-        headers: {
-          "x-access-token": accessToken,
-        },
+    const url = baseURL + id;
+    fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": accessToken,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setExpense(data.response);
+        console.log(data.response);
       })
-      .then((response) => {
-        // console.log("Expenses response", response.data);
-        setExpense(response.data.response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((error) => console.error(error));
   };
 
   const deleteSub = async (exp_id, title) => {
@@ -116,47 +120,53 @@ const SubCategoryListScreen = ({ navigation, route }) => {
   }, []);
 
   const addExpense = async () => {
-    axios
-      .post(
-        baseURL,
-        {
-          id: id,
-          name: text,
-          amount: amount,
-        },
-        {
-          headers: {
-            "x-access-token": accessToken,
+    const trimmedText = text.trim();
+
+    if (trimmedText === "") {
+      alert("Please enter a valid Item and Price before submitting👍🏽.");
+      return;
+    } else
+      axios
+        .post(
+          baseURL,
+          {
+            id: id,
+            name: text,
+            amount: amount,
           },
-        }
-      )
-      .then((response) => {
-        // console.log(response.data);
-        getExpenses();
-        showMessage({
-          message: i18n.t("itemAddedSuccess"),
-          type: "success",
-          floating: true,
-          duration: 5000,
-          icon: { icon: "success", position: "left" },
-          style: {
-            paddingVertical: 20,
-            paddingHorizontal: 20,
-          },
+          {
+            headers: {
+              "x-access-token": accessToken,
+            },
+          }
+        )
+        .then((response) => {
+          // console.log(response.data);
+          getExpenses();
+          showMessage({
+            message: i18n.t("itemAddedSuccess"),
+            type: "success",
+            floating: true,
+            duration: 5000,
+            icon: { icon: "success", position: "left" },
+            style: {
+              paddingVertical: 20,
+              paddingHorizontal: 20,
+            },
+          });
+          //setExpense([...expense,repo])
+        })
+        .catch((err) => {
+          console.log(err);
+          showMessage({
+            message: i18n.t("itemAddedError"),
+            type: "danger",
+            floating: true,
+            duration: 5000,
+            icon: { icon: "danger", position: "left" },
+            style: { paddingVertical: 20, paddingHorizontal: 20 },
+          });
         });
-        //setExpense([...expense,repo])
-      })
-      .catch((err) => {
-        console.log(err);
-        showMessage({
-          message: i18n.t("itemAddedError"),
-          type: "danger",
-          floating: true,
-          duration: 5000,
-          icon: { icon: "danger", position: "left" },
-          style: { paddingVertical: 20, paddingHorizontal: 20 },
-        });
-      });
   };
 
   let [fontsLoaded] = useFonts({
@@ -166,26 +176,39 @@ const SubCategoryListScreen = ({ navigation, route }) => {
     Poppins_700Bold,
   });
 
-  const Item = ({ id, title, price }) => (
-    <View style={styles.FlatListButtonCont}>
-      <View style={styles.ListCont}>
-        <View style={styles.ItemCont}>
-          <Text style={styles.Itemtitle}>{title}</Text>
+  const Item = ({ id, title, price, createdAt }) => {
+    const formattedDate = format(new Date(createdAt), "dd-MM-yyyy");
+    return (
+      <View style={styles.FlatListButtonCont}>
+        <View style={styles.ListCont}>
+          <View style={styles.ItemCont}>
+            <Text style={styles.Itemtitle}>{title}</Text>
+            <Text
+              style={{
+                fontFamily: "Poppins_400Regular",
+                color: "#848992",
+                fontSize: 13,
+                marginTop: 7,
+              }}
+            >
+              Created at: {formattedDate}
+            </Text>
+          </View>
+          <View style={styles.priceCont}>
+            <Text style={styles.pricetitle}>₹ {price}</Text>
+          </View>
         </View>
-        <View style={styles.priceCont}>
-          <Text style={styles.pricetitle}>₹ {price}</Text>
-        </View>
+        <IconButton
+          icon="delete"
+          iconColor="#328d38"
+          size={25}
+          onPress={() => {
+            deleteSub(id, title);
+          }}
+        />
       </View>
-      <IconButton
-        icon="delete"
-        iconColor="#2b422e"
-        size={25}
-        onPress={() => {
-          deleteSub(id, title);
-        }}
-      />
-    </View>
-  );
+    );
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -197,29 +220,55 @@ const SubCategoryListScreen = ({ navigation, route }) => {
           backgroundColor="transparent"
           translucent={true}
         />
-        <View style={styles.titleContainer}>
-          <TouchableOpacity
-            style={{ top: 60, marginLeft: 20 }}
-            onPress={() => {
-              navigation.goBack();
-            }}
+        <View>
+          <LinearGradient
+            colors={["#328d38", "#edeee7"]} // Adjust the colors as needed
+            start={{ x: 0, y: 0 }} // Top left corner
+            end={{ x: 0, y: 1 }} // Bottom left corner
+            style={styles.titleContainer}
           >
-            <AntDesign name="left" size={30} color="white" />
-          </TouchableOpacity>
-          <Text style={styles.title}>{route.params.title}</Text>
+            <TouchableOpacity
+              style={{ top: 60, marginLeft: 20 }}
+              onPress={() => {
+                navigation.goBack();
+              }}
+            >
+              <AntDesign name="left" size={30} color="#1f1f1f" />
+            </TouchableOpacity>
+            <View style={{ flexDirection: "column" }}>
+              <Text style={styles.title}>{route.params.title}</Text>
+              <Text
+                style={{
+                  marginTop: 8,
+                  marginLeft: 17,
+                  fontSize: 16,
+                  color: "#1f1f1f",
+                  fontFamily: "Poppins_700Bold",
+                }}
+              >
+                Total Expense: ₹{" "}
+                {expense.reduce((total, item) => total + item.amount, 0)}
+              </Text>
+            </View>
+          </LinearGradient>
         </View>
 
-        {expense.length != 0 ? (
+        {expense.length && expense != 0 ? (
           <FlatList
             data={expense}
             renderItem={({ item }) => (
               <View>
-                <Item id={item._id} title={item.name} price={item.amount} />
+                <Item
+                  id={item._id}
+                  title={item.name}
+                  price={item.amount}
+                  createdAt={item.createdAt}
+                />
               </View>
             )}
             keyExtractor={(item) => item._id}
             contentContainerStyle={{
-              paddingBottom: 10,
+              paddingBottom: 100,
             }}
             showsVerticalScrollIndicator={false}
           />
@@ -260,18 +309,29 @@ const SubCategoryListScreen = ({ navigation, route }) => {
             style={{ height: "100%", backgroundColor: "#e5e5e5" }}
           >
             <View style={styles.centeredView}>
-              <IconButton
-                iconColor="black"
-                style={{ bottom: 40, left: 5 }}
-                icon="close"
-                size={30}
-                onPress={() => {
-                  setToggle(!toggle);
+              <View
+                style={{
+                  bottom: 50,
+                  display: "flex",
+                  flexDirection: "row",
+                  backgroundColor: "#328d38",
+                  height: Dimensions.get("window").height / 10.9,
                 }}
-              />
-              <Text style={styles.title1}>
-                {i18n.t("subcategorylisttitle")}
-              </Text>
+              >
+                <IconButton
+                  iconColor="white"
+                  style={{ top: 10, left: 5 }}
+                  icon="close"
+                  size={30}
+                  onPress={() => {
+                    setToggle(!toggle);
+                  }}
+                />
+                <Text style={styles.title1}>
+                  {i18n.t("subcategorylisttitle")}
+                </Text>
+              </View>
+
               <View style={styles.modalView}>
                 <View style={styles.errorContainer}>
                   <View style={styles.inputContainer}>
@@ -279,26 +339,48 @@ const SubCategoryListScreen = ({ navigation, route }) => {
                       <TextInput
                         variant="standard"
                         inputStyle={{
-                          fontFamily: "Poppins_400Regular",
+                          fontFamily: "Poppins_500Medium",
                         }}
                         style={styles.input}
                         placeholder={i18n.t("subcategorylisttoggleinput1")}
-                        color="#2a4330"
+                        color="#1f1f1f"
                         onChangeText={(newText) => setText(newText)}
                         defaultValue={text}
                       />
+                      {text === " " && (
+                        <View
+                          style={{
+                            position: "Absolute",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            marginTop: 15,
+                            // marginBottom: 10,
+                          }}
+                        >
+                          <Ionicons
+                            name="ios-warning"
+                            size={20}
+                            color="rgba(0,0,0,0.5)"
+                          />
+                          <Text
+                            style={{ fontSize: 12, color: "rgba(0,0,0,0.5)" }}
+                          >
+                            Do not keep the Item Empty
+                          </Text>
+                        </View>
+                      )}
                     </View>
 
                     <View style={styles.inputButton1}>
                       <TextInput
                         variant="standard"
                         inputStyle={{
-                          fontFamily: "Poppins_400Regular",
+                          fontFamily: "Poppins_500Medium",
                         }}
                         style={styles.input}
                         keyboardType="numeric"
                         placeholder={i18n.t("subcategorylisttoggleinput2")}
-                        color="#2a4330"
+                        color="#1f1f1f"
                         onChangeText={(newText) => setAmount(newText)}
                         defaultValue={amount}
                       />
@@ -366,7 +448,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height / 7.4,
+    height: Dimensions.get("window").height / 5.5,
     backgroundColor: "#2a4330",
     alignItems: "flex-start",
   },
@@ -375,12 +457,12 @@ const styles = StyleSheet.create({
     marginTop: 60,
     marginLeft: 15,
     fontSize: 21,
-    color: "white",
+    color: "#1f1f1f",
     fontFamily: "Poppins_400Regular",
   },
 
   plus: {
-    backgroundColor: "#2b422e",
+    backgroundColor: "#328d38",
     bottom: 30,
     position: "absolute",
     justifyContent: "flex-end",
@@ -400,10 +482,10 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: "#328d38",
   },
   buttonClose: {
-    backgroundColor: "#103103",
+    backgroundColor: "#328d38",
   },
   textStyle: {
     color: "white",
@@ -473,10 +555,12 @@ const styles = StyleSheet.create({
     top: 50,
   },
   title1: {
-    color: "black",
+    marginTop: 25,
+    marginLeft: 20,
+    color: "white",
+    fontSize: 21,
+    fontFamily: "Poppins_400Regular",
     textAlign: "center",
-    fontSize: 20,
-    fontFamily: "Poppins_500Medium",
   },
   Itemtitle: {
     fontFamily: "Poppins_400Regular",
@@ -484,18 +568,21 @@ const styles = StyleSheet.create({
   },
   ListCont: {
     width: Dimensions.get("window").width / 1.27,
-    height: Dimensions.get("window").height / 11,
+    height: Dimensions.get("window").height / 8,
     backgroundColor: "#ffffff",
-    elevation: 6,
-    marginLeft: 1,
+    borderColor: "#2b422e",
+    borderWidth: 1,
+    marginLeft: 5,
     marginTop: 15,
-    borderRadius: 10,
+    borderRadius: 12,
+    marginBottom: 5,
     flexDirection: "row",
   },
   ItemCont: {
     alignItems: "flex-start",
     left: 25,
     marginTop: 20,
+    flexDirection: "column",
   },
   priceCont: {
     position: "absolute",

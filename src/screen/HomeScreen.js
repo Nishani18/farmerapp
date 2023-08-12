@@ -30,6 +30,8 @@ import Item from "../components/Item";
 import * as Notifications from "expo-notifications";
 import i18n from "../i18n/i18nHelper";
 import Schemes from "../components/Schemes";
+import { LinearGradient } from "expo-linear-gradient";
+import { SelectList } from "react-native-dropdown-select-list";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -109,60 +111,60 @@ export default function HomeScreen({ navigation }) {
     );
   };
 
-  const SoilMoistureSection = () => {
-    return (
-      <View>
-        <Text style={styles.revenue}>{i18n.t("soilmoisturetitle")}</Text>
-        <View
-          style={{
-            backgroundColor: "#f1f1ed",
-            bottom: 100,
-            height: Dimensions.get("window").height / 4.3,
-            left: 20,
-            marginRight: 40,
-            marginBottom: 20,
-            borderRadius: 20,
-          }}
-        >
-          <View
-            style={{
-              top: 100,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <TouchableOpacity
-              style={{
-                height: 68,
-                width: 300,
-                backgroundColor: "#ffffff",
-                elevation: 10,
-                bottom: 50,
-                borderRadius: 40,
-              }}
-              onPress={() =>
-                navigation.navigate("SoilMoistureNavigation", {
-                  screen: "SoilMoisture",
-                })
-              }
-            >
-              <Text
-                style={{
-                  fontFamily: "Poppins_500Medium",
-                  fontSize: 17,
-                  marginTop: 20,
-                  marginBottom: 20,
-                  textAlign: "center",
-                }}
-              >
-                {i18n.t("soilmoisturebutton")}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-    );
-  };
+  // const SoilMoistureSection = () => {
+  //   return (
+  //     <View>
+  //       <Text style={styles.revenue}>{i18n.t("soilmoisturetitle")}</Text>
+  //       <View
+  //         style={{
+  //           backgroundColor: "#f1f1ed",
+  //           bottom: 100,
+  //           height: Dimensions.get("window").height / 4.3,
+  //           left: 20,
+  //           marginRight: 40,
+  //           marginBottom: 20,
+  //           borderRadius: 20,
+  //         }}
+  //       >
+  //         <View
+  //           style={{
+  //             top: 100,
+  //             justifyContent: "center",
+  //             alignItems: "center",
+  //           }}
+  //         >
+  //           <TouchableOpacity
+  //             style={{
+  //               height: 68,
+  //               width: 300,
+  //               backgroundColor: "#ffffff",
+  //               elevation: 10,
+  //               bottom: 50,
+  //               borderRadius: 40,
+  //             }}
+  //             onPress={() =>
+  //               navigation.navigate("SoilMoistureNavigation", {
+  //                 screen: "SoilMoisture",
+  //               })
+  //             }
+  //           >
+  //             <Text
+  //               style={{
+  //                 fontFamily: "Poppins_500Medium",
+  //                 fontSize: 17,
+  //                 marginTop: 20,
+  //                 marginBottom: 20,
+  //                 textAlign: "center",
+  //               }}
+  //             >
+  //               {i18n.t("soilmoisturebutton")}
+  //             </Text>
+  //           </TouchableOpacity>
+  //         </View>
+  //       </View>
+  //     </View>
+  //   );
+  // };
 
   const SchemeSection = () => {
     return (
@@ -191,8 +193,8 @@ export default function HomeScreen({ navigation }) {
         return <CategoryChart />;
       case "reminderSection":
         return <ReminderSection />;
-      case "soilMoistureSection":
-        return <SoilMoistureSection />;
+      // case "soilMoistureSection":
+      //   return <SoilMoistureSection />;
       case "schemeSection":
         return <SchemeSection />;
       default:
@@ -313,34 +315,44 @@ export default function HomeScreen({ navigation }) {
           }
         >
           <View
-            style={styles.greetingCont}
-            borderBottomLeftRadius={30}
-            borderBottomRightRadius={30}
+            style={{
+              borderBottomLeftRadius: 30,
+              borderBottomRightRadius: 30,
+              overflow: "hidden", // Ensure gradient is contained within the rounded borders
+            }}
           >
-            <Text style={styles.greeting}>
-              {i18n.t("hi")}, {profile.name}!
-            </Text>
-            <View
-              style={{
-                flex: 1,
-                alignItems: "flex-end",
-                justifyContent: "center",
-                paddingHorizontal: 20,
-                bottom: 70,
-                right: 5,
-              }}
+            <LinearGradient
+              colors={["#386342", "#4d895b", "#62af74", "#77d58d", "#ffffff"]} // Adjust the colors as needed
+              start={{ x: 0, y: 0 }} // Top left corner
+              end={{ x: 0, y: 1 }} // Bottom left corner// End at the right// Adjust the colors as needed
+              style={styles.greetingCont}
             >
-              <TouchableOpacity
-                onPress={() => {
-                  addLanguage();
+              <Text style={styles.greeting}>
+                {i18n.t("hi")}, {profile.name}!
+              </Text>
+
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "flex-end",
+                  justifyContent: "center",
+                  paddingHorizontal: 20,
+                  bottom: 70,
+                  right: 5,
                 }}
               >
-                <Image
-                  source={require("../../assets/Kannada.png")}
-                  style={styles.language}
-                />
-              </TouchableOpacity>
-            </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    addLanguage();
+                  }}
+                >
+                  <Image
+                    source={require("../../assets/Kannada.png")}
+                    style={styles.language}
+                  />
+                </TouchableOpacity>
+              </View>
+            </LinearGradient>
           </View>
 
           <Weather />
@@ -354,7 +366,7 @@ export default function HomeScreen({ navigation }) {
                 style={{
                   backgroundColor:
                     selectedComponent === "categoryChart"
-                      ? "#386342"
+                      ? "#328d38"
                       : "#EDF1D6",
 
                   width: 170,
@@ -380,7 +392,7 @@ export default function HomeScreen({ navigation }) {
                 style={{
                   backgroundColor:
                     selectedComponent === "reminderSection"
-                      ? "#386342"
+                      ? "#328d38"
                       : "#EDF1D6",
                   width: 120,
                   height: 50,
@@ -404,7 +416,7 @@ export default function HomeScreen({ navigation }) {
                 </Text>
               </TouchableOpacity>
 
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 style={{
                   backgroundColor:
                     selectedComponent === "soilMoistureSection"
@@ -430,13 +442,13 @@ export default function HomeScreen({ navigation }) {
                 >
                   {i18n.t("soilmoisturetitle1")}
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
 
               <TouchableOpacity
                 style={{
                   backgroundColor:
                     selectedComponent === "schemeSection"
-                      ? "#386342"
+                      ? "#328d38"
                       : "#EDF1D6",
                   width: 110,
                   height: 50,
@@ -477,8 +489,8 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width / 1,
     height: Dimensions.get("window").height / 3.7,
     backgroundColor: "#386342",
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
+    borderBottomLeftRadius: 25,
+    borderBottomRightRadius: 25,
     elevation: 5,
     flexDirection: "row",
   },
@@ -496,7 +508,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     elevation: 10,
     marginLeft: 35,
-    bottom: 125,
+    bottom: 150,
     borderRadius: 12,
     width: Dimensions.get("window").width / 1.2,
     height: Dimensions.get("window").height / 3.5,

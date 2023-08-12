@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   },
   modalLink: {
     marginTop: 10,
-    backgroundColor: "#386342",
+    backgroundColor: "#328d38",
     padding: 10,
     borderRadius: 5,
   },

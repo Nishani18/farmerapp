@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import i18n from "../i18n/i18nHelper";
 import { showMessage } from "react-native-flash-message";
+import { LinearGradient } from "expo-linear-gradient";
 
 const ReceiptManagement = () => {
   const navigation = useNavigation();
@@ -152,7 +153,7 @@ const ReceiptManagement = () => {
         <View style={{ right: 5 }}>
           <IconButton
             icon="delete"
-            iconColor="#2b422e"
+            iconColor="#328d38"
             size={29}
             onPress={() => handleDelete({ _id })}
           />
@@ -186,16 +187,23 @@ const ReceiptManagement = () => {
         backgroundColor="transparent"
         translucent={true}
       />
-      <View style={styles.titleContainer}>
-        <TouchableOpacity
-          style={{ top: 52, marginLeft: 20 }}
-          onPress={() => {
-            navigation.goBack();
-          }}
+      <View>
+        <LinearGradient
+          colors={["#328d38", "#edeee7"]} // Adjust the colors as needed
+          start={{ x: 0, y: 0 }} // Top left corner
+          end={{ x: 0, y: 1 }} // Bottom left corner
+          style={styles.titleContainer}
         >
-          <AntDesign name="left" size={30} color="white" />
-        </TouchableOpacity>
-        <Text style={styles.title}>{i18n.t("receiptContTitle")}</Text>
+          <TouchableOpacity
+            style={{ top: 52, marginLeft: 20 }}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <AntDesign name="left" size={30} color="#1f1f1f" />
+          </TouchableOpacity>
+          <Text style={styles.title}>{i18n.t("receiptContTitle")}</Text>
+        </LinearGradient>
       </View>
 
       <FlatList
@@ -257,7 +265,7 @@ const styles = StyleSheet.create({
   titleContainer: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height / 7,
-    backgroundColor: "#2a4330",
+    // backgroundColor: "#1f1f1f",
     justifyContent: "space-evenly",
     alignItems: "flex-start",
   },
@@ -266,12 +274,12 @@ const styles = StyleSheet.create({
     marginTop: 9,
     marginLeft: 68,
     fontSize: 21,
-    color: "white",
+    color: "#1f1f1f",
     fontFamily: "Poppins_400Regular",
   },
 
   plus: {
-    backgroundColor: "#2b422e",
+    backgroundColor: "#328d38",
     bottom: 30,
     position: "absolute",
     justifyContent: "flex-end",
@@ -350,4 +358,29 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   imageContainer: {},
+
+  graphcontainer: {
+    top: 200,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  imageChart: {
+    width: Dimensions.get("window").width / 4,
+    height: Dimensions.get("window").height / 8,
+  },
+
+  heading: {
+    fontFamily: "Poppins_500Medium",
+    fontSize: 17,
+    // marginTop: 16,
+  },
+
+  paragraph: {
+    fontFamily: "Poppins_400Regular",
+    marginLeft: 20,
+    fontSize: 15,
+    marginRight: 20,
+    textAlign: "center",
+  },
 });
