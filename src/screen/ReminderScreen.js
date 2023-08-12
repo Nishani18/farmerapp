@@ -16,7 +16,7 @@ import * as Notifications from "expo-notifications";
 import { useSelector } from "react-redux";
 import { AntDesign } from "@expo/vector-icons";
 import { showMessage } from "react-native-flash-message";
-
+import { LinearGradient } from "expo-linear-gradient";
 import i18n from "../i18n/i18nHelper";
 import { useNavigation } from "@react-navigation/native";
 
@@ -96,16 +96,23 @@ const ReminderScreen = () => {
         backgroundColor="transparent"
         translucent={true}
       />
-      <View style={styles.titleContainer}>
-        <TouchableOpacity
-          style={{ top: 48, marginLeft: 20 }}
-          onPress={() => {
-            navigation.goBack();
-          }}
+      <View>
+        <LinearGradient
+          colors={["#328d38", "#edeee7"]} // Adjust the colors as needed
+          start={{ x: 0, y: 0 }} // Top left corner
+          end={{ x: 0, y: 1 }} // Bottom left corner
+          style={styles.titleContainer}
         >
-          <AntDesign name="left" size={25} color="white" />
-        </TouchableOpacity>
-        <Text style={styles.title}>{i18n.t("reminderTitle")}</Text>
+          <TouchableOpacity
+            style={{ top: 48, marginLeft: 20 }}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <AntDesign name="left" size={25} color="#1f1f1f" />
+          </TouchableOpacity>
+          <Text style={styles.title}>{i18n.t("reminderTitle")}</Text>
+        </LinearGradient>
       </View>
       <View>
         <Text
@@ -120,7 +127,7 @@ const ReminderScreen = () => {
         </Text>
         <TouchableOpacity
           style={{
-            backgroundColor: "#2a4330",
+            backgroundColor: "#1f1f1f",
             marginLeft: 25,
             marginRight: 25,
             padding: 15,
@@ -152,7 +159,7 @@ const ReminderScreen = () => {
 
         <TouchableOpacity
           style={{
-            backgroundColor: "#2a4330",
+            backgroundColor: "#1f1f1f",
             marginLeft: 25,
             marginRight: 25,
             padding: 15,
@@ -193,7 +200,7 @@ const ReminderScreen = () => {
       </View>
       <Button
         style={{
-          backgroundColor: "#050a06",
+          backgroundColor: "#328d38",
           borderRadius: 5,
           marginTop: 30,
           marginLeft: 25,
@@ -231,7 +238,7 @@ const styles = StyleSheet.create({
     marginTop: 9,
     marginLeft: 60,
     fontSize: 21,
-    color: "white",
+    color: "#1f1f1f",
     fontFamily: "Poppins_400Regular",
   },
   input: {

@@ -27,6 +27,8 @@ import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
 import { FAB, IconButton } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
+import { format } from "date-fns";
+import { LinearGradient } from "expo-linear-gradient";
 
 import i18n from "../i18n/i18nHelper";
 
@@ -57,15 +59,7 @@ const SubCategoryListScreen = ({ navigation, route }) => {
       .then((response) => response.json())
       .then((data) => {
         setExpense(data.response);
-
-        // Calculate the highest expense
-        let highest = { name: "", amount: 0 };
-        data.response.forEach((expense) => {
-          if (expense.amount > highest.amount) {
-            highest = { name: expense.name, amount: expense.amount };
-          }
-        });
-        setHighestExpense(highest);
+        console.log(data.response);
       })
       .catch((error) => console.error(error));
   };
@@ -182,26 +176,39 @@ const SubCategoryListScreen = ({ navigation, route }) => {
     Poppins_700Bold,
   });
 
-  const Item = ({ id, title, price }) => (
-    <View style={styles.FlatListButtonCont}>
-      <View style={styles.ListCont}>
-        <View style={styles.ItemCont}>
-          <Text style={styles.Itemtitle}>{title}</Text>
+  const Item = ({ id, title, price, createdAt }) => {
+    const formattedDate = format(new Date(createdAt), "dd-MM-yyyy");
+    return (
+      <View style={styles.FlatListButtonCont}>
+        <View style={styles.ListCont}>
+          <View style={styles.ItemCont}>
+            <Text style={styles.Itemtitle}>{title}</Text>
+            <Text
+              style={{
+                fontFamily: "Poppins_400Regular",
+                color: "#848992",
+                fontSize: 13,
+                marginTop: 7,
+              }}
+            >
+              Created at: {formattedDate}
+            </Text>
+          </View>
+          <View style={styles.priceCont}>
+            <Text style={styles.pricetitle}>₹ {price}</Text>
+          </View>
         </View>
-        <View style={styles.priceCont}>
-          <Text style={styles.pricetitle}>₹ {price}</Text>
-        </View>
+        <IconButton
+          icon="delete"
+          iconColor="#328d38"
+          size={25}
+          onPress={() => {
+            deleteSub(id, title);
+          }}
+        />
       </View>
-      <IconButton
-        icon="delete"
-        iconColor="#2b422e"
-        size={25}
-        onPress={() => {
-          deleteSub(id, title);
-        }}
-      />
-    </View>
-  );
+    );
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -213,29 +220,37 @@ const SubCategoryListScreen = ({ navigation, route }) => {
           backgroundColor="transparent"
           translucent={true}
         />
-        <View style={styles.titleContainer}>
-          <TouchableOpacity
-            style={{ top: 60, marginLeft: 20 }}
-            onPress={() => {
-              navigation.goBack();
-            }}
+        <View>
+          <LinearGradient
+            colors={["#328d38", "#edeee7"]} // Adjust the colors as needed
+            start={{ x: 0, y: 0 }} // Top left corner
+            end={{ x: 0, y: 1 }} // Bottom left corner
+            style={styles.titleContainer}
           >
-            <AntDesign name="left" size={30} color="white" />
-          </TouchableOpacity>
-          <View style={{ flexDirection: "column" }}>
-            <Text style={styles.title}>{route.params.title}</Text>
-            <Text
-              style={{
-                marginTop: 8,
-                marginLeft: 17,
-                fontSize: 15,
-                color: "white",
-                fontFamily: "Poppins_400Regular",
+            <TouchableOpacity
+              style={{ top: 60, marginLeft: 20 }}
+              onPress={() => {
+                navigation.goBack();
               }}
             >
-              Highest Expense: {highestExpense.name} = ₹ {highestExpense.amount}
-            </Text>
-          </View>
+              <AntDesign name="left" size={30} color="#1f1f1f" />
+            </TouchableOpacity>
+            <View style={{ flexDirection: "column" }}>
+              <Text style={styles.title}>{route.params.title}</Text>
+              <Text
+                style={{
+                  marginTop: 8,
+                  marginLeft: 17,
+                  fontSize: 16,
+                  color: "#1f1f1f",
+                  fontFamily: "Poppins_700Bold",
+                }}
+              >
+                Total Expense: ₹{" "}
+                {expense.reduce((total, item) => total + item.amount, 0)}
+              </Text>
+            </View>
+          </LinearGradient>
         </View>
 
         {expense.length && expense != 0 ? (
@@ -243,7 +258,12 @@ const SubCategoryListScreen = ({ navigation, route }) => {
             data={expense}
             renderItem={({ item }) => (
               <View>
-                <Item id={item._id} title={item.name} price={item.amount} />
+                <Item
+                  id={item._id}
+                  title={item.name}
+                  price={item.amount}
+                  createdAt={item.createdAt}
+                />
               </View>
             )}
             keyExtractor={(item) => item._id}
@@ -289,18 +309,29 @@ const SubCategoryListScreen = ({ navigation, route }) => {
             style={{ height: "100%", backgroundColor: "#e5e5e5" }}
           >
             <View style={styles.centeredView}>
-              <IconButton
-                iconColor="black"
-                style={{ bottom: 40, left: 5 }}
-                icon="close"
-                size={30}
-                onPress={() => {
-                  setToggle(!toggle);
+              <View
+                style={{
+                  bottom: 50,
+                  display: "flex",
+                  flexDirection: "row",
+                  backgroundColor: "#328d38",
+                  height: Dimensions.get("window").height / 10.9,
                 }}
-              />
-              <Text style={styles.title1}>
-                {i18n.t("subcategorylisttitle")}
-              </Text>
+              >
+                <IconButton
+                  iconColor="white"
+                  style={{ top: 10, left: 5 }}
+                  icon="close"
+                  size={30}
+                  onPress={() => {
+                    setToggle(!toggle);
+                  }}
+                />
+                <Text style={styles.title1}>
+                  {i18n.t("subcategorylisttitle")}
+                </Text>
+              </View>
+
               <View style={styles.modalView}>
                 <View style={styles.errorContainer}>
                   <View style={styles.inputContainer}>
@@ -308,11 +339,11 @@ const SubCategoryListScreen = ({ navigation, route }) => {
                       <TextInput
                         variant="standard"
                         inputStyle={{
-                          fontFamily: "Poppins_400Regular",
+                          fontFamily: "Poppins_500Medium",
                         }}
                         style={styles.input}
                         placeholder={i18n.t("subcategorylisttoggleinput1")}
-                        color="#2a4330"
+                        color="#1f1f1f"
                         onChangeText={(newText) => setText(newText)}
                         defaultValue={text}
                       />
@@ -344,12 +375,12 @@ const SubCategoryListScreen = ({ navigation, route }) => {
                       <TextInput
                         variant="standard"
                         inputStyle={{
-                          fontFamily: "Poppins_400Regular",
+                          fontFamily: "Poppins_500Medium",
                         }}
                         style={styles.input}
                         keyboardType="numeric"
                         placeholder={i18n.t("subcategorylisttoggleinput2")}
-                        color="#2a4330"
+                        color="#1f1f1f"
                         onChangeText={(newText) => setAmount(newText)}
                         defaultValue={amount}
                       />
@@ -426,12 +457,12 @@ const styles = StyleSheet.create({
     marginTop: 60,
     marginLeft: 15,
     fontSize: 21,
-    color: "white",
+    color: "#1f1f1f",
     fontFamily: "Poppins_400Regular",
   },
 
   plus: {
-    backgroundColor: "#2b422e",
+    backgroundColor: "#328d38",
     bottom: 30,
     position: "absolute",
     justifyContent: "flex-end",
@@ -451,10 +482,10 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: "#328d38",
   },
   buttonClose: {
-    backgroundColor: "#103103",
+    backgroundColor: "#328d38",
   },
   textStyle: {
     color: "white",
@@ -524,10 +555,12 @@ const styles = StyleSheet.create({
     top: 50,
   },
   title1: {
-    color: "black",
+    marginTop: 25,
+    marginLeft: 20,
+    color: "white",
+    fontSize: 21,
+    fontFamily: "Poppins_400Regular",
     textAlign: "center",
-    fontSize: 20,
-    fontFamily: "Poppins_500Medium",
   },
   Itemtitle: {
     fontFamily: "Poppins_400Regular",
@@ -535,19 +568,21 @@ const styles = StyleSheet.create({
   },
   ListCont: {
     width: Dimensions.get("window").width / 1.27,
-    height: Dimensions.get("window").height / 11,
+    height: Dimensions.get("window").height / 8,
     backgroundColor: "#ffffff",
-    elevation: 3,
+    borderColor: "#2b422e",
+    borderWidth: 1,
     marginLeft: 5,
-    marginTop: 17,
+    marginTop: 15,
+    borderRadius: 12,
     marginBottom: 5,
-    borderRadius: 10,
     flexDirection: "row",
   },
   ItemCont: {
     alignItems: "flex-start",
     left: 25,
     marginTop: 20,
+    flexDirection: "column",
   },
   priceCont: {
     position: "absolute",

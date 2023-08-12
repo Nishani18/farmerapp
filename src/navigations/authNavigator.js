@@ -8,22 +8,55 @@ import BottomTabNavigator from "./BottomTabNavigator";
 const Stack = createStackNavigator();
 
 function AuthNavigator() {
+  const config = {
+    animation: "spring",
+    config: {
+      stiffness: 500,
+      damping: 500,
+      mass: 6,
+      overshootClamping: true,
+      restDisplacementThreshold: 0.01,
+      restSpeedThreshold: 0.01,
+    },
+  };
+
   return (
     <Stack.Navigator screenOptions={{}} initialRouteName="Login">
       <Stack.Screen
         name="Login"
         component={LoginScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          title: "Login",
+          transitionSpec: {
+            open: config,
+            close: config,
+          },
+        }}
       />
       <Stack.Screen
         name="Register"
         component={RegisterScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          title: "Register",
+          transitionSpec: {
+            open: config,
+            close: config,
+          },
+        }}
       />
       <Stack.Screen
         name="BottomNavigation"
         component={BottomTabNavigator}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          title: "BottomNavigation",
+          transitionSpec: {
+            open: config,
+            close: config,
+          },
+        }}
       />
     </Stack.Navigator>
   );

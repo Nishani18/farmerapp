@@ -29,12 +29,16 @@ import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { IconButton, FAB } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
+import { format } from "date-fns";
+import { LinearGradient } from "expo-linear-gradient";
+import { SelectList } from "react-native-dropdown-select-list";
 
 import i18n from "../i18n/i18nHelper";
 
 const SubCategoryScreen = ({ route }) => {
   console.log(route.params.title);
   console.log(route.params.id);
+
   const navigation = useNavigation();
 
   const id = route.params.id;
@@ -50,7 +54,12 @@ const SubCategoryScreen = ({ route }) => {
   const [subCategory, setSubCategory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [highestExpense, setHighestExpense] = useState({ name: "", amount: 0 });
+  const [selectedFilter, setSelectedFilter] = useState(null);
+
+  const filterOptions = [
+    { key: "createdAtOldToNew", value: "Created At" },
+    { key: "amountHighToLow", value: "Expenses" },
+  ];
 
   if (loading) {
     return (
@@ -67,6 +76,23 @@ const SubCategoryScreen = ({ route }) => {
     Poppins_700Bold,
   });
 
+  // const getSub = async () => {
+  //   const url = baseURL + id;
+  //   fetch(url, {
+  //     method: "GET",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       "x-access-token": userToken,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setSubCategory(data.response);
+  //       console.log(data.response);
+  //     })
+  //     .catch((error) => console.error(error));
+  // };
+
   const getSub = async () => {
     const url = baseURL + id;
     fetch(url, {
@@ -78,16 +104,16 @@ const SubCategoryScreen = ({ route }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        setSubCategory(data.response);
-
-        // Calculate the highest expense
-        let highest = { name: "", amount: 0 };
-        data.response.forEach((subcategory) => {
-          if (subcategory.total > highest.amount) {
-            highest = { name: subcategory.name, amount: subcategory.total };
-          }
-        });
-        setHighestExpense(highest);
+        let sortedData = data.response;
+        // if (selectedFilter === "createdAtOldToNew") {
+        //   sortedData.sort(
+        //     (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
+        //   );
+        // } else if (selectedFilter === "amountHighToLow") {
+        //   sortedData.sort((a, b) => b.amount - a.amount);
+        // }
+        setSubCategory(sortedData);
+        console.log(sortedData);
       })
       .catch((error) => console.error(error));
   };
@@ -148,15 +174,20 @@ const SubCategoryScreen = ({ route }) => {
   const onRefresh = () => {
     setRefreshing(true);
     getSub();
-    addSub();
+    // addSub();
     setTimeout(() => setRefreshing(false), 2000);
   };
 
   const addSub = () => {
-    const trimmedText = text.trim();
-    if (trimmedText === "") {
-      alert("Please enter a valid sub category before submitting👍🏽.");
-      return;
+    if (text.trim() === "") {
+      alert("Please enter a valid Sub Category title👍🏽.");
+      [
+        {
+          text: "OK",
+        },
+      ];
+
+      return; // Exit the function if input is blank
     }
     axios
       .post(
@@ -191,41 +222,57 @@ const SubCategoryScreen = ({ route }) => {
       });
   };
 
-  const Item = ({ id, title, amount }) => (
-    <View style={styles.FlatListButtonCont}>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("CategoryNavigation", {
-            screen: "SubCategoryList",
-            params: {
-              id,
-              title,
-            },
-          })
-        }
-      >
-        <View style={styles.SubCategoryCont}>
-          <View style={styles.SubCategoryTitleCont}>
-            <Text style={styles.SubCategoryTitle}>{title}</Text>
-          </View>
+  const Item = ({ id, title, amount, createdAt }) => {
+    const formattedDate = format(new Date(createdAt), "dd-MM-yyyy");
 
-          <View style={styles.SubCategoryEstimate}>
-            <Text style={styles.SubCategoryTotal}>₹ {amount}</Text>
-            <Text style={styles.Estimate}>{i18n.t("subcategoryestimate")}</Text>
+    return (
+      <View style={styles.FlatListButtonCont}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("CategoryNavigation", {
+              screen: "SubCategoryList",
+              params: {
+                id,
+                title,
+              },
+            })
+          }
+        >
+          <View style={styles.SubCategoryCont}>
+            <View style={styles.SubCategoryTitleCont}>
+              <Text style={styles.SubCategoryTitle}>{title}</Text>
+              <Text
+                style={{
+                  fontFamily: "Poppins_400Regular",
+                  color: "#848992",
+                  fontSize: 13,
+                  marginTop: 7,
+                }}
+              >
+                Created at: {formattedDate}
+              </Text>
+            </View>
+
+            <View style={styles.SubCategoryEstimate}>
+              <Text style={styles.SubCategoryTotal}>₹ {amount}</Text>
+              <Text style={styles.Estimate}>
+                {i18n.t("subcategoryestimate")}
+              </Text>
+            </View>
           </View>
-        </View>
-      </TouchableOpacity>
-      <IconButton
-        icon="delete"
-        iconColor="#2b422e"
-        size={25}
-        onPress={() => {
-          console.log(id);
-          deleteSub(id, title);
-        }}
-      />
-    </View>
-  );
+        </TouchableOpacity>
+        <IconButton
+          icon="delete"
+          iconColor="#328d38"
+          size={25}
+          onPress={() => {
+            console.log(id);
+            deleteSub(id, title);
+          }}
+        />
+      </View>
+    );
+  };
 
   if (!fontsLoaded) {
     return null;
@@ -237,37 +284,58 @@ const SubCategoryScreen = ({ route }) => {
           backgroundColor="transparent"
           translucent={true}
         />
-        <View style={styles.titleContainer}>
-          <TouchableOpacity
-            style={{ top: 60, marginLeft: 20 }}
-            onPress={() => {
-              navigation.goBack();
-            }}
-          >
-            <AntDesign name="left" size={30} color="white" />
-          </TouchableOpacity>
-          <View style={{ flexDirection: "column" }}>
-            <Text style={styles.title}>
-              {route.params.title} {i18n.t("subcategorytitle")}
-            </Text>
-            <Text
-              style={{
-                marginTop: 8,
-                marginLeft: 17,
-                fontSize: 15,
-                color: "white",
-                fontFamily: "Poppins_400Regular",
-              }}
+        <View>
+          <View style={{ flexDirection: "column", position: "relative" }}>
+            <LinearGradient
+              colors={["#328d38", "#edeee7"]} // Adjust the colors as needed
+              start={{ x: 0, y: 0 }} // Top left corner
+              end={{ x: 0, y: 1 }} // Bottom left corner
+              style={styles.titleContainer}
             >
-              Highest Expense: {highestExpense.name} = ₹ {highestExpense.amount}
-            </Text>
+              <TouchableOpacity
+                style={{ top: 60, marginLeft: 20 }}
+                onPress={() => {
+                  navigation.goBack();
+                }}
+              >
+                <AntDesign name="left" size={30} color="#1f1f1f" />
+              </TouchableOpacity>
+              <View style={{ flexDirection: "column" }}>
+                <Text style={styles.title}>
+                  {route.params.title} {i18n.t("subcategorytitle")}
+                </Text>
+                <Text
+                  style={{
+                    marginTop: 8,
+                    marginLeft: 17,
+                    fontSize: 16,
+                    color: "#1f1f1f",
+                    fontFamily: "Poppins_700Bold",
+                  }}
+                >
+                  Total Expense: ₹{" "}
+                  {subCategory.reduce((total, item) => total + item.total, 0)}
+                </Text>
+              </View>
+              {/* <SelectList
+                options={filterOptions}
+                selected={selectedFilter}
+                onSelect={(option) => setSelectedFilter(option.key)}
+                boxStyles={{ marginTop: 30 }}
+              /> */}
+            </LinearGradient>
           </View>
         </View>
         {subCategory.length != 0 ? (
           <FlatList
             data={subCategory}
             renderItem={({ item }) => (
-              <Item id={item._id} title={item.name} amount={item.total} />
+              <Item
+                id={item._id}
+                title={item.name}
+                amount={item.total}
+                createdAt={item.createdAt}
+              />
             )}
             keyExtractor={(item) => item._id}
             contentContainerStyle={{
@@ -387,7 +455,7 @@ const styles = StyleSheet.create({
     marginTop: 60,
     marginLeft: 15,
     fontSize: 21,
-    color: "white",
+    color: "#1f1f1f",
     fontFamily: "Poppins_400Regular",
   },
 
@@ -395,14 +463,16 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width / 1.25,
     height: Dimensions.get("window").height / 8,
     backgroundColor: "#ffffff",
-    elevation: 6,
+    borderColor: "#2b422e",
+    borderWidth: 1,
     marginLeft: 5,
     marginTop: 15,
-    borderRadius: 10,
+    borderRadius: 12,
     flexDirection: "row",
   },
   SubCategoryTitleCont: {
     alignItems: "flex-start",
+    flexDirection: "column",
     left: 20,
     marginTop: 20,
   },
@@ -432,10 +502,11 @@ const styles = StyleSheet.create({
   Estimate: {
     fontFamily: "Poppins_400Regular",
     color: "grey",
+    marginTop: 5,
   },
 
   plus: {
-    backgroundColor: "#2b422e",
+    backgroundColor: "#328d38",
     bottom: 30,
     position: "absolute",
     justifyContent: "flex-end",
@@ -452,10 +523,10 @@ const styles = StyleSheet.create({
     height: 52,
   },
   buttonOpen: {
-    backgroundColor: "#F194FF",
+    backgroundColor: "#328d38",
   },
   buttonClose: {
-    backgroundColor: "#103103",
+    backgroundColor: "#328d38",
   },
   textStyle: {
     color: "white",
@@ -489,7 +560,7 @@ const styles = StyleSheet.create({
   modaltitle: {
     display: "flex",
     flexDirection: "row",
-    backgroundColor: "#2a4330",
+    backgroundColor: "#328d38",
     height: Dimensions.get("window").height / 10.9,
   },
   listtitle: {

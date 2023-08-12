@@ -27,6 +27,7 @@ import { FAB, IconButton } from "react-native-paper";
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
 import i18n from "../i18n/i18nHelper";
+import { LinearGradient } from "expo-linear-gradient";
 
 const CategoryScreen = () => {
   const baseURL = "https://farmer-test.onrender.com/api/categorie/";
@@ -162,24 +163,31 @@ const CategoryScreen = () => {
           backgroundColor="transparent"
           translucent={true}
         />
-        <View style={styles.titleContainer}>
-          <Text style={styles.title}>{i18n.t("categorytitle")}</Text>
+        <View>
+          <LinearGradient
+            colors={["#328d38", "#f2f2f2"]} // Adjust the colors as needed
+            start={{ x: 0, y: 0 }} // Top left corner
+            end={{ x: 0, y: 1 }} // Bottom left corner
+            style={styles.titleContainer}
+          >
+            <Text style={styles.title}>{i18n.t("categorytitle")}</Text>
 
-          <FAB
-            style={{
-              position: "absolute",
-              right: 50,
-              bottom: 30,
-              elevation: 5,
-              backgroundColor: "#ffffff",
-            }}
-            size="medium"
-            icon="plus"
-            color="#2b422e"
-            onPress={() => {
-              setToggle(true);
-            }}
-          />
+            <FAB
+              style={{
+                position: "absolute",
+                right: 50,
+                bottom: 30,
+                elevation: 10,
+                backgroundColor: "#ffffff",
+              }}
+              size="medium"
+              icon="plus"
+              color="#2b422e"
+              onPress={() => {
+                setToggle(true);
+              }}
+            />
+          </LinearGradient>
         </View>
 
         {category != 0 ? (
@@ -294,7 +302,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 28,
-    color: "#fff",
+    color: "#1f1f1f",
     fontFamily: "Poppins_500Medium",
     alignItems: "flex-start",
     marginTop: 40,
@@ -355,10 +363,10 @@ const styles1 = StyleSheet.create({
     elevation: 5,
   },
   buttonOpen: {
-    backgroundColor: "#2b422e",
+    backgroundColor: "#328d38",
   },
   buttonClose: {
-    backgroundColor: "#2b422e",
+    backgroundColor: "#328d38",
   },
   textStyle: {
     color: "white",

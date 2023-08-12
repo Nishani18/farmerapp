@@ -6,7 +6,7 @@ import CategoryScreen from "../screen/CategoryScreen";
 import ProfileScreen from "../screen/ProfileScreen";
 import StatisticsScreen from "../screen/StatisticsScreen";
 
-import { AntDesign } from "@expo/vector-icons";
+import { Entypo, Ionicons, FontAwesome5 } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,7 +15,7 @@ function BottomTabNavigator() {
     <Tab.Navigator
       initialRouteName="Home"
       screenOptions={{
-        tabBarActiveTintColor: "#1e391e",
+        tabBarActiveTintColor: "#328d38",
         tabBarStyle: {
           height: 60,
           paddingHorizontal: 5,
@@ -42,7 +42,7 @@ function BottomTabNavigator() {
           tabBarShowLabel: false,
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <AntDesign name="home" size={30} color={color} />
+            <Entypo name="home" size={32} color={color} />
           ),
         }}
       />
@@ -53,7 +53,7 @@ function BottomTabNavigator() {
           tabBarShowLabel: false,
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <AntDesign name="plussquareo" size={30} color={color} />
+            <Entypo name="squared-plus" size={32} color={color} />
           ),
         }}
       />
@@ -64,7 +64,7 @@ function BottomTabNavigator() {
           tabBarShowLabel: false,
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <AntDesign name="areachart" size={30} color={color} />
+            <Ionicons name="bar-chart" size={32} color={color} />
           ),
         }}
       />
@@ -75,7 +75,7 @@ function BottomTabNavigator() {
           tabBarShowLabel: false,
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <AntDesign name="user" size={30} color={color} />
+            <FontAwesome5 name="user-alt" size={30} color={color} />
           ),
         }}
       />

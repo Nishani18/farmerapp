@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import i18n from "../i18n/i18nHelper";
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
+import { LinearGradient } from "expo-linear-gradient";
 
 const ReceiptFormScreen = () => {
   const navigation = useNavigation();
@@ -126,17 +127,24 @@ const ReceiptFormScreen = () => {
         backgroundColor="transparent"
         translucent={true}
       />
-      <View style={styles.titleContainer}>
-        <TouchableOpacity
-          style={{ top: 52, marginLeft: 20 }}
-          onPress={() => {
-            navigation.goBack();
-          }}
+      <View>
+        <LinearGradient
+          colors={["#328d38", "#edeee7"]} // Adjust the colors as needed
+          start={{ x: 0, y: 0 }} // Top left corner
+          end={{ x: 0, y: 1 }} // Bottom left corner
+          style={styles.titleContainer}
         >
-          <AntDesign name="left" size={30} color="white" />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{ top: 52, marginLeft: 20 }}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <AntDesign name="left" size={30} color="#1f1f1f" />
+          </TouchableOpacity>
 
-        <Text style={styles.title}>{i18n.t("receiptCont2Title")}</Text>
+          <Text style={styles.title}>{i18n.t("receiptCont2Title")}</Text>
+        </LinearGradient>
       </View>
 
       <View
@@ -220,7 +228,7 @@ const ReceiptFormScreen = () => {
         />
         <TouchableOpacity
           style={{
-            backgroundColor: "black",
+            backgroundColor: "#328d38",
             marginLeft: 25,
             marginRight: 25,
             padding: 15,
@@ -270,7 +278,7 @@ const styles = StyleSheet.create({
     marginTop: 9,
     marginLeft: 68,
     fontSize: 21,
-    color: "white",
+    color: "#1f1f1f",
     fontFamily: "Poppins_400Regular",
   },
   input: {
@@ -286,7 +294,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   uploadButton: {
-    backgroundColor: "#2a4330",
+    backgroundColor: "#1f1f1f",
     marginLeft: 27,
     marginRight: 27,
     padding: 15,
