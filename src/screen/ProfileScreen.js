@@ -400,13 +400,9 @@ footer {
           </LinearGradient>
         </View>
         <View style={styles.nameDPCont}>
-          {/* <Image
-            source={require("../../assets/user.png")}
-            style={styles.language}
-          /> */}
           <Avatar.Text
             style={styles.language}
-            backgroundColor="#328d38"
+            backgroundColor="#1f1f1f"
             label={profile.name
               .split(" ")
               .map((word) => word.charAt(0).toUpperCase())
@@ -488,7 +484,7 @@ footer {
             style={{
               marginTop: 20,
               borderRadius: 7,
-              backgroundColor: "#328d38",
+              backgroundColor: "#1f1f1f",
             }}
           >
             {i18n.t("profileprint")}
@@ -533,7 +529,7 @@ footer {
             style={{
               marginTop: 20,
               borderRadius: 7,
-              backgroundColor: "#328d38",
+              backgroundColor: "#1f1f1f",
             }}
             onPress={() =>
               navigation.navigate("ProfileNavigation", {
@@ -574,7 +570,7 @@ footer {
             style={{
               marginTop: 20,
               borderRadius: 7,
-              backgroundColor: "#328d38",
+              backgroundColor: "#1f1f1f",
             }}
           >
             {i18n.t("profilelogout")}

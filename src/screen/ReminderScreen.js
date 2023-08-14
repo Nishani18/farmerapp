@@ -8,6 +8,7 @@ import {
   TextInput,
   ActivityIndicator,
   SafeAreaView,
+  Alert,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Button } from "@react-native-material/core";
@@ -54,6 +55,10 @@ const ReminderScreen = () => {
 
   //add method
   const add = async () => {
+    if (!description.trim()) {
+      Alert.alert("Error", "Please enter a reminder description.");
+      return;
+    }
     setLoading(true);
     //console.log(description);
     const tdy = new Date();
@@ -127,7 +132,7 @@ const ReminderScreen = () => {
         </Text>
         <TouchableOpacity
           style={{
-            backgroundColor: "#1f1f1f",
+            backgroundColor: "#328d38",
             marginLeft: 25,
             marginRight: 25,
             padding: 15,
@@ -159,7 +164,7 @@ const ReminderScreen = () => {
 
         <TouchableOpacity
           style={{
-            backgroundColor: "#1f1f1f",
+            backgroundColor: "#328d38",
             marginLeft: 25,
             marginRight: 25,
             padding: 15,
@@ -200,7 +205,7 @@ const ReminderScreen = () => {
       </View>
       <Button
         style={{
-          backgroundColor: "#328d38",
+          backgroundColor: "#1f1f1f",
           borderRadius: 5,
           marginTop: 30,
           marginLeft: 25,

@@ -228,7 +228,7 @@ const ReceiptFormScreen = () => {
         />
         <TouchableOpacity
           style={{
-            backgroundColor: "#328d38",
+            backgroundColor: "#1f1f1f",
             marginLeft: 25,
             marginRight: 25,
             padding: 15,
@@ -294,11 +294,11 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   uploadButton: {
-    backgroundColor: "#1f1f1f",
+    backgroundColor: "#328d38",
     marginLeft: 27,
     marginRight: 27,
     padding: 15,
-    borderRadius: 5,
+    borderRadius: 6,
     width: 140,
   },
   buttonText: {

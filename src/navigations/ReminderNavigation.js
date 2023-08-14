@@ -27,7 +27,12 @@ const ReminderNavigation = () => {
           title: "Reminder",
           transitionSpec: {
             open: config,
-            close: config,
+            close: {
+              animation: "timing",
+              config: {
+                duration: 0, // Set the duration to 0 for no animation
+              },
+            },
           },
         }}
       />

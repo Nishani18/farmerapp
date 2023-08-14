@@ -13,7 +13,6 @@ import {
   Poppins_500Medium,
 } from "@expo-google-fonts/poppins";
 import React from "react";
-import ReminderScreen from "../screen/ReminderScreen";
 import i18n from "../i18n/i18nHelper";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
