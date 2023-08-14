@@ -37,7 +37,7 @@ import { AntDesign } from "@expo/vector-icons";
 const StatisticsScreen = () => {
   const [data, setData] = useState([]);
   const [week, setWeek] = useState([]);
-  const [year, setYear] = useState();
+  const [year, setYear] = useState(2023);
   const [month, setMonth] = useState();
   const [refreshing, setRefreshing] = useState(false);
   const [animationDuration, setAnimationDuration] = useState(1000);

@@ -77,7 +77,7 @@ export default function LoginScreen({ navigation }) {
         <View style={styles.Image}>
           <ImageBackground
             style={{ width: "100%", height: "100%" }}
-            source={require("../../../assets/Village.jpg")}
+            source={require("../../../assets/loginImage.jpg")}
           >
             <View style={styles.LogoContainer}>
               <Image
@@ -134,7 +134,7 @@ export default function LoginScreen({ navigation }) {
               fontFamily: "Poppins_500Medium",
             }}
             buttonStyle={{
-              backgroundColor: "#103103",
+              backgroundColor: "#1f1f1f",
               padding: 15,
               borderRadius: 10,
               marginHorizontal: 20,
@@ -197,7 +197,7 @@ export default function LoginScreen({ navigation }) {
                 fontFamily: "Poppins_500Medium",
               }}
               buttonStyle={{
-                backgroundColor: "#103103",
+                backgroundColor: "#1f1f1f",
                 padding: 15,
                 borderRadius: 10,
                 marginHorizontal: 20,
@@ -225,7 +225,7 @@ export default function LoginScreen({ navigation }) {
               style={{ justifyContent: "center", alignItems: "center" }}
             >
               <Image
-                source={require("../../../assets/Kannada.png")}
+                source={require("../../../assets/kanndaImage.png")}
                 style={styles.language}
               />
             </TouchableOpacity>

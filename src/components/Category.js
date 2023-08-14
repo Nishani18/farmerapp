@@ -125,8 +125,8 @@ const Category = ({ title, id, createdAt }) => {
       </TouchableOpacity>
       <IconButton
         icon="delete"
-        iconColor="#328d38"
-        size={25}
+        iconColor="#1f1f1f"
+        size={30}
         onPress={handleDelete}
       />
       {loading && <ActivityIndicator size="small" color="green" />}

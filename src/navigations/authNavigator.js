@@ -30,7 +30,12 @@ function AuthNavigator() {
           title: "Login",
           transitionSpec: {
             open: config,
-            close: config,
+            close: {
+              animation: "timing",
+              config: {
+                duration: 0, // Set the duration to 0 for no animation
+              },
+            },
           },
         }}
       />
@@ -42,7 +47,12 @@ function AuthNavigator() {
           title: "Register",
           transitionSpec: {
             open: config,
-            close: config,
+            close: {
+              animation: "timing",
+              config: {
+                duration: 0, // Set the duration to 0 for no animation
+              },
+            },
           },
         }}
       />
@@ -54,7 +64,12 @@ function AuthNavigator() {
           title: "BottomNavigation",
           transitionSpec: {
             open: config,
-            close: config,
+            close: {
+              animation: "timing",
+              config: {
+                duration: 0, // Set the duration to 0 for no animation
+              },
+            },
           },
         }}
       />

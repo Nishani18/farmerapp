@@ -76,23 +76,6 @@ const SubCategoryScreen = ({ route }) => {
     Poppins_700Bold,
   });
 
-  // const getSub = async () => {
-  //   const url = baseURL + id;
-  //   fetch(url, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       "x-access-token": userToken,
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       setSubCategory(data.response);
-  //       console.log(data.response);
-  //     })
-  //     .catch((error) => console.error(error));
-  // };
-
   const getSub = async () => {
     const url = baseURL + id;
     fetch(url, {
@@ -263,8 +246,8 @@ const SubCategoryScreen = ({ route }) => {
         </TouchableOpacity>
         <IconButton
           icon="delete"
-          iconColor="#328d38"
-          size={25}
+          iconColor="#1f1f1f"
+          size={27}
           onPress={() => {
             console.log(id);
             deleteSub(id, title);
@@ -341,6 +324,7 @@ const SubCategoryScreen = ({ route }) => {
             contentContainerStyle={{
               paddingBottom: 100,
             }}
+            showsVerticalScrollIndicator={false}
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
             }
@@ -506,7 +490,7 @@ const styles = StyleSheet.create({
   },
 
   plus: {
-    backgroundColor: "#328d38",
+    backgroundColor: "#1f1f1f",
     bottom: 30,
     position: "absolute",
     justifyContent: "flex-end",
@@ -523,10 +507,10 @@ const styles = StyleSheet.create({
     height: 52,
   },
   buttonOpen: {
-    backgroundColor: "#328d38",
+    backgroundColor: "#1f1f1f",
   },
   buttonClose: {
-    backgroundColor: "#328d38",
+    backgroundColor: "#1f1f1f",
   },
   textStyle: {
     color: "white",

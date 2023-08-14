@@ -153,8 +153,8 @@ const ReceiptManagement = () => {
         <View style={{ right: 5 }}>
           <IconButton
             icon="delete"
-            iconColor="#328d38"
-            size={29}
+            iconColor="#1f1f1f"
+            size={27}
             onPress={() => handleDelete({ _id })}
           />
         </View>
@@ -208,6 +208,7 @@ const ReceiptManagement = () => {
 
       <FlatList
         data={receipts}
+        showsVerticalScrollIndicator={false}
         keyExtractor={(item) => item._id}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -279,7 +280,7 @@ const styles = StyleSheet.create({
   },
 
   plus: {
-    backgroundColor: "#328d38",
+    backgroundColor: "#1f1f1f",
     bottom: 30,
     position: "absolute",
     justifyContent: "flex-end",

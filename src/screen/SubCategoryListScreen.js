@@ -200,8 +200,8 @@ const SubCategoryListScreen = ({ navigation, route }) => {
         </View>
         <IconButton
           icon="delete"
-          iconColor="#328d38"
-          size={25}
+          iconColor="#1f1f1f"
+          size={27}
           onPress={() => {
             deleteSub(id, title);
           }}
@@ -365,7 +365,7 @@ const SubCategoryListScreen = ({ navigation, route }) => {
                           <Text
                             style={{ fontSize: 12, color: "rgba(0,0,0,0.5)" }}
                           >
-                            Do not keep the Item Empty
+                            Do not keep Item Empty
                           </Text>
                         </View>
                       )}
@@ -462,7 +462,7 @@ const styles = StyleSheet.create({
   },
 
   plus: {
-    backgroundColor: "#328d38",
+    backgroundColor: "#1f1f1f",
     bottom: 30,
     position: "absolute",
     justifyContent: "flex-end",
@@ -482,10 +482,10 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   buttonOpen: {
-    backgroundColor: "#328d38",
+    backgroundColor: "#1f1f1f",
   },
   buttonClose: {
-    backgroundColor: "#328d38",
+    backgroundColor: "#1f1f1f",
   },
   textStyle: {
     color: "white",

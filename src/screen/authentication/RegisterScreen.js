@@ -103,7 +103,7 @@ const RegisterScreen = ({ navigation }) => {
         />
         <View style={styles.header}>
           <ImageBackground
-            source={require("../../../assets/RegisterImage.jpg")}
+            source={require("../../../assets/registerScreenImage.jpg")}
             style={{ width: "100%", height: "100%" }}
           />
         </View>
@@ -231,7 +231,7 @@ const RegisterScreen = ({ navigation }) => {
               fontFamily: "Poppins_500Medium",
             }}
             buttonStyle={{
-              backgroundColor: "#103103",
+              backgroundColor: "#1f1f1f",
               padding: 15,
               borderRadius: 10,
               marginHorizontal: 20,

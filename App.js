@@ -66,7 +66,7 @@ const RootNavigation = () => {
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
-        <ActivityIndicator animating={true} size={50} color="#386342" />
+        <ActivityIndicator animating={true} size={50} color="#328d38" />
       </View>
     );
   }
@@ -82,7 +82,12 @@ const RootNavigation = () => {
               title: "AuthNavigator",
               transitionSpec: {
                 open: config,
-                close: config,
+                close: {
+                  animation: "timing",
+                  config: {
+                    duration: 0, // Set the duration to 0 for no animation
+                  },
+                },
               },
             }}
           />
@@ -94,7 +99,12 @@ const RootNavigation = () => {
               title: "BottomTabNavigator",
               transitionSpec: {
                 open: config,
-                close: config,
+                close: {
+                  animation: "timing",
+                  config: {
+                    duration: 0, // Set the duration to 0 for no animation
+                  },
+                },
               },
             }}
           />
@@ -106,7 +116,12 @@ const RootNavigation = () => {
             title: "CategoryNavigation",
             transitionSpec: {
               open: config,
-              close: config,
+              close: {
+                animation: "timing",
+                config: {
+                  duration: 0, // Set the duration to 0 for no animation
+                },
+              },
             },
           }}
         />
@@ -117,7 +132,12 @@ const RootNavigation = () => {
             title: "ReminderNavigation",
             transitionSpec: {
               open: config,
-              close: config,
+              close: {
+                animation: "timing",
+                config: {
+                  duration: 0, // Set the duration to 0 for no animation
+                },
+              },
             },
           }}
         />
@@ -132,7 +152,12 @@ const RootNavigation = () => {
             title: "ProfileNavigation",
             transitionSpec: {
               open: config,
-              close: config,
+              close: {
+                animation: "timing",
+                config: {
+                  duration: 0, // Set the duration to 0 for no animation
+                },
+              },
             },
           }}
         />

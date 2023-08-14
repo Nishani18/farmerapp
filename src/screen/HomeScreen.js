@@ -347,7 +347,7 @@ export default function HomeScreen({ navigation }) {
                   }}
                 >
                   <Image
-                    source={require("../../assets/Kannada.png")}
+                    source={require("../../assets/kanndaImage.png")}
                     style={styles.language}
                   />
                 </TouchableOpacity>
@@ -673,6 +673,11 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height / 19,
     marginRight: 3,
     marginTop: 80,
+    shadowColor: "#454545",
+    shadowRadius: 17,
+    borderColor: "#454545",
+    borderWidth: 1.2,
+    borderRadius: 10,
   },
   ScrollCont: {
     bottom: 100,
