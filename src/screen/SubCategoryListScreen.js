@@ -59,7 +59,7 @@ const SubCategoryListScreen = ({ navigation, route }) => {
       .then((response) => response.json())
       .then((data) => {
         setExpense(data.response);
-        console.log(data.response);
+        console.log("subcategory list data", data.response);
       })
       .catch((error) => console.error(error));
   };
