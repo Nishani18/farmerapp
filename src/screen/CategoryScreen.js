@@ -7,11 +7,11 @@ import {
   Pressable,
   Alert,
   Image,
-  ActivityIndicator,
   SafeAreaView,
   RefreshControl,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { ActivityIndicator } from "react-native-paper";
 import { Text, TextInput } from "@react-native-material/core";
 import {
   useFonts,
@@ -22,7 +22,7 @@ import {
 } from "@expo-google-fonts/poppins";
 import React, { useEffect, useState } from "react";
 import Category from "../components/Category";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { FAB, IconButton } from "react-native-paper";
 import axios from "axios";
 import { showMessage } from "react-native-flash-message";
@@ -44,7 +44,7 @@ const CategoryScreen = () => {
   const [name, setName] = useState("");
   const [category, setCategory] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const accessToken = useSelector((state) => state.auth.userToken);
   const lang = useSelector((state) => state.root.lang);
@@ -63,6 +63,7 @@ const CategoryScreen = () => {
   };
 
   const getCategory = async () => {
+    setLoading(true);
     console.log("COmesssssssssss");
     try {
       const response = await axios.get(baseURL, {
@@ -76,6 +77,8 @@ const CategoryScreen = () => {
       //console.log(response.data.response);
     } catch (error) {
       console.error("category screen get Error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -148,7 +151,7 @@ const CategoryScreen = () => {
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
-        <ActivityIndicator size="large" color="green" />
+        <ActivityIndicator animating={true} size={50} color="#328d38" />
       </View>
     );
   }
@@ -190,7 +193,7 @@ const CategoryScreen = () => {
           </LinearGradient>
         </View>
 
-        {category != 0 ? (
+        {category.length > 0 ? (
           <FlatList
             data={category}
             renderItem={renderItem}
@@ -366,7 +369,7 @@ const styles1 = StyleSheet.create({
     backgroundColor: "#1f1f1f",
   },
   buttonClose: {
-    backgroundColor: "#1f1f1fs",
+    backgroundColor: "#1f1f1f",
   },
   textStyle: {
     color: "white",

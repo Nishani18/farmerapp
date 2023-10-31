@@ -16,8 +16,9 @@ import {
   VictoryAxis,
   VictoryLine,
   VictoryScatter,
+  VictoryPie,
 } from "victory-native";
-
+import { Svg } from "react-native-svg";
 import {
   useFonts,
   Poppins_200ExtraLight,
@@ -33,14 +34,19 @@ import { LinearGradient } from "expo-linear-gradient";
 import i18n from "../i18n/i18nHelper";
 import { SelectList } from "react-native-dropdown-select-list";
 import { AntDesign } from "@expo/vector-icons";
+import { SIZES } from "../constants/theme";
 
 const StatisticsScreen = () => {
   const [data, setData] = useState([]);
   const [week, setWeek] = useState([]);
   const [year, setYear] = useState(2023);
-  const [month, setMonth] = useState();
+  const [month, setMonth] = useState(8);
   const [refreshing, setRefreshing] = useState(false);
-  const [animationDuration, setAnimationDuration] = useState(1000);
+
+  //subcategory filter
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [subCategories, setSubCategories] = useState([]);
+  const [selectedSubCategory, setSelectedSubCategory] = useState(null);
 
   const monthMap = {
     Jan: 1,
@@ -79,39 +85,42 @@ const StatisticsScreen = () => {
 
   const baseURL = "https://farmer-test.onrender.com/api/categorie/";
 
+  const subCategorybaseURL = "https://farmer-test.onrender.com/api/sub/";
+
   const userToken = useSelector((state) => state.auth.userToken);
   const lang = useSelector((state) => state.root.lang);
 
   i18n.locale = lang;
 
-  const getWeekGraph = async () => {
-    console.log(month);
-    const url = baseURL + "weekgraph?year=" + year + "&month=" + month;
-    console.log(url);
-    axios
-      .get(url, {
-        headers: {
-          "x-access-token": userToken,
-        },
-      })
-      .then((response) => {
-        console.log(response.data.response);
-        setWeek(response.data.response);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  // const getWeekGraph = async () => {
+  //   const url = baseURL + "weekgraph?year=" + year + "&month=" + month;
+  //   console.log("the week url: ", url);
+  //   axios
+  //     .get(url, {
+  //       headers: {
+  //         "x-access-token": userToken,
+  //       },
+  //     })
+  //     .then((response) => {
+  //       console.log(response.data.response);
+  //       setWeek(response.data.response);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   useEffect(() => {
     loadUserData();
-    getWeekGraph();
+    // getWeekGraph();
+    getSubCategories();
   }, []);
 
   const onRefresh = () => {
     setRefreshing(true);
     loadUserData();
-    getWeekGraph();
+    // getWeekGraph();
+    getSubCategories();
     setTimeout(() => setRefreshing(false), 2000);
   };
 
@@ -127,6 +136,32 @@ const StatisticsScreen = () => {
         setData(response.data.result);
       });
   };
+
+  const getSubCategories = async (id) => {
+    try {
+      const response = await axios.get(`${subCategorybaseURL}/${id}`, {
+        headers: { "x-access-token": userToken },
+      });
+      setSubCategories(response.data);
+    } catch (error) {
+      console.log("Error fetching subcategories:", error);
+    }
+  };
+
+  const handleCategorySelect = (value) => {
+    setSelectedCategory(value);
+  };
+
+  const subCategoriesForSelectedCategory = subCategories.filter(
+    (subCategory) => subCategory.category === selectedCategory
+  );
+
+  const subCategoryData = subCategoriesForSelectedCategory.map(
+    (subCategory) => ({
+      x: subCategory.name,
+      y: data.find((item) => item.category === subCategory.name)?.amount || 0,
+    })
+  );
 
   let [fontsLoaded] = useFonts({
     Poppins_200ExtraLight,
@@ -248,8 +283,8 @@ const StatisticsScreen = () => {
                   width={380}
                   domainPadding={{ x: 30, y: [0, 40] }}
                   animate={{
-                    duration: animationDuration,
-                    onLoad: { duration: animationDuration },
+                    duration: 500,
+                    onLoad: { duration: 1000 },
                   }}
                 >
                   <VictoryAxis
@@ -353,32 +388,41 @@ const StatisticsScreen = () => {
                 style={{
                   zIndex: 2,
                   marginTop: 20,
-                  flexDirection: "row",
+                  // flexDirection: "row",
                   justifyContent: "center",
-                  alignContent: "center",
+                  alignItems: "center",
                 }}
               >
                 <View style={{ position: "relative" }}>
                   <SelectList
+                    // setSelected={(val) => {
+                    //   console.log(monthMap[val]);
+                    //   setMonth(monthMap[val]);
+                    //   getWeekGraph();
+                    // }}
+                    // data={monthDropdown}
+
                     setSelected={(val) => {
-                      console.log(monthMap[val]);
-                      setMonth(monthMap[val]);
-                      getWeekGraph();
+                      handleCategorySelect(val),
+                        console.log(handleCategorySelect(val));
                     }}
-                    data={monthDropdown}
+                    data={subCategories.map((subCategory) => ({
+                      key: subCategory._id,
+                      value: subCategory.name,
+                    }))}
                     save="value"
-                    placeholder={i18n.t("selectMonth")}
+                    placeholder="Select Category"
                     maxHeight={135}
                     searchPlaceholder={i18n.t("selectPlaceholder")}
                     fontFamily="Poppins_400Regular"
                     dropdownStyles={{
                       backgroundColor: "#ffffff",
-                      width: 150,
+                      width: 180,
                       borderColor: "#d8dbdf",
                       borderWidth: 2,
                     }}
                     boxStyles={{
-                      width: 150,
+                      width: 180,
                       borderRadius: 7,
                       backgroundColor: "white",
                       borderColor: "#d8dbdf",
@@ -387,7 +431,7 @@ const StatisticsScreen = () => {
                     closeicon={<AntDesign name="up" size={12} color="black" />}
                   />
                 </View>
-                <View style={{ marginLeft: 20, position: "relative" }}>
+                {/* <View style={{ marginLeft: 20, position: "relative" }}>
                   <SelectList
                     setSelected={(val) => {
                       setYear(val);
@@ -414,28 +458,20 @@ const StatisticsScreen = () => {
                     }}
                     closeicon={<AntDesign name="up" size={12} color="black" />}
                   />
-                </View>
+                </View> */}
               </View>
 
               <View
                 style={{
                   position: "absolute",
-                  top: 60,
-                  marginLeft: 15,
+                  top: 90,
+                  right: -20,
                   marginBottom: 20,
                 }}
               >
                 {data.length != 0 ? (
-                  <VictoryChart
-                    polar={false}
-                    height={340}
-                    width={350}
-                    animate={{
-                      duration: animationDuration,
-                      onLoad: { duration: animationDuration },
-                    }}
-                  >
-                    <VictoryAxis
+                  <Svg viewBox="0 0 100 100">
+                    {/* <VictoryAxis
                       dependentAxis
                       tickFormat={(t) => `${t / 1000}k`}
                       label="Expenses"
@@ -459,8 +495,8 @@ const StatisticsScreen = () => {
                           fontSize: 12,
                         },
                       }}
-                    />
-                    <VictoryLine
+                    /> */}
+                    {/* <VictoryLine
                       interpolation={"linear"}
                       data={week}
                       style={{ data: { stroke: "#1e391e" } }}
@@ -469,8 +505,35 @@ const StatisticsScreen = () => {
                       data={week}
                       size={5}
                       style={{ data: { fill: "#70b581" } }}
+                    /> */}
+
+                    {/* <VictoryPie
+                      data={week}
+                      radius={({ datum }) => 20 + datum.y * 0.02} // Adjust the factor to control the radius
+                      style={{
+                        labels: { fontSize: 10 },
+                        data: { fill: "#70b581" },
+                      }}
+                    /> */}
+
+                    <VictoryPie
+                      padAngle={8}
+                      // labelComponent={<EmptyComponent />}
+                      innerRadius={35}
+                      colorScale={[
+                        "#4b78a5",
+                        "#f7b275",
+                        "#386342",
+                        "#936444",
+                        "#dfdfdf",
+                        "#ffe07d",
+                        "#eb5568",
+                      ]}
+                      data={subCategoryData}
+                      width={SIZES.width * 0.99}
+                      height={SIZES.width * 0.8}
                     />
-                  </VictoryChart>
+                  </Svg>
                 ) : (
                   <View style={styles.graphcontainer1}>
                     <Image

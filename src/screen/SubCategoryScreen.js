@@ -11,8 +11,8 @@ import {
   Image,
   RefreshControl,
   SafeAreaView,
-  ScrollView,
 } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import { TextInput } from "@react-native-material/core";
@@ -31,7 +31,6 @@ import { IconButton, FAB } from "react-native-paper";
 import { showMessage } from "react-native-flash-message";
 import { format } from "date-fns";
 import { LinearGradient } from "expo-linear-gradient";
-import { SelectList } from "react-native-dropdown-select-list";
 
 import i18n from "../i18n/i18nHelper";
 
@@ -54,17 +53,11 @@ const SubCategoryScreen = ({ route }) => {
   const [subCategory, setSubCategory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState(null);
-
-  const filterOptions = [
-    { key: "createdAtOldToNew", value: "Created At" },
-    { key: "amountHighToLow", value: "Expenses" },
-  ];
 
   if (loading) {
     return (
       <View style={{ flex: 1, justifyContent: "center" }}>
-        <ActivityIndicator size="large" color="green" />
+        <ActivityIndicator animating={true} size={50} color="#328d38" />
       </View>
     );
   }
@@ -87,16 +80,8 @@ const SubCategoryScreen = ({ route }) => {
     })
       .then((response) => response.json())
       .then((data) => {
-        let sortedData = data.response;
-        // if (selectedFilter === "createdAtOldToNew") {
-        //   sortedData.sort(
-        //     (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-        //   );
-        // } else if (selectedFilter === "amountHighToLow") {
-        //   sortedData.sort((a, b) => b.amount - a.amount);
-        // }
-        setSubCategory(sortedData);
-        console.log(sortedData);
+        setSubCategory(data.response);
+        console.log(data.response);
       })
       .catch((error) => console.error(error));
   };
@@ -300,12 +285,6 @@ const SubCategoryScreen = ({ route }) => {
                   {subCategory.reduce((total, item) => total + item.total, 0)}
                 </Text>
               </View>
-              {/* <SelectList
-                options={filterOptions}
-                selected={selectedFilter}
-                onSelect={(option) => setSelectedFilter(option.key)}
-                boxStyles={{ marginTop: 30 }}
-              /> */}
             </LinearGradient>
           </View>
         </View>
