@@ -41,7 +41,7 @@ const SubCategoryScreen = ({ route }) => {
   const navigation = useNavigation();
 
   const id = route.params.id;
-  const baseURL = "https://farmer-test.onrender.com/api/sub/";
+  const baseURL = "localhost:8080";
   const userToken = useSelector((state) => state.auth.userToken);
   // console.log(userToken);
   const lang = useSelector((state) => state.root.lang);

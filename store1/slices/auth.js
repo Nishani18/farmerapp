@@ -4,7 +4,7 @@ import axios from "axios";
 
 import authServices from "../services/auth.services";
 
-const baseURL = "https://farmer-test.onrender.com/api/auth/";
+const baseURL = "localhost:8080";
 
 // const user = await secureStore.getItemAsync('userToken');
 

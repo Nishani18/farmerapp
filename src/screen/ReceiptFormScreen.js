@@ -69,7 +69,7 @@ const ReceiptFormScreen = () => {
         });
 
         const imageResponse = await axios.post(
-          "https://farmer-test.onrender.com/api/receipt/uploadImage",
+          "localhost:8080",
           imageFormData,
           {
             headers: {
@@ -88,16 +88,12 @@ const ReceiptFormScreen = () => {
           comment: comments,
         };
 
-        const response = await axios.post(
-          "https://farmer-test.onrender.com/api/receipt/uploadReport",
-          data,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              "x-access-token": accessToken,
-            },
-          }
-        );
+        const response = await axios.post("localhost:8080", data, {
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": accessToken,
+          },
+        });
         console.log("Response from next endpoint:", response.data);
         showMessage({
           message: i18n.t("recieptSuccess"),

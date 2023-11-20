@@ -1,7 +1,7 @@
 import axios from "axios";
 import * as secureStore from "expo-secure-store";
 
-const baseURL = "https://farmer-test.onrender.com/api/auth/";
+const baseURL = "localhost:8080";
 
 const register = (name, email, password) => {
   return axios.post(baseURL + "signin", {

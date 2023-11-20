@@ -35,7 +35,7 @@ const ReceiptManagement = () => {
 
   i18n.locale = lang;
 
-  const baseURL = "https://farmer-test.onrender.com/api/receipt/";
+  const baseURL = "localhost:8080";
 
   const fetchReceipts = async () => {
     try {

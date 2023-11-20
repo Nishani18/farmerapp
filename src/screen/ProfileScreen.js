@@ -4,7 +4,6 @@ import {
   StyleSheet,
   Text,
   Dimensions,
-  Image,
   RefreshControl,
   ScrollView,
   Alert,
@@ -18,7 +17,7 @@ import {
   Poppins_500Medium,
   Poppins_700Bold,
 } from "@expo-google-fonts/poppins";
-import { Button, Avatar, MD2Colors, MD3Colors } from "react-native-paper";
+import { Button, Avatar } from "react-native-paper";
 import { useDispatch } from "react-redux";
 import { logout } from "../../store1/slices/auth";
 import * as Print from "expo-print";
@@ -298,8 +297,8 @@ footer {
   const userToken = useSelector((state) => state.auth.userToken);
   const lang = useSelector((state) => state.root.lang);
 
-  const base_url = "https://farmer-test.onrender.com/api/profile/";
-  const expense_url = "https://farmer-test.onrender.com/api/expense/pdf";
+  const base_url = "localhost:8080";
+  const expense_url = "localhost:8080";
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -617,9 +616,6 @@ const styles = StyleSheet.create({
     right: 100,
   },
   language: {
-    // width: Dimensions.get("window").width / 7,
-    // height: Dimensions.get("window").height / 14,
-    // left: 180,
     marginTop: 40,
   },
   nameDPCont: {
