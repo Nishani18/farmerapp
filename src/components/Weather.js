@@ -16,18 +16,18 @@ const Weather = () => {
       lat: 12.87,
       lon: 74.84,
       tz_id: "Asia/Kolkata",
-      localtime_epoch: 1675182607,
+      localtime_epoch: 97439875349,
       localtime: "2023-01-31 22:00",
     },
     current: {
-      last_updated_epoch: 1675181700,
+      last_updated_epoch: 28329834923,
       last_updated: "2023-01-31 21:45",
       temp_c: 27.0,
       temp_f: 80.6,
       is_day: 0,
       condition: {
         text: "Mist",
-        icon: "//cdn.weatherapi.com/weather/64x64/night/143.png",
+        icon: "",
         code: 1030,
       },
       wind_mph: 4.3,
@@ -62,9 +62,7 @@ const Weather = () => {
       setLocation(location);
 
       axios
-        .get(
-          `http://api.weatherapi.com/v1/current.json?KEY=fc05ca2446d34b6199a155429233101&q=${location.coords.latitude},${location.coords.longitude}`
-        )
+        .get(`localhost:8080`)
         .then((response) => {
           // console.log(response.data);
           setWeather(response.data);
@@ -140,7 +138,6 @@ const styles = StyleSheet.create({
   weatherContainer: {
     backgroundColor: "white",
     elevation: 8,
-    // marginLeft: 17,
     bottom: 80,
     marginBottom: 30,
     borderRadius: 12,

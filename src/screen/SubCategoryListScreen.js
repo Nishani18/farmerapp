@@ -43,7 +43,7 @@ const SubCategoryListScreen = ({ navigation, route }) => {
   const lang = useSelector((state) => state.root.lang);
 
   const id = route.params.id;
-  const baseURL = "https://farmer-test.onrender.com/api/expense/";
+  const baseURL = "localhost:8080";
 
   i18n.locale = lang;
 

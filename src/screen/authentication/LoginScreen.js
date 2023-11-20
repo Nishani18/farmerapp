@@ -277,14 +277,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 15,
   },
-  footer: {
-    // position: "absolute",
-    // width: "100%",
-    // textAlign: "center",
-    // flexDirection: "row",
-    // marginLeft: 90,
-    // marginTop: 500,
-  },
   footerText: {
     color: "#bab5b3",
     fontFamily: "Poppins_500Medium",

@@ -1,13 +1,5 @@
 import { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  Image,
-  FlatList,
-  ScrollView,
-} from "react-native";
+import { View, Text, StyleSheet, Dimensions, Image } from "react-native";
 import { Svg } from "react-native-svg";
 import React from "react";
 import { VictoryPie, VictoryLegend } from "victory-native";
@@ -27,7 +19,7 @@ import i18n from "../i18n/i18nHelper";
 const HomeScreenChart = ({ chart }) => {
   const [data, setData] = useState(chart);
 
-  const baseURL = "https://farmer-test.onrender.com/api/categorie/graph";
+  const baseURL = "localhost:8080";
 
   const userToken = useSelector((state) => state.auth.userToken);
   const lang = useSelector((state) => state.root.lang);
@@ -78,8 +70,6 @@ const HomeScreenChart = ({ chart }) => {
             <View style={{ marginLeft: 20, fontFamily: "Poppins_400Regular" }}>
               <VictoryLegend
                 labels={({ datum }) => datum.x}
-                // standalone={false}
-                // centerTitle
                 orientation="vertical"
                 style={{
                   labels: {

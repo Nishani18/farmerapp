@@ -2,10 +2,10 @@
 
 <h3 align="center">🌱 A Farmer Expenditure Application 📱</h3>
 
-
 Krishi Mithra is a mobile application designed for farmers to keep track of their expenses and gain insights into their financial management. It is built on the React Native Expo platform, using a stack of Redux, Node.js, Express.js, and MongoDB.
 
 ## Features 📜
+
 - Expense tracking: Farmers can record and categorize their expenses, making it easy to see where their money is going.
 - Insightful charts: The app generates charts to provide farmers with insights into their spending habits.
 - PDF generation: Farmers can generate PDF reports of their expenses for their records or for sharing with their advisors.
@@ -13,6 +13,7 @@ Krishi Mithra is a mobile application designed for farmers to keep track of thei
 - Reminder and notification capability: Farmers can set reminders for upcoming payments and receive notifications when bills are due.
 
 ## Technologies Used 🛠️
+
 - React Native Expo
 - Redux
 - Node.js
@@ -20,27 +21,6 @@ Krishi Mithra is a mobile application designed for farmers to keep track of thei
 - MongoDB
 
 ## Contributors 💻
-- [Nishith Salian](https://github.com/dead1art) 👨🏽‍💻
-- [Nishani](https://github.com/Nishani18) 👩🏽‍💻
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- [Nishith Salian]
+- [Nishani]

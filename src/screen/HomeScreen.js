@@ -31,7 +31,6 @@ import * as Notifications from "expo-notifications";
 import i18n from "../i18n/i18nHelper";
 import Schemes from "../components/Schemes";
 import { LinearGradient } from "expo-linear-gradient";
-import { SelectList } from "react-native-dropdown-select-list";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -41,9 +40,9 @@ Notifications.setNotificationHandler({
   }),
 });
 
-const apiKey = "585ADARCBF7ZCCQM";
-const channelId = 2028274;
-const readApiUrl = `https://api.thingspeak.com/channels/${channelId}/feeds.json?results=1&api_key=${apiKey}`;
+const apiKey = "692UQAYVBQ9MAJZY";
+const channelId = 7225182;
+const readApiUrl = `localhost:8080`;
 
 export default function HomeScreen({ navigation }) {
   const userToken = useSelector((state) => state.auth.userToken);
@@ -52,8 +51,8 @@ export default function HomeScreen({ navigation }) {
 
   const dispatch = useDispatch();
 
-  const base_url = "https://farmer-test.onrender.com/api/profile/";
-  const base_url_chart = "https://farmer-test.onrender.com/api/categorie/graph";
+  const base_url = "localhost:8080";
+  const base_url_chart = "localhost:8080";
 
   const [profile, setProfile] = useState({ name: "user" });
   const [refreshing, setRefreshing] = useState(false);
@@ -111,61 +110,6 @@ export default function HomeScreen({ navigation }) {
     );
   };
 
-  // const SoilMoistureSection = () => {
-  //   return (
-  //     <View>
-  //       <Text style={styles.revenue}>{i18n.t("soilmoisturetitle")}</Text>
-  //       <View
-  //         style={{
-  //           backgroundColor: "#f1f1ed",
-  //           bottom: 100,
-  //           height: Dimensions.get("window").height / 4.3,
-  //           left: 20,
-  //           marginRight: 40,
-  //           marginBottom: 20,
-  //           borderRadius: 20,
-  //         }}
-  //       >
-  //         <View
-  //           style={{
-  //             top: 100,
-  //             justifyContent: "center",
-  //             alignItems: "center",
-  //           }}
-  //         >
-  //           <TouchableOpacity
-  //             style={{
-  //               height: 68,
-  //               width: 300,
-  //               backgroundColor: "#ffffff",
-  //               elevation: 10,
-  //               bottom: 50,
-  //               borderRadius: 40,
-  //             }}
-  //             onPress={() =>
-  //               navigation.navigate("SoilMoistureNavigation", {
-  //                 screen: "SoilMoisture",
-  //               })
-  //             }
-  //           >
-  //             <Text
-  //               style={{
-  //                 fontFamily: "Poppins_500Medium",
-  //                 fontSize: 17,
-  //                 marginTop: 20,
-  //                 marginBottom: 20,
-  //                 textAlign: "center",
-  //               }}
-  //             >
-  //               {i18n.t("soilmoisturebutton")}
-  //             </Text>
-  //           </TouchableOpacity>
-  //         </View>
-  //       </View>
-  //     </View>
-  //   );
-  // };
-
   const SchemeSection = () => {
     return (
       <View style={{ bottom: 100 }}>
@@ -193,8 +137,6 @@ export default function HomeScreen({ navigation }) {
         return <CategoryChart />;
       case "reminderSection":
         return <ReminderSection />;
-      // case "soilMoistureSection":
-      //   return <SoilMoistureSection />;
       case "schemeSection":
         return <SchemeSection />;
       default:
@@ -415,34 +357,6 @@ export default function HomeScreen({ navigation }) {
                   {i18n.t("reminderScroll")}
                 </Text>
               </TouchableOpacity>
-
-              {/* <TouchableOpacity
-                style={{
-                  backgroundColor:
-                    selectedComponent === "soilMoistureSection"
-                      ? "#386342"
-                      : "#EDF1D6",
-                  width: 150,
-                  height: 50,
-                  borderRadius: 20,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginLeft: 15,
-                }}
-                onPress={() => handleComponentClick("soilMoistureSection")}
-              >
-                <Text
-                  style={{
-                    fontFamily: "Poppins_400Regular",
-                    color:
-                      selectedComponent === "soilMoistureSection"
-                        ? "white"
-                        : "black",
-                  }}
-                >
-                  {i18n.t("soilmoisturetitle1")}
-                </Text>
-              </TouchableOpacity> */}
 
               <TouchableOpacity
                 style={{

@@ -22,7 +22,7 @@ import axios from "axios";
 import { showMessage } from "react-native-flash-message";
 import i18n from "../../../src/i18n/i18nHelper";
 
-const baseURL = "https://farmer-test.onrender.com";
+const baseURL = "localhost:8080";
 
 const RegisterScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
@@ -36,7 +36,7 @@ const RegisterScreen = ({ navigation }) => {
 
   const signUpHandler = async () => {
     axios
-      .post(`${baseURL}/api/auth/signin`, {
+      .post(`${baseURL}`, {
         name: name,
         email: email,
         password: password,

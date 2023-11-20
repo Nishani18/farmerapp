@@ -30,7 +30,7 @@ import i18n from "../i18n/i18nHelper";
 import { LinearGradient } from "expo-linear-gradient";
 
 const CategoryScreen = () => {
-  const baseURL = "https://farmer-test.onrender.com/api/categorie/";
+  const baseURL = "localhost:8080";
 
   const renderItem = ({ item }) => {
     return (
@@ -64,7 +64,6 @@ const CategoryScreen = () => {
 
   const getCategory = async () => {
     setLoading(true);
-    console.log("COmesssssssssss");
     try {
       const response = await axios.get(baseURL, {
         headers: {

@@ -16,13 +16,12 @@ import axios from "axios";
 import { showMessage } from "react-native-flash-message";
 
 const Category = ({ title, id, createdAt }) => {
-  console.log(id);
   const navigation = useNavigation();
 
   const [category, setCategory] = useState([]);
   const [loading, setLoading] = useState(false); // Refresh state variable
 
-  const baseURL = "https://farmer-test.onrender.com/api/categorie/";
+  const baseURL = "localhost:8080";
 
   const accessToken = useSelector((state) => state.auth.userToken);
   const lang = useSelector((state) => state.root.lang);
@@ -30,7 +29,6 @@ const Category = ({ title, id, createdAt }) => {
   i18n.locale = lang;
 
   const getCategory = async () => {
-    console.log("Category comp COmes here!!!!");
     try {
       const response = await axios.get(baseURL, {
         headers: {

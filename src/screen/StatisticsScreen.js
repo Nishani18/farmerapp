@@ -14,8 +14,6 @@ import {
   VictoryBar,
   VictoryChart,
   VictoryAxis,
-  VictoryLine,
-  VictoryScatter,
   VictoryPie,
 } from "victory-native";
 import { Svg } from "react-native-svg";
@@ -83,9 +81,9 @@ const StatisticsScreen = () => {
     { key: "2", value: 2023 },
   ];
 
-  const baseURL = "https://farmer-test.onrender.com/api/categorie/";
+  const baseURL = "localhost:8080";
 
-  const subCategorybaseURL = "https://farmer-test.onrender.com/api/sub/";
+  const subCategorybaseURL = "localhost:8080";
 
   const userToken = useSelector((state) => state.auth.userToken);
   const lang = useSelector((state) => state.root.lang);
