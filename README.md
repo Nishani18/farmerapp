@@ -2,7 +2,7 @@
 
 <h3 align="center">🌱 A Farmer Expenditure Application 📱</h3>
 
-Krishi Mithra is a mobile application designed for farmers to keep track of their expenses and gain insights into their financial management. It is built on the React Native Expo platform, using a stack of Redux, Node.js, Express.js, and MongoDB.
+Krishi Nidhi is a mobile application designed for farmers to keep track of their expenses and gain insights into their financial management. It is built on the React Native Expo platform, using a stack of Redux, Node.js, Express.js, and MongoDB.
 
 ## Features 📜
 
