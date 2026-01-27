@@ -20,7 +20,3 @@ Krishi Nidhi is a mobile application designed for farmers to keep track of their
 - Express.js
 - MongoDB
 
-## Contributors 💻
-
-- [Nishith Salian]
-- [Nishani]
